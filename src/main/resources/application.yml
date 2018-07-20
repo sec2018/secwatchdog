@@ -11,13 +11,13 @@ server:
 spring:
     profiles:
       active: dev
-	# 指定静态资源的路径
-	resources:
-	    static-locations: classpath:/css/,classpath:/font/,classpath:/img/,classpath:/index/,classpath:/common/
-	mvc:
-     view:
-       prefix: /
-       suffix: .jsp
+    # 指定静态资源的路径
+    resources:
+      static-locations: classpath:/,classpath:/css/,classpath:/font/,classpath:/img/,classpath:/common/
+    mvc:
+      view:
+        prefix: /WEB-INF/
+        suffix: .jsp
 #	redis:
 #	    open: true  # 是否开启redis缓存  true开启   false关闭
 #	    database: 0
@@ -32,8 +32,8 @@ spring:
 #	        min-idle: 5       # 连接池中的最小空闲连接
 mybatis:
   #*Mapper.java可以随便放，只要和mapper.xml对应上就行
-   mapper-locations: classpath:sec/secwatchdog/mapping/*.xml
-   type-aliases-package: sec.secwatchdog.model
+   mapper-locations: classpath:mapper/*.xml
+   #type-aliases-package: sec.secwatchdog.model
 
 #这个插件是mybatis的分页查询
 pagehelper:

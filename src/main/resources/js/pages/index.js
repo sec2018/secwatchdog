@@ -1,4 +1,5 @@
 ﻿$(function(){
+	 
 	if (data.data1.privilegelevel == 1) {
 	    $("#span_leftscan").html("全国总览");
 	    //下面的表格

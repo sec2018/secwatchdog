@@ -1,8 +1,0 @@
-spring:
-    datasource:
-      url: jdbc:mysql://122.112.252.45:3306/dogtest?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-      username: root
-      password: 100677
-      driver-class-name: com.mysql.jdbc.Driver
-      type: com.alibaba.druid.pool.DruidDataSource
-      connectionProperties: druid.stat.mergeSql=true

@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html class="login-bg">
 <head>
     <title>包虫病防控犬驱虫远程管理系统 - 登录</title>
-    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -20,9 +21,6 @@
 
     <!-- this page specific styles -->
     <link rel="stylesheet" href="css/compiled/signin.css" type="text/css" media="screen" />
-   <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 </head>
 <body onkeydown="keyLogin();">
     <div class="login-wrapper">
