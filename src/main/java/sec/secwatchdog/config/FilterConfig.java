@@ -25,13 +25,12 @@ public class FilterConfig {
 	 * Encoding Filter
 	 */
 	@Bean
-	@Order(1000)
 	public FilterRegistrationBean characterEncodingFilter() {
 		FilterRegistrationBean bean = new FilterRegistrationBean();
 		bean.setFilter(new CharacterEncodingFilter());
 		bean.addInitParameter("encoding", "UTF-8");
 		bean.addInitParameter("forceEncoding", "true");
-		bean.addUrlPatterns("/*");
+		bean.addUrlPatterns("*.do");
 		return bean;
 	}
  

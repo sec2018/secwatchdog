@@ -1,4 +1,4 @@
-package sec.secwatchdog.controller;
+﻿package sec.secwatchdog.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +28,8 @@ public class CityController {
 	private CityService cityService;
 /***
  * 
- * @param city ������
- * @param province ʡ��
+ * @param city 
+ * @param province  
  * @param request
  * @param model
  * @return
