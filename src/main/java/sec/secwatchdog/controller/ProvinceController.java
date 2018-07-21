@@ -30,7 +30,7 @@ public class ProvinceController {
 	private ProvinceService provinceService;
 	/***
 	 * 
-	 * @param province ���Ż���ʡ��
+	 * @param province 兵团或者省名
 	 * @param request
 	 * @param model
 	 * @return
@@ -38,7 +38,7 @@ public class ProvinceController {
 	@RequestMapping("/province")
 	public String GoToProvincePage(@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
 		HttpSession session=request.getSession();
-		//sessionʧЧ���˵���½ҳ��
+		//session失效，退出登录页面
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
 		}
@@ -48,25 +48,25 @@ public class ProvinceController {
 		JSONObject jsStr = null;
 			
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data1",manager);//data1�����û���Ϣ
-		if(province.equals("�������")) {//�鿴������ŵ�����
-			url.append("page_corps");//ת��ҳ��index/page_corps.jsp
-			Map<String,Integer> armyIndexInfo = provinceService.GetArmyIndexLogo(province);//��ý�����ŵ�����������Ϣ
+		data.put("data1",manager);//data1保存用户信息
+		if(province.equals("建设兵团")) {//查看建设兵团的详情
+			url.append("page_corps");//转到页面index/page_corps.jsp
+			Map<String,Integer> armyIndexInfo = provinceService.GetArmyIndexLogo(province);//获得建设兵团的总体数据信息
 			data.put("data2",armyIndexInfo);
-			Map<String,Object> armyProvinceMap = provinceService.GetArmyProvinceMap(province);//��ý�������¸�������ʦ����ϸ������Ϣ
+			Map<String,Object> armyProvinceMap = provinceService.GetArmyProvinceMap(province);//获得该建设兵团下各个流行师的详细数据
 			data.put("data3", armyProvinceMap);
-			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//��ý�����ŵ��������
+			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该建设兵团的区域编码
 			data.put("data4", data4);
-		}else {//����ǽ�����ţ���ʡ
-			url.append("page_province");//ת��ҳ��index/page_province.jsp
-			Map<String,Integer> provinceIndexInfo = provinceService.GetIndexLogoInfo(province);//��ø�ʡ������������Ϣ
+		}else {//如果非建设兵团，即省
+			url.append("page_province");//转到页面index/page_province.jsp
+			Map<String,Integer> provinceIndexInfo = provinceService.GetIndexLogoInfo(province);//获得该省的总体数据信息
 			data.put("data2",provinceIndexInfo);
-			Map<String,Object> ProvinceMap = provinceService.GetProvinceMap(province);//��ø��¸��������е���ϸ������Ϣ
+			Map<String,Object> ProvinceMap = provinceService.GetProvinceMap(province);//获得该省下各个流行市的详细数据
 			data.put("data3", ProvinceMap);
-			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//��ø�ʡ���������
+			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该省的区域编码
 			data.put("data4", data4);
 		}
-		jsStr = JSONObject.fromObject(data);//����תΪjson��ʽ
+		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 
 		return url.toString();
 	}

@@ -25,18 +25,20 @@ public class VillageController {
 	
 	@Resource
 	private VillageService villageService;
-/***
- * 
- * @param city ������
- * @param province ʡ��
- * @param request
- * @param model
- * @return
- */
+ /***
+  * 
+  * @param village 乡名
+  * @param county  县名
+  * @param city   市名
+  * @param province  市名
+  * @param request
+  * @param model
+  * @return
+  */
 	@RequestMapping("/village")
 	public String GoToCountyPage(@RequestParam(value="village") String village, @RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
 		HttpSession session=request.getSession();
-		//sessionʧЧ���˵���½ҳ��
+		//session过期
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
 		}
@@ -46,17 +48,17 @@ public class VillageController {
 		JSONObject jsStr = null;
 			
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data1",manager);//data1�����û���Ϣ
+		data.put("data1",manager);//data1保存用户信息
 
-		url.append("page_village");//ת��ҳ��index/page_village.jsp
-		Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//��ø��������������Ϣ
+		url.append("page_village");//转到页面index/page_village.jsp
+		Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//获得该乡的总体数据信息
 		data.put("data2",villageIndexInfo);
-		Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//��ø����¸������д����ϸ������Ϣ
+		Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//获得该乡下各村的数据信息
 		data.put("data3", villageMap);
-		Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//��ø�����������
+		Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//获得该乡的区域编码
 		data.put("data4", data4);
 		
-		jsStr = JSONObject.fromObject(data);//����תΪjson��ʽ
+		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 
 		return url.toString();
 	
