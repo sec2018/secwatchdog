@@ -17,16 +17,16 @@ import sun.misc.BASE64Encoder;
 
 public class AESUtil {
 	/** 
-     * ��Կ�㷨 
+     * 秘钥算法
      */  
     private static final String ALGORITHM = "AES";  
     /** 
-     * �ӽ����㷨/����ģʽ/��䷽ʽ 
+     * 加解密算法/工作模式/填充方式
      */  
     private static final String ALGORITHM_STR = "AES/ECB/PKCS5Padding";  
   
     /** 
-     * SecretKeySpec����KeySpec�ӿڵ�ʵ����,���ڹ���������Կ�淶 
+     * SecretKeySpec类是KeySpec接口的实现类，用于构建秘钥规范
      */  
     private SecretKeySpec key;
   
@@ -38,7 +38,7 @@ public class AESUtil {
     }  
   
     /** 
-     * AES���� 
+     * AES加密
      * @param data 
      * @return 
      * @throws Exception 
@@ -58,7 +58,7 @@ public class AESUtil {
 //    } 
   
     /** 
-     * AES���� 
+     * AES解密 
      * @param base64Data 
      * @return 
      * @throws Exception 
@@ -71,7 +71,7 @@ public class AESUtil {
     
   
     /** 
-     * hex�ַ��� ת byte���� 
+     * hex字符串转byte数组 
      * @param s 
      * @return 
      */  
@@ -98,7 +98,7 @@ public class AESUtil {
         System.out.println("exp:"+util.decryptData("euLUpj0cPhoYeh/Yn0ce9Q==")); // ����  
     }   
     
-    /**��������ת����16���� 
+    /**将二进制转换为16进制
      * @param buf 
      * @return 
      */  
@@ -114,7 +114,7 @@ public class AESUtil {
         return sb.toString();  
     }
     
-    /**��16����ת��Ϊ������ 
+    /**将16进制转为二进制
      * @param hexStr 
      * @return 
      */  
@@ -130,7 +130,7 @@ public class AESUtil {
         return result;  
     }  
     
-  //����
+  //加密
     public String encryptData(String sSrc) throws Exception{
         
         if(sKey == null || sKey.length() != 16){
@@ -154,10 +154,10 @@ public class AESUtil {
         
     }
     
-    // ����
+    //解密
     public String decryptData(String sSrc) throws Exception {
         try {
-            // �ж�Key�Ƿ���ȷ
+            //判断Key是否正确
             if (sKey == null || sKey .length() != 16) {
                 
                 throw new Exception("sKeyΪ�ջ���16λ");

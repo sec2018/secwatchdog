@@ -9,7 +9,7 @@ public class NameConversionUtil {
 	public static String GovToEchartsAreaName(SqlSession session, String areaname) {
 		Map<String, String> mapparam = new HashMap<String,String>();
 		mapparam.put("areaname", areaname);
-		String statement = "sec.secwatchdog.util.echartsareanametemp";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.util.echartsareanametemp"; 
 		String echartsareaname =  session.selectOne(statement, mapparam);
         
         return echartsareaname;
@@ -18,7 +18,7 @@ public class NameConversionUtil {
 	public static String EchartsAreaNameToGov(SqlSession session, String areaname) {
 		Map<String, String> mapparam = new HashMap<String,String>();
 		mapparam.put("areaname", areaname);
-		String statement = "sec.secwatchdog.util.govareanametemp";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.util.govareanametemp"; 
 		String govareaname =  session.selectOne(statement, mapparam);
 	 
 		

@@ -25,18 +25,19 @@ public class CountyController {
 	
 	@Resource
 	private CountyService countyService;
-/***
- * 
- * @param city ������
- * @param province ʡ��
- * @param request
- * @param model
- * @return
- */
+ /***
+  * 
+  * @param county 县名
+  * @param city   市名
+  * @param province  省名
+  * @param request
+  * @param model
+  * @return
+  */
 	@RequestMapping("/county")
 	public String GoToCountyPage(@RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
 		HttpSession session=request.getSession();
-		//sessionʧЧ���˵���½ҳ��
+		//session过期
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
 		}
@@ -46,17 +47,17 @@ public class CountyController {
 		JSONObject jsStr = null;
 			
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data1",manager);//data1�����û���Ϣ
+		data.put("data1",manager);//data1用户信息
 
-		url.append("page_county");//ת��ҳ��index/page_county.jsp
-		Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//��ø��ص�����������Ϣ
+		url.append("page_county");//转到页面index/page_county.jsp
+		Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//该县的总体数据信息
 		data.put("data2",countyIndexInfo);
-		Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//��ø����¸������������ϸ������Ϣ
+		Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//该县下各个流行乡的数据信息
 		data.put("data3", countyMap);
-		Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//��ø��ص��������
+		Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//获得该县的区域编码
 		data.put("data4", data4);
 		
-		jsStr = JSONObject.fromObject(data);//����תΪjson��ʽ
+		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 
 		return url.toString();
 	}

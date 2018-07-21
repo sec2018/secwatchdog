@@ -13,27 +13,11 @@ import sec.secwatchdog.dao.CountyDao;
 import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Sheepdogs;
 import sec.secwatchdog.util.NameConversionUtil;
-import org.apache.ibatis.annotations.Mapper;
 
 @Repository("countyDao")
 public class CountyDaoImpl implements CountyDao {
 	@Autowired
     private SqlSession session;
-	
-	/*public CountyDaoImpl(){
-		//ʹ�������������mybatis�������ļ�(��Ҳ���ع�����ӳ���ļ�)
-        String resource = "mybatis-config.xml";
-        Reader reader;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-			SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();      
-	        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(reader);
-	        session = sqlSessionFactory.openSession();
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	}*/
 	
 	@Override
 	public Map<String, Integer> GetIndexLogoInfo(String provinceName,String cityName, String countyName) {	
@@ -45,58 +29,64 @@ public class CountyDaoImpl implements CountyDao {
 		mapparam.put("provinceName", provinceName);
 		mapparam.put("cityName", cityName);
 		mapparam.put("countyName", countyName);
-		//��õ������ǰ��λ(ʡ)
-		String statement = "sec.secwatchdog.dao.CountyDao.getProvince";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码前两位(省)
+		String statement = "sec.secwatchdog.dao.CountyDao.getProvince";
 		Districts province = session.selectOne(statement,mapparam);
 		String provinceCode = province.getDistrictcode();
 		String provincCode0to2 = provinceCode.substring(0,2);	
 		mapparam.put("provincCode0to2", provincCode0to2);
-		//��õ������ǰ��λ(��)
-		statement = "sec.secwatchdog.dao.CountyDao.getCity";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码前四位(市)
+		statement = "sec.secwatchdog.dao.CountyDao.getCity";
 		Districts city = session.selectOne(statement,mapparam);
 		String cityCode = city.getDistrictcode();
 		String cityCode0to4 = cityCode.substring(0,4);	
 		mapparam.put("cityCode0to4", cityCode0to4);
 		
-		//��õ������ǰ��λ(��)
-		statement = "sec.secwatchdog.dao.CountyDao.getCounty";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码前六位(县)
+		statement = "sec.secwatchdog.dao.CountyDao.getCounty";
 		Districts county= session.selectOne(statement,mapparam);
 		String countyCode = county.getDistrictcode();
 		String countyCode0to6 = countyCode.substring(0,6);	
        	mapparam.put("countyCode0to6", countyCode0to6); 
 		
 		List<Sheepdogs> sdlist = null;
-		statement = "sec.secwatchdog.dao.CountyDao.getCountyIndexInfo";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.CountyDao.getCountyIndexInfo";
 		
 		sdlist = session.selectList(statement, mapparam);
-		//�����Ȧ��Ȯ������ιʳ������
+		//佩戴项圈牧犬数量和喂食器数量
 		int neckDogNumTotal = 0;
 		int feederNumTotal = 0;
 		for(Sheepdogs each:sdlist){
-			if(!each.getNeckletid().equals("-1")) {//"-1"��ʾδ�����Ȧ
+			//"-1"表示未佩戴项圈
+			if(!each.getNeckletid().equals("-1")) {
 				neckDogNumTotal++;
 			}
-			if(!each.getApparatusid().equals("-1")) {//"-1"��ʾ��ιʳ��
+			//"-1"表示无喂食器
+			if(!each.getApparatusid().equals("-1")) {
 				feederNumTotal++;
 			}
 		}
-		statement = "sec.secwatchdog.dao.CountyDao.getExhiCount";//ӳ��sql�ı�ʶ�ַ���  
-		int med1 = session.selectOne(statement, mapparam);//Ͷҩ����
-		statement = "sec.secwatchdog.dao.CountyDao.getAppexhiCount";//ӳ��sql�ı�ʶ�ַ���  
-		int med2 = session.selectOne(statement, mapparam);//ιʳ����
-		int medNumTotal = med1 + med2;//�����ܴ���
+		statement = "sec.secwatchdog.dao.CountyDao.getExhiCount";
+		//投药次数
+		int med1 = session.selectOne(statement, mapparam);
+		statement = "sec.secwatchdog.dao.CountyDao.getAppexhiCount";
+		//喂食次数
+		int med2 = session.selectOne(statement, mapparam);
+		//驱虫总次数
+		int medNumTotal = med1 + med2;
 		List<Districts> dislist = new ArrayList<Districts>();
-		//���������λ���ֿ�ͷ�ı�Ŷ�Ӧ�������������Ϣ
-		statement = "sec.secwatchdog.dao.CountyDao.ywDisctricts";//ӳ��sql�ı�ʶ�ַ���  
+		//获得以上面六位数字开头的编号所对应的所有区域的信息
+		statement = "sec.secwatchdog.dao.CountyDao.ywDisctricts";
 		dislist = session.selectList(statement,mapparam);
 		
-        //�硢������������
+        //乡、村流行区数量
 		int villageEpidemicTotal = 0;
 		int hamletEpidemicTotal = 0;
 		
 		for(Districts each : dislist) {
-			if(each.getEpidemic() == 1) {//������Ϊ������
-				//����������뽫������࣬��xx0000000000Ϊʡ��xxxx00000000����������Ϊ�м���xxxxxx000000Ϊ�ؼ���xxxxxxxxx000Ϊ�缶�������λ��ȫΪ0���ʾ�弶
+			//该区域为流行区
+			if(each.getEpidemic() == 1) {
+			//根据区域编码将区域分类，如xx0000000000为省，xxxx00000000表明该区域为市级，xxxxxx000000为县级，xxxxxxxxx000为乡级，最后三位不全为0则表示村级
 			  if(each.getDistrictcode().substring(9,12).equals("000")) {
 				  villageEpidemicTotal++;
 				}else
@@ -105,9 +95,9 @@ public class CountyDaoImpl implements CountyDao {
 		
 		}
 		List<Integer> levellist = new ArrayList<Integer>();
-		statement = "sec.secwatchdog.dao.CountyDao.getManagerLevel";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.CountyDao.getManagerLevel";
 		levellist = session.selectList(statement,mapparam);
-		//�ء��硢�弶����Ա��
+		//县、乡、村级管理员数
 		int countyAadminTotal = 0;
 		int villageAdminTotal = 0;
 		int hamletAdminTotal = 0;
@@ -125,8 +115,7 @@ public class CountyDaoImpl implements CountyDao {
 	                break;
 				}
 			}
-		
-		//�����ݱ��浽map��
+		//将数据保存到map中
 		map.put("villageepidemictotal", villageEpidemicTotal-1);
 		map.put("hamletepidemictotal",  hamletEpidemicTotal);
 
@@ -134,7 +123,7 @@ public class CountyDaoImpl implements CountyDao {
 		map.put("villageadmintotal", villageAdminTotal);
 		map.put("hamletadmintotal", hamletAdminTotal);
 		
-		statement = "sec.secwatchdog.dao.CountyDao.getAllDogNum";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.CountyDao.getAllDogNum";
 		int allDogNumTotal = session.selectOne(statement,mapparam);
 		
 		map.put("neckdognumtotal", neckDogNumTotal);
@@ -151,76 +140,81 @@ public class CountyDaoImpl implements CountyDao {
 		provinceName = NameConversionUtil.EchartsAreaNameToGov(session,provinceName);
 		cityName = NameConversionUtil.EchartsAreaNameToGov(session,cityName);
 		countyName = NameConversionUtil.EchartsAreaNameToGov(session,countyName);
- 
-		Map<String, Object> map = new HashMap<String,Object>();//�������󷵻ص�����
-		Map<String, String> mapparam = new HashMap<String,String>();//sql����
+		//保存请求返回的数据
+		Map<String, Object> map = new HashMap<String,Object>();
+		//sql语句的参数
+		Map<String, String> mapparam = new HashMap<String,String>();
 		mapparam.put("provinceName", provinceName);
-		String statement = "sec.secwatchdog.dao.CountyDao.getProvinceMap";//ӳ��sql�ı�ʶ�ַ���   
-		String thisProvince = session.selectOne(statement,mapparam);//���ʡ�������
-	    String thisProvince0to2 = thisProvince.substring(0, 2);//����ǰ��λ��ʾʡ��
+		String statement = "sec.secwatchdog.dao.CountyDao.getProvinceMap";
+		//获得省区域编码
+		String thisProvince = session.selectOne(statement,mapparam);
+		//编码前两位表示省份
+	    String thisProvince0to2 = thisProvince.substring(0, 2);
 	    mapparam.put("thisProvince0to2", thisProvince0to2);
 	    mapparam.put("cityName", cityName);
-	    statement = "sec.secwatchdog.dao.CountyDao.getCityMap";//ӳ��sql�ı�ʶ�ַ���      
-	    String thisCity = session.selectOne(statement,mapparam);//������������
-	    String thisCity0to4 = thisCity.substring(0, 4);//����ǰ��λ��ʾ��
+	    statement = "sec.secwatchdog.dao.CountyDao.getCityMap";
+	    //获得市区域编码
+	    String thisCity = session.selectOne(statement,mapparam);
+	    //编码前四位表示市
+	    String thisCity0to4 = thisCity.substring(0, 4);
 	    mapparam.put("thisCity0to4", thisCity0to4);
 	    
 	    mapparam.put("countyName", countyName);
-	    statement = "sec.secwatchdog.dao.CountyDao.getCountyMap";//ӳ��sql�ı�ʶ�ַ���      
-	    String thisCounty = session.selectOne(statement,mapparam);//������������
-	    String thisCounty0to6 = thisCounty.substring(0, 6);//����ǰ��λ��ʾ�� 	    
+	    statement = "sec.secwatchdog.dao.CountyDao.getCountyMap";
+	    //获得县区域编码
+	    String thisCounty = session.selectOne(statement,mapparam);
+	    //编码前六位表示县
+	    String thisCounty0to6 = thisCounty.substring(0, 6);    
 	    mapparam.put("thisCounty0to6", thisCounty0to6);
-		statement = "sec.secwatchdog.dao.CountyDao.getVillagesAndHamlets";//ӳ��sql�ı�ʶ�ַ���  
-		//���������ʹ�
+		statement = "sec.secwatchdog.dao.CountyDao.getVillagesAndHamlets"; 
+		//获得流行乡和村
 		List<Districts> villagesAndHamlets = session.selectList(statement,mapparam);
 		int i=0;
 		for(Districts pro : villagesAndHamlets)
         { 
-			//����ÿ��������
+			//对于每个流行乡
             if (pro.getDistrictcode().endsWith("000"))
             {
-            	//����ÿ����������Ϣ
+            	//保存每个乡的相关信息
             	Map<String, Object> maptemp = new HashMap<String,Object>();
 				maptemp.put("townname", pro.getShortname());
 				String village0to9 = pro.getDistrictcode().substring(0, 9);
 				int HamletsNum = 0;
-				//ͳ��ÿ���������������д�ĸ���
+				//统计该乡流行村的个数
 				for(Districts cn:villagesAndHamlets) {
 					if(cn.getDistrictcode().startsWith(village0to9)
 							&& !cn.getDistrictcode().equals(village0to9+"000")) {
 						HamletsNum++;
 					}
 				}
-				//�������д���
 				maptemp.put("hamletnum", HamletsNum);
-				//������ع���Ա����
-				statement = "sec.secwatchdog.dao.CountyDao.getManagerNum";//ӳ��sql�ı�ʶ�ַ���  
+				//该乡管理员总数
+				statement = "sec.secwatchdog.dao.CountyDao.getManagerNum";
 				mapparam.put("districtName", pro.getDistrictname());
 				int managerNum = session.selectOne(statement,mapparam);
 				maptemp.put("managernum", managerNum);
-				//������Ȯ����
-				statement = "sec.secwatchdog.dao.CountyDao.getAllNecketId";//ӳ��sql�ı�ʶ�ַ���  
+				//牧犬总数
+				statement = "sec.secwatchdog.dao.CountyDao.getAllNecketId";  
 				mapparam.put("village0to9", village0to9);
 				List<String> dogNumList = session.selectList(statement,mapparam);
 				maptemp.put("dognum", dogNumList.size());
-				//������Ȧ����
+				//项圈总数
 				int neckletNum = 0;
 				for(String n1:dogNumList) {
-					//"-1"��ʾδ�����Ȧ
 					if(!n1.equals("-1")) {
 						neckletNum++;
 					}
 				}
 				maptemp.put("neckletnum", neckletNum);
-				//��γ��
+				//经纬度
 				maptemp.put("lng", pro.getLng());
 				maptemp.put("lat", pro.getLat());
-				//����Ͷҩ�ܴ���
-				statement = "sec.secwatchdog.dao.CountyDao.getCountExhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				//投药总次数
+				statement = "sec.secwatchdog.dao.CountyDao.getCountExhibitrealtime";
 				int medNum = session.selectOne(statement,mapparam);
 				maptemp.put("mednum", medNum);
-				//����ιʳ����
-				statement = "sec.secwatchdog.dao.CountyDao.getCountAppexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				//喂食器数量
+				statement = "sec.secwatchdog.dao.CountyDao.getCountAppexhibitrealtime";
 				int feednum = session.selectOne(statement,mapparam);
 				maptemp.put("feedernum", feednum);	
 
@@ -241,29 +235,33 @@ public class CountyDaoImpl implements CountyDao {
 		mapparam.put("provinceName", provinceName);
 		mapparam.put("cityName", cityName);
 		mapparam.put("countyName", countyName);
-		//��õ������ǰ��λ(ʡ)
-		String statement = "sec.secwatchdog.dao.CountyDao.getProvince";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码前两位(省)
+		String statement = "sec.secwatchdog.dao.CountyDao.getProvince";
 		Districts province = session.selectOne(statement,mapparam);
 		String provinceCode = province.getDistrictcode();
 		String provinceCode0to2 = provinceCode.substring(0,2);	
 		mapparam.put("provinceCode0to2", provinceCode0to2);
-		//��õ������ǰ��λ(ʦ)
-		statement = "sec.secwatchdog.dao.CountyDao.getCity";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码前四位(市)
+		statement = "sec.secwatchdog.dao.CountyDao.getCity";
 		Districts city = session.selectOne(statement,mapparam);
 		String cityCode = city.getDistrictcode();
 		String cityCode0to4 = cityCode.substring(0,4);	
 		mapparam.put("cityCode0to4", cityCode0to4);
-		
-		//��õ������(��)
-		statement = "sec.secwatchdog.dao.CountyDao.getCounty";//ӳ��sql�ı�ʶ�ַ���  
+		//获得该地区地区编码
+		statement = "sec.secwatchdog.dao.CountyDao.getCounty"; 
 		Districts county = session.selectOne(statement,mapparam);
 		String countyCode = county.getDistrictcode();
-		
-		map.put("countyGov",NameConversionUtil.EchartsAreaNameToGov(session, countyName));
+		//该县的官方名
+		map.put("countyGov",NameConversionUtil.EchartsAreaNameToGov(session, countyName));		
+		//该县的echart地图所用名
 		map.put("countyEchartsAreaName",NameConversionUtil.GovToEchartsAreaName(session, countyName).replace("*",""));
+		//该市的官方名
 		map.put("cityGov",NameConversionUtil.EchartsAreaNameToGov(session, cityName));
+		//该市的echart地图所用名
 		map.put("cityEchartsAreaName",NameConversionUtil.GovToEchartsAreaName(session, cityName).replace("*",""));
+		//该省的官方名
 		map.put("provinceGov",NameConversionUtil.EchartsAreaNameToGov(session, provinceName));
+		//该省的echart地图所用名
 		map.put("provinceEchartsAreaName",NameConversionUtil.GovToEchartsAreaName(session, provinceName).replace("*",""));
 		map.put("districtcode",countyCode);
 		return map;

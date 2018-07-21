@@ -47,14 +47,14 @@ public class ShiroController {
         throw new Exception();
     }
 
-    //��ת����¼ҳ��
+    //跳转到登录页面
     @RequestMapping("/login")
     public ModelAndView login() throws Exception {
         ModelAndView mav = new ModelAndView("login");
         return mav;
     }
 
-    //��ת����¼�ɹ�ҳ��
+    //跳转到登录成功页面
     @RequestMapping("/success")
     public ModelAndView loginsuccess() throws Exception {
         ModelAndView mav = new ModelAndView("success");
@@ -62,7 +62,7 @@ public class ShiroController {
     }
 
     /** 
-     * ��֤�û��������� 
+     * 验证用户和密码
      * @param String username,String password
      * @return 
      */  
@@ -90,7 +90,7 @@ public class ShiroController {
     }  
 
     /** 
-     * �˳���¼
+     * 退出登录
      */  
     @RequestMapping(value="/logout",method=RequestMethod.POST)    
     @ResponseBody    
