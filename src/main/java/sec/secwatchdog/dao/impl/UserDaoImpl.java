@@ -30,40 +30,16 @@ public class UserDaoImpl implements UserDao{
 	@Autowired
 	private SqlSession session;
 	
-//	public UserDaoImpl(){
-//		//ʹ�������������mybatis�������ļ�����Ҳ���ع�����ӳ���ļ���  
-//        String resource = "mybatis-config.xml";      
-//        Reader reader;
-//		try {
-//			reader = Resources.getResourceAsReader(resource);
-//			SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();      
-//	        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(reader);  
-//	        session = sqlSessionFactory.openSession(); 
-//		}catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-//	}
 	
 	@Override
 	public Managers login(Managers manager) {
 		Managers resultUser = null;
         Map<String, Object> map = new HashMap<String, Object>();
-        AESUtil util = new AESUtil(); // ��Կ 
-//        String password ="";
-//		try {
-//			password = util.encryptData(manager.getPassword());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+        AESUtil util = new AESUtil(); 
+
         map.put("username", manager.getUsername());
-        /** 
-         * ӳ��sql�ı�ʶ�ַ���org.guus.mapping.userMapper.getUser 
-         * getUser��select��ǩ��id����ֵ��ͨ��select��ǩ��id����ֵ�Ϳ����ҵ�Ҫִ�е�SQL 
-         */  
-        String statement = "sec.secwatchdog.dao.UserDao.login";//ӳ��sql�ı�ʶ�ַ���  
-        //ִ�в�ѯ����һ��Ψһuser�����sql  
+
+        String statement = "sec.secwatchdog.dao.UserDao.login";
         resultUser = session.selectOne(statement,map);
         try {
 			resultUser.setPassword(util.decryptData(resultUser.getPassword()));
@@ -77,12 +53,8 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public Managers checklogin(String username) {
 		Managers resultUser = null;
-        /** 
-         * ӳ��sql�ı�ʶ�ַ���org.guus.mapping.userMapper.getUser 
-         * getUser��select��ǩ��id����ֵ��ͨ��select��ǩ��id����ֵ�Ϳ����ҵ�Ҫִ�е�SQL 
-         */  
-        String statement = "sec.secwatchdog.dao.UserDao.checklogin";//ӳ��sql�ı�ʶ�ַ���  
-        //ִ�в�ѯ����һ��Ψһuser�����sql  
+ 
+        String statement = "sec.secwatchdog.dao.UserDao.checklogin";
         resultUser = session.selectOne(statement,username);
 		return resultUser;
 	}
@@ -93,8 +65,7 @@ public class UserDaoImpl implements UserDao{
 		Map<String, Integer> map = new HashMap<String,Integer>();
 		if(manager.getPrivilegelevel() == 1) {
 			List<Sheepdogs> sdlist = null;
-			String statement = "sec.secwatchdog.dao.UserDao.getcountryindexinfo";//ӳ��sql�ı�ʶ�ַ���  
-	        //ִ�в�ѯ����һ��Ψһuser�����sql  
+			String statement = "sec.secwatchdog.dao.UserDao.getcountryindexinfo";
 			sdlist = session.selectList(statement);
 			int dognumtotal = 0;
 			int feedernumtotal = 0;
@@ -106,16 +77,16 @@ public class UserDaoImpl implements UserDao{
 					feedernumtotal++;
 				}
 			}
-			statement = "sec.secwatchdog.dao.UserDao.getexhicount";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.UserDao.getexhicount";
 			int med1 = session.selectOne(statement);
-			statement = "sec.secwatchdog.dao.UserDao.getappexhicount";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.UserDao.getappexhicount";
 			int med2 = session.selectOne(statement);
 			int mednumtotal = med1 + med2;
 			
 			List<Districts> alllist = new ArrayList<Districts>();
 			List<Districts> dislist = new ArrayList<Districts>();
 			List<Districts> armylist = new ArrayList<Districts>(); 
-			statement = "sec.secwatchdog.dao.UserDao.ywdisctricts";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.UserDao.ywdisctricts";
 			alllist = session.selectList(statement);
 			for(Districts al : alllist)
             {
@@ -178,7 +149,7 @@ public class UserDaoImpl implements UserDao{
 			int countyadmintotal = 0;
 			int villageadmintotal = 0;
 			int hamletadmintotal = 0;
-			statement = "sec.secwatchdog.dao.UserDao.getmanagerlevel";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.UserDao.getmanagerlevel";
 			levellist = session.selectList(statement);
 			for(Integer each:levellist) {
 				switch(each) {
@@ -223,7 +194,7 @@ public class UserDaoImpl implements UserDao{
 
 	public Map<String,Object> GetCountryMap(){
 		Map<String, Object> map = new HashMap<String,Object>();
-		String statement = "sec.secwatchdog.dao.UserDao.getcountrymap";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.UserDao.getcountrymap";
 		List<Districts> provincelist = new ArrayList<Districts>();
 		provincelist = session.selectList(statement);
 		int i = 0;
@@ -240,12 +211,12 @@ public class UserDaoImpl implements UserDao{
 					}
 				}
 				maptemp.put("citynum", citynum);
-				statement = "sec.secwatchdog.dao.UserDao.getmanagernum";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.UserDao.getmanagernum";
 				Map<String, String> mapparam = new HashMap<String,String>();
 				mapparam.put("districtname", each.getDistrictname());
 				int managernum = session.selectOne(statement,mapparam);
 				maptemp.put("managernum", managernum);
-				statement = "sec.secwatchdog.dao.UserDao.getallnecketid";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.UserDao.getallnecketid";
 				mapparam.put("pro1to2", pro1to2);
 				List<String> dognumlist = session.selectList(statement,mapparam);
 				maptemp.put("dognum", dognumlist.size());
@@ -256,10 +227,10 @@ public class UserDaoImpl implements UserDao{
 					}
 				}
 				maptemp.put("neckletnum", neckletnum);
-				statement = "sec.secwatchdog.dao.UserDao.getcountexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.UserDao.getcountexhibitrealtime";  
 				int mednum = session.selectOne(statement,mapparam);
 				maptemp.put("mednum", mednum);
-				statement = "sec.secwatchdog.dao.UserDao.getcountappexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.UserDao.getcountappexhibitrealtime";
 				int feednum = session.selectOne(statement,mapparam);
 				maptemp.put("feedernum", feednum);
 				
@@ -272,14 +243,14 @@ public class UserDaoImpl implements UserDao{
 	
 	public Map<String,Object> GetXinJiangArmyCountryMap(){
 		Map<String, Object> map = new HashMap<String,Object>();
-		String statement = "sec.secwatchdog.dao.UserDao.getdivisionnum";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.UserDao.getdivisionnum";
 		int divisionnum = session.selectOne(statement);
-		map.put("armyname","�������");
+		map.put("armyname","建设兵团");
 		map.put("divisionnum", divisionnum);
-		statement = "sec.secwatchdog.dao.UserDao.getarmymanagernum";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.UserDao.getarmymanagernum";
 		int managernum = session.selectOne(statement);
 		map.put("managernum", managernum);
-		statement = "sec.secwatchdog.dao.UserDao.getarmydognum";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.UserDao.getarmydognum";
 		List<String> dognumlist = session.selectList(statement);
 		map.put("dognum", dognumlist.size());
 		int neckletnum = 0;
@@ -289,15 +260,15 @@ public class UserDaoImpl implements UserDao{
 			}
 		}
 		map.put("neckletnum", neckletnum);
-		statement = "sec.secwatchdog.dao.UserDao.getarmyposition";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.UserDao.getarmyposition";
 		List<Districts> positionlist = session.selectList(statement);
 		Districts position = positionlist.get(0);
 		map.put("lng", position.getLng());
 		map.put("lat", position.getLat());
-		statement = "sec.secwatchdog.dao.UserDao.getarmymednum";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.UserDao.getarmymednum";
 		int mednum = session.selectOne(statement);
 		map.put("mednum", mednum);
-		statement = "sec.secwatchdog.dao.UserDao.getarmyfeedernum";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.UserDao.getarmyfeedernum";
 		int feedernum = session.selectOne(statement);
 		map.put("feedernum", feedernum);
 		return map;

@@ -1,5 +1,8 @@
 package sec.secwatchdog.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +22,14 @@ public class FilterConfig {
 	 */
 	@Bean
 	public FilterRegistrationBean characterEncodingFilter() {
-		FilterRegistrationBean bean = new FilterRegistrationBean();
-		bean.setFilter(new CharacterEncodingFilter());
-		bean.addInitParameter("encoding", "UTF-8");
-		bean.addInitParameter("forceEncoding", "true");
-		bean.addUrlPatterns("/*.do"); 
-        return bean;
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new CharacterEncodingFilter());
+		registrationBean.addInitParameter("encoding", "UTF-8");
+		registrationBean.addInitParameter("forceEncoding", "true");
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*.do");
+		registrationBean.setUrlPatterns(urlPatterns);
+        return registrationBean;
 		 
 	}
 	

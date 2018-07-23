@@ -33,15 +33,13 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Resource
 	private UserService userService;
 	
-	/* 
-     * ��Ȩ
-     */
+	 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) { 
         Set<String> roleNames = new HashSet<String>();  
         Set<String> permissions = new HashSet<String>();  
-        roleNames.add("administrator");//��ӽ�ɫ
-        permissions.add("newPage.jsp");  //���Ȩ��
+        roleNames.add("administrator"); 
+        permissions.add("newPage.jsp");  
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);  
         info.setStringPermissions(permissions);  
         return info;  
@@ -50,7 +48,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 //        User user = new User();
 //        user.setUsername(username);
 //        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//        //Ϊ�û���Ȩ,ֻ�轫�û���Ȩ����ӵ�info����
+ 
 //        info.addStringPermission("delete");
 //        List roleList = userService.getRole(user);
 //        if(roleList != null){
@@ -62,9 +60,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 //        return null;
     }
     
-    /* 
-	 * ��¼��֤
-	 */
+  
     
 //	@Override
 //	protected AuthenticationInfo doGetAuthenticationInfo(
@@ -86,16 +82,11 @@ public class MyShiroRealm extends AuthorizingRealm {
 	
 	    @Override
 	    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-	        //��ȡ�����û��������������
-	        //ʵ�������authcToken�Ǵ�LoginController����currentUser.login(token)��������
-	        //����token�����ö���һ���ģ��������ǣ�org.apache.shiro.authc.UsernamePasswordToken@33799a1e
+	       
 	        UsernamePasswordToken token = (UsernamePasswordToken)authcToken;
 	        System.out.print("��֤��ǰSubjectʱ��ȡ��token��");
 	        System.out.println(ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-	        Managers user = userService.checklogin(token.getUsername());
-	//	        �˴�����ȶԣ��ȶԵ��߼�Shiro����������ֻ�践��һ����������ص���ȷ����֤��Ϣ
-	//	        ˵���˾��ǵ�һ���������¼�û������ڶ�������s��Ϸ��ĵ�¼���루�����Ǵ����ݿ���ȡ���ģ�������Ϊ����ʾ��Ӳ�����ˣ�
-	//	        ����һ���������ĵ�¼ҳ���Ͼ�ֻ������ָ�����û����������ͨ����֤
+	        Managers user = userService.checklogin(token.getUsername()); 
 	        if(null != user){
 	            String username = user.getUsername();
 	            String password = user.getPassword();
@@ -107,10 +98,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 	     
 	    }
 	  
-	  /**
-	     * ��һЩ���ݷŵ�ShiroSession�У��Ա��������ط�ʹ��
-	     * ����Controller���棬ʹ��ʱֱ����HttpSession.getAttribute(key)�Ϳ���ȡ��
-	     */
+	 
 	    private void setAuthenticationSession(Object value){
 	        Subject currentUser = SecurityUtils.getSubject();
 	        if(null != currentUser){
