@@ -45,11 +45,11 @@ public class CityServiceImpl implements CityService {
 		String provinceCode = province.getDistrictcode();
 		String provinceCode0to2 = provinceCode.substring(0,2);	
 		//获得该地区地区编码前四位(市)
-		Districts city = districtsDao.getCityDistrictsByDistrictName(cityName, provinceCode0to2);
+		Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(cityName, provinceCode0to2);
 		String cityCode = city.getDistrictcode();
 		String cityCode0to4 = cityCode.substring(0,4);	
 
-		List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(cityCode0to4);;
+		List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(cityCode0to4);
 		//佩戴项圈牧犬数量和喂食器数量
 		int neckdognumtotal = 0;
 		int feedernumtotal = 0;
@@ -92,8 +92,9 @@ public class CityServiceImpl implements CityService {
 			}
 		
 		}
+		//市级及市级以下管理员
 		List<Integer> levellist = new ArrayList<Integer>();
-		levellist = managersDao.getCityManagerLevelByDistrictName(provinceName, cityName);
+		levellist = managersDao.getCityManagerAndBelowByDistrictName(provinceName, cityName);
 		//市、县、乡、村级管理员数
 		int cityadmintotal = 0;
 		int countyadmintotal = 0;
@@ -125,7 +126,7 @@ public class CityServiceImpl implements CityService {
 		map.put("villageadmintotal", villageadmintotal);
 		map.put("hamletadmintotal", hamletadmintotal);
 		
-		int alldognumtotal = sheepdogsDao.getAllDogNumByDistrictCode(cityCode0to4);
+		int alldognumtotal = sheepdogsDao.getAllNeckletIdByDistrictcode(cityCode0to4).size();
 		
 		map.put("neckdognumtotal", neckdognumtotal);
 		map.put("alldognumtotal",alldognumtotal );
@@ -146,7 +147,7 @@ public class CityServiceImpl implements CityService {
 		String armyCode = districtsist.getDistrictcode();
 		String armyCode0to2 = armyCode.substring(0,2);
 		//获得该地区地区编码前四位(师)
-		Districts division = districtsDao.getCityDistrictsByDistrictName(divisionName, armyCode0to2);
+		Districts division = districtsDao.getCityAndBelowDistrictsByDistrictName(divisionName, armyCode0to2);
 		String divisionCode = division.getDistrictcode();
 		String divisionCode0to4 = divisionCode.substring(0,4);	
 
@@ -191,7 +192,7 @@ public class CityServiceImpl implements CityService {
 		
 		}
 		List<Integer> levellist = new ArrayList<Integer>();
-		levellist = managersDao.getCityManagerLevelByDistrictName(armyName, divisionName);
+		levellist = managersDao.getCityManagerAndBelowByDistrictName(armyName, divisionName);
 		//师、团、连级管理员数量
         int divisionadmintotal = 0;
         int regimentaladmintotal = 0;
@@ -219,7 +220,7 @@ public class CityServiceImpl implements CityService {
 		map.put("regimentaladmintotal", regimentaladmintotal);
 		map.put("companyadmintotal", companyadmintotal);
 		
-		int alldognumtotal = sheepdogsDao.getAllDogNumByDistrictCode(divisionCode0to4);
+		int alldognumtotal = sheepdogsDao.getAllNeckletIdByDistrictcode(divisionCode0to4).size();
 		
 		map.put("neckdognumtotal", neckdognumtotal);
 		map.put("alldognumtotal",alldognumtotal );
@@ -240,12 +241,12 @@ public class CityServiceImpl implements CityService {
 	    String provinceCode0to2 = provinceCode.substring(0, 2);
 	    
 	    //获得市区域编码
-	    String cityCode = districtsDao.getCityDistrictsByDistrictName(cityName, provinceCode0to2).getDistrictcode();
+	    String cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(cityName, provinceCode0to2).getDistrictcode();
 	    //编码前四位表示市
 	    String cityCode0to4 = cityCode.substring(0, 4);
 	    
 		//获得流行县和乡
-		List<Districts> countiesandtowns = districtsDao.getCountiesAndTownsByDistrictcode(cityCode0to4);
+		List<Districts> countiesandtowns = districtsDao.getCountiesAndVillagesByDistrictcode(cityCode0to4);
 		int i=0;
 		for(Districts pro : countiesandtowns)
         { 
@@ -267,7 +268,7 @@ public class CityServiceImpl implements CityService {
 				
 				maptemp.put("townnum", townnum);
 				//该县管理员总数
-				int managernum = managersDao.getCountyManagerNumByDistrictName(provinceName,cityName,pro.getDistrictname());
+				int managernum = managersDao.getCountyManagerAndBelowByDistrictName(provinceName,cityName,pro.getDistrictname()).size();
 				maptemp.put("managernum", managernum);
 				//牧犬总数
 				List<String> dognumlist = sheepdogsDao.getAllNeckletIdByDistrictcode(countyCode0to6);
@@ -306,7 +307,7 @@ public class CityServiceImpl implements CityService {
 		String armyCode = districtsDao.getDistrictsByDistrictName(armyName).getDistrictcode();
 	    String armyCode0to2 = armyCode.substring(0, 2);
 	    //获得师区域编码
-		String divisionCode = districtsDao.getCityDistrictsByDistrictName(divisionName, armyCode0to2).getDistrictcode();
+		String divisionCode = districtsDao.getCityAndBelowDistrictsByDistrictName(divisionName, armyCode0to2).getDistrictcode();
 	    String divisionCode0to4 = divisionCode.substring(0, 4);
 	    
 		 //获得流行团和连
@@ -330,7 +331,7 @@ public class CityServiceImpl implements CityService {
 				}
 				maptemp.put("companynum", companynum);
 				//该团管理员总数
-				int managernum = managersDao.getCountyManagerNumByDistrictName(armyName,divisionName,pro.getDistrictname());
+				int managernum = managersDao.getCountyManagerAndBelowByDistrictName(armyName,divisionName,pro.getDistrictname()).size();
 				maptemp.put("managernum", managernum);
 				//牧犬总数
 				List<String> dognumlist = sheepdogsDao.getAllNeckletIdByDistrictcode(regimentalCode0to6);
@@ -370,7 +371,7 @@ public class CityServiceImpl implements CityService {
 		String provinceCode = province.getDistrictcode();
 		String provinceCode0to2 = provinceCode.substring(0,2);	
 		//获得该地区地区编码
-		Districts city = districtsDao.getCityDistrictsByDistrictName(cityName, provinceCode0to2);
+		Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(cityName, provinceCode0to2);
 		String cityCode = city.getDistrictcode();
 		//该市或师的官方名
 		map.put("cityGov",nameConversionUtil.EchartsAreaNameToGov(cityName));

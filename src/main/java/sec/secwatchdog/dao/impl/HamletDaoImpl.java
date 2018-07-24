@@ -41,58 +41,58 @@ private SqlSession session;
 	@Resource
 	private UserService userService;
 
-	@Override
-	public Map<String, Object> CheckUser(String username) {
-		// TODO Auto-generated method stub
-		Managers resultUser=userService.checklogin(username);
-		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("username", resultUser.getUsername());
-		map.put("managername", resultUser.getManagername());
-		map.put("privilegelevel", resultUser.getPrivilegelevel());
-		String area = "全国";
-		switch (resultUser.getPrivilegelevel())
-        {
-            case 1:
-            	area = "全国";
-                break;
-            case 2:
-            	area = resultUser.getProvince();
-                break;
-            case 3:
-            	area = resultUser.getProvince() + resultUser.getCity();
-                break;
-            case 4:
-            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty();
-                break;
-            case 5:
-            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty() + resultUser.getVillage();
-                break;
-            case 6:
-            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty() + resultUser.getVillage() + resultUser.getHamlet();
-                break;
-            case 7:
-            	area = "游客模式";
-                break;
-        }
-		map.put("area", area);
-		map.put("province", resultUser.getProvince());
-		map.put("city", resultUser.getCity());
-		map.put("county", resultUser.getCounty());
-		map.put("village", resultUser.getVillage());
-		map.put("hamlet", resultUser.getHamlet());
-		map.put("job", resultUser.getWorkplace());
-		map.put("manageridentity", resultUser.getManageridentity());
-		map.put("officecall", resultUser.getOfficecall());
-		map.put("telphone", resultUser.getManagertel());
-		map.put("address", resultUser.getAddress());
-		map.put("email", resultUser.getEmail());
-		map.put("password", "");
-		map.put("chargehamlet", resultUser.getChargehamlet());
-		map.put("districtcode", resultUser.getDistrictcode());
-		map.put("adminstatus", resultUser.getManagerstatus() == 1 ?  "已激活" : "未激活");
-		return map;
-	}
-	
+//	@Override
+//	public Map<String, Object> CheckUser(String username) {
+//		// TODO Auto-generated method stub
+//		Managers resultUser=userService.checklogin(username);
+//		Map<String, Object> map = new HashMap<String,Object>();
+//		map.put("username", resultUser.getUsername());
+//		map.put("managername", resultUser.getManagername());
+//		map.put("privilegelevel", resultUser.getPrivilegelevel());
+//		String area = "全国";
+//		switch (resultUser.getPrivilegelevel())
+//        {
+//            case 1:
+//            	area = "全国";
+//                break;
+//            case 2:
+//            	area = resultUser.getProvince();
+//                break;
+//            case 3:
+//            	area = resultUser.getProvince() + resultUser.getCity();
+//                break;
+//            case 4:
+//            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty();
+//                break;
+//            case 5:
+//            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty() + resultUser.getVillage();
+//                break;
+//            case 6:
+//            	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty() + resultUser.getVillage() + resultUser.getHamlet();
+//                break;
+//            case 7:
+//            	area = "游客模式";
+//                break;
+//        }
+//		map.put("area", area);
+//		map.put("province", resultUser.getProvince());
+//		map.put("city", resultUser.getCity());
+//		map.put("county", resultUser.getCounty());
+//		map.put("village", resultUser.getVillage());
+//		map.put("hamlet", resultUser.getHamlet());
+//		map.put("job", resultUser.getWorkplace());
+//		map.put("manageridentity", resultUser.getManageridentity());
+//		map.put("officecall", resultUser.getOfficecall());
+//		map.put("telphone", resultUser.getManagertel());
+//		map.put("address", resultUser.getAddress());
+//		map.put("email", resultUser.getEmail());
+//		map.put("password", "");
+//		map.put("chargehamlet", resultUser.getChargehamlet());
+//		map.put("districtcode", resultUser.getDistrictcode());
+//		map.put("adminstatus", resultUser.getManagerstatus() == 1 ?  "已激活" : "未激活");
+//		return map;
+//	}
+//	
 	public Map<String,Object> Getuser_page_farmDogList(PageBean pageBean,String username){
 		Map<String,Object> Getuser_page_farmDogList = new HashMap<String,Object>();
 		
@@ -154,6 +154,7 @@ private SqlSession session;
         hamletname = EchartsAreaNameToGov(hamletname);
         Map<String,String> mapparam = new HashMap<String,String>();
         mapparam.put("provincename", provincename);
+        System.out.println(provincename);
         mapparam.put("cityname", cityname);
         mapparam.put("countyname", countyname);
         mapparam.put("villagename", villagename);

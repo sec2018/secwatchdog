@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,39 +35,53 @@ public class HamletController {
 	@Resource
 	private HamletService hamletService;
 	
-	@RequestMapping(value="/hamletapi", produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/hamletapi", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
-	public String GoToHamlet(@RequestParam(value="page",required=false)String page,Managers manager,HttpServletRequest request) {
+	public String GoToHamlet(@RequestParam(value="page",required=false)String page,@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
-		}
+		}		
+		String province,city, county,village,hamlet;
 		if(StringUtil.isEmpty(page)){
 			page="1";
 		}
 		PageBean pageBean=new PageBean(Integer.parseInt(page),6);
 		Managers resultUser= (Managers) session.getAttribute("currentUser");
-		System.out.println(resultUser.getAddress());
+		if(json.getString("hamlet").equals("null")) {	
+			province = resultUser.getProvince();
+			city = resultUser.getCity();
+			county = resultUser.getCounty();
+			village = resultUser.getVillage();
+			hamlet = resultUser.getHamlet();	
+		}else {
+			province = json.getString("province");
+			city = json.getString("city");
+			county = json.getString("county");
+			village = json.getString("village");
+			hamlet = json.getString("hamlet");
+		}
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1", resultUser);
-		Map<String,Object> Getuser_page_farmDogList = new HashMap<String,Object>();
-		Getuser_page_farmDogList = hamletService.Getuser_page_farmDogList(pageBean,resultUser.getUsername());
-		data.put("data2", Getuser_page_farmDogList);
+//		Map<String,Object> Getuser_page_farmDogList = new HashMap<String,Object>();
+//		Getuser_page_farmDogList = hamletService.Getuser_page_farmDogList(pageBean,resultUser.getUsername());
+//		data.put("data2", Getuser_page_farmDogList);
 		Map<String,Object> gethamletmap = new HashMap<String,Object>();
-		gethamletmap = hamletService.GetHamletMap(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
+		System.out.println(json);
+	    gethamletmap = hamletService.GetHamletMap(province,city,county,village,hamlet);
 		data.put("data3", gethamletmap);
 		Map<String,String> data4 = new HashMap<String,String>();
-		data4.put("provincename", hamletService.GovToEchartsAreaName(resultUser.getProvince()));
-		data4.put("cityname", hamletService.GovToEchartsAreaName(resultUser.getCity()));
-		data4.put("countyname", hamletService.GovToEchartsAreaName(resultUser.getCounty()));
-		data4.put("villagename", hamletService.GovToEchartsAreaName(resultUser.getVillage()));
-		data4.put("hamletname", hamletService.GovToEchartsAreaName(resultUser.getHamlet()));
+		data4.put("provincename", hamletService.GovToEchartsAreaName(province));
+		data4.put("cityname", hamletService.GovToEchartsAreaName(city));
+		data4.put("countyname", hamletService.GovToEchartsAreaName(county));
+		data4.put("villagename", hamletService.GovToEchartsAreaName(village));
+		data4.put("hamletname", hamletService.GovToEchartsAreaName(hamlet));
 		data.put("data4", data4);
-		Map<String,Object> getupuser_page_farmDogFeederList = new HashMap<String,Object>();
-		getupuser_page_farmDogFeederList = hamletService.Getupuser_page_farmDogFeederList(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
-		data.put("data5", getupuser_page_farmDogFeederList);
+//		Map<String,Object> getupuser_page_farmDogFeederList = new HashMap<String,Object>();
+//		getupuser_page_farmDogFeederList = hamletService.Getupuser_page_farmDogFeederList(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
+//		data.put("data5", getupuser_page_farmDogFeederList);
 		Map<String,Object> getHamletFeederMap = new HashMap<String,Object>();
-		getHamletFeederMap = hamletService.GetHamletFeederMap(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
+		getHamletFeederMap = hamletService.GetHamletFeederMap(province,city,county,village,hamlet);
 		data.put("data6", getHamletFeederMap);
 		Map<String,Object> getLevel6AdminDogNum = new HashMap<String,Object>();
 		getLevel6AdminDogNum = hamletService.GetLevel6AdminDogNum(resultUser.getUsername());
@@ -102,5 +118,23 @@ public class HamletController {
 		data.put("pageCode", pageCode);
 		JSONObject jsStr = JSONObject.fromObject(data);
 		return jsStr.toString();
+	}
+	
+	@RequestMapping("/hamlet")
+	public String GoTohamletPage(@RequestParam(value="hamlet") String hamlet, @RequestParam(value="village") String village,@RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
+		HttpSession session=request.getSession();
+		//session失效，退出登录页面
+		if(session.getAttribute("currentUser")==null){;
+			return "redirect:/login.jsp";
+		}
+		
+		model.addAttribute("provincename", province);
+		model.addAttribute("cityname", city);
+		model.addAttribute("countyname", county);
+		model.addAttribute("villagename", village);
+		model.addAttribute("hamletname", hamlet);
+		StringBuilder url = new StringBuilder("index/page_hamlet");
+		return url.toString();
+	 
 	}
 }

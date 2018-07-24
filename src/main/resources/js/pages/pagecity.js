@@ -131,6 +131,7 @@ function objToArray(array) {
 function GetCityEcharts(data) {
 	
 	cityGov = "" + data.data4.cityGov;
+
 	var cityEchartsAreaName="" + data.data4.cityEchartsAreaName;
 	provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;

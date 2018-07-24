@@ -92,8 +92,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 			}
 		
 		}
+		//省级及省级以下管理员
 		List<Integer> levellist = new ArrayList<Integer>();
-		levellist = managersDao.getProvinceManagerLevelByDistrictName(provinceName);
+		levellist = managersDao.getProvinceManagerLevelAndBelowByDistrictName(provinceName);
 		//省、市、乡、乡、村级管理员数
 		int provinceadmintotal = 0;
 		int cityadmintotal = 0;
@@ -132,7 +133,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		map.put("villageadmintotal", villageadmintotal);
 		map.put("hamletadmintotal", hamletadmintotal);
 		
-		int alldognumtotal = sheepdogsDao.getAllDogNumByDistrictCode(provinceCode0to2);
+		int alldognumtotal = sheepdogsDao.getAllNeckletIdByDistrictcode(provinceCode0to2).size();
 		
 		map.put("neckdognumtotal", neckdognumtotal);
 		map.put("alldognumtotal",alldognumtotal );
@@ -195,8 +196,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 					companyepidemictotal++;
 			}
 		}
+		//兵团级及兵团级以下管理员
 		List<Integer> levellist = new ArrayList<Integer>();
-		levellist = managersDao.getProvinceManagerLevelByDistrictName(armyName);
+		levellist = managersDao.getProvinceManagerLevelAndBelowByDistrictName(armyName);
 		//兵团、师、团、连级管理员数量
 		int armyadmintotal = 0;
         int divisionadmintotal = 0;
@@ -231,7 +233,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         map.put("regimentaladmintotal",regimentaladmintotal);
         map.put("companyadmintotal", companyadmintotal);
 		
-		int alldognumtotal = sheepdogsDao.getAllDogNumByDistrictCode(armyCode0to2);
+		int alldognumtotal = sheepdogsDao.getAllNeckletIdByDistrictcode(armyCode0to2).size();
 		
 		map.put("neckdognumtotal", neckdognumtotal);
 		map.put("alldognumtotal",alldognumtotal );
@@ -271,7 +273,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 				}
 				maptemp.put("countynum", countynum);
 				//该市管理员总数
-				int managernum = managersDao.getCityManagerNumByDistrictName(provinceName,pro.getDistrictname());
+				int managernum = managersDao.getCityManagerAndBelowByDistrictName(provinceName, pro.getDistrictname()).size();
 				maptemp.put("managernum", managernum);
 				//牧犬总数
 				List<String> dognumlist = sheepdogsDao.getAllNeckletIdByDistrictcode(cityCode0to4);
@@ -330,7 +332,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 				}
 				maptemp.put("regimentalnum", regimentalnum);
 				//该师管理员总数
-				int managernum = managersDao.getCityManagerNumByDistrictName(armyName,divisions.getDistrictname());
+				int managernum = managersDao.getCityManagerAndBelowByDistrictName(armyName,divisions.getDistrictname()).size();
 				maptemp.put("managernum", managernum);
 				//牧犬总数
 				List<String> dognumlist = sheepdogsDao.getAllNeckletIdByDistrictcode(divisionCode0to4);
