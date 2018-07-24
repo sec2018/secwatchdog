@@ -1,6 +1,13 @@
 package sec.secwatchdog.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Sheepdogs {
+	@Id
+    @GeneratedValue
     public Integer dogid;
 
     public String dogname;

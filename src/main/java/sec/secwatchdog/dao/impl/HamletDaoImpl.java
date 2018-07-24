@@ -41,21 +41,6 @@ private SqlSession session;
 	@Resource
 	private UserService userService;
 
-	/*public HamletDaoImpl(){
-		//ʹ�������������mybatis�������ļ�����Ҳ���ع�����ӳ���ļ���  
-        String resource = "mybatis-config.xml";      
-        Reader reader;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-			SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();      
-	        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(reader);  
-	        session = sqlSessionFactory.openSession(); 
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	}*/
-
 	@Override
 	public Map<String, Object> CheckUser(String username) {
 		// TODO Auto-generated method stub
@@ -64,11 +49,11 @@ private SqlSession session;
 		map.put("username", resultUser.getUsername());
 		map.put("managername", resultUser.getManagername());
 		map.put("privilegelevel", resultUser.getPrivilegelevel());
-		String area = "ȫ��";
+		String area = "全国";
 		switch (resultUser.getPrivilegelevel())
         {
             case 1:
-            	area = "ȫ��";
+            	area = "全国";
                 break;
             case 2:
             	area = resultUser.getProvince();
@@ -86,7 +71,7 @@ private SqlSession session;
             	area = resultUser.getProvince() + resultUser.getCity() + resultUser.getCounty() + resultUser.getVillage() + resultUser.getHamlet();
                 break;
             case 7:
-            	area = "�ο�ģʽ";
+            	area = "游客模式";
                 break;
         }
 		map.put("area", area);
@@ -104,14 +89,14 @@ private SqlSession session;
 		map.put("password", "");
 		map.put("chargehamlet", resultUser.getChargehamlet());
 		map.put("districtcode", resultUser.getDistrictcode());
-		map.put("adminstatus", resultUser.getManagerstatus() == 1 ? "�Ѽ���" : "δ����");
+		map.put("adminstatus", resultUser.getManagerstatus() == 1 ?  "已激活" : "未激活");
 		return map;
 	}
 	
 	public Map<String,Object> Getuser_page_farmDogList(PageBean pageBean,String username){
 		Map<String,Object> Getuser_page_farmDogList = new HashMap<String,Object>();
 		
-		String statement = "sec.secwatchdog.dao.HamletDao.Getuser_page_farmDogList";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.Getuser_page_farmDogList"; 
 		Map<String, Object> paramsmap = new HashMap<String, Object>();
 		paramsmap.put("pageBean1", pageBean);
 		if(pageBean!=null){
@@ -127,11 +112,11 @@ private SqlSession session;
 			maptemp.put("dogid", each.getDogid());
 			maptemp.put("dogname", each.getDogname());
 			String neckletid = each.getNeckletid();
-			statement = "sec.secwatchdog.dao.HamletDao.getlastexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.HamletDao.getlastexhibitrealtime"; 
 			Lastexhibitrealtime lb = session.selectOne(statement,neckletid);
 			if(lb != null) {
 				maptemp.put("neckletid",  neckletid);
-				statement = "sec.secwatchdog.dao.HamletDao.getfeedback";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.HamletDao.getfeedback"; 
 				Feedback feedback = session.selectOne(statement,neckletid);
 				maptemp.put("firstmedtime",  feedback.getFirstmedtime());
 				maptemp.put("lastmed",  lb.getRealtime());
@@ -154,7 +139,7 @@ private SqlSession session;
 	}
 	
 	public Integer Getuser_page_farmDogListtotal(String username){
-		String statement = "sec.secwatchdog.dao.HamletDao.Getuser_page_farmDogListtotal";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.Getuser_page_farmDogListtotal"; 
 		int total = session.selectOne(statement,username);
 		return total;
 	}
@@ -173,19 +158,19 @@ private SqlSession session;
         mapparam.put("countyname", countyname);
         mapparam.put("villagename", villagename);
         mapparam.put("hamletname", hamletname);
-		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode"; 
 		String provincecode0to2 = session.selectOne(statement,mapparam).toString().substring(0, 2);
 		mapparam.put("provincecode0to2", provincecode0to2);
-		statement = "sec.secwatchdog.dao.HamletDao.getcitycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcitycode"; 
 		String citycode0to4 = session.selectOne(statement,mapparam).toString().substring(0, 4);
 		mapparam.put("citycode0to4", citycode0to4);
-		statement = "sec.secwatchdog.dao.HamletDao.getcountycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcountycode"; 
 		String countycode0to6 = session.selectOne(statement,mapparam).toString().substring(0, 6);
 		mapparam.put("countycode0to6", countycode0to6);
-		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode"; 
 		String thisvillage0to9 = session.selectOne(statement,mapparam).toString().substring(0, 9);
 		mapparam.put("thisvillage0to9", thisvillage0to9);
-		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode"; 
 		Districts thishamlettemp = session.selectOne(statement,mapparam);
 		String thishamletcode = "";
 		if (thishamlettemp != null)
@@ -196,7 +181,7 @@ private SqlSession session;
         {
             return null;
         }
-		statement = "sec.secwatchdog.dao.HamletDao.gethamletdogs";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.gethamletdogs"; 
 		List<Sheepdogs> doginfo = new ArrayList<Sheepdogs>();
 		doginfo = session.selectList(statement,thishamletcode);
 		int i = 0;
@@ -205,7 +190,7 @@ private SqlSession session;
 			maptemp.put("dogid", each.getDogid());
 			maptemp.put("neckletid", each.getNeckletid());
 			maptemp.put("dogname", each.getDogname());
-			statement = "sec.secwatchdog.dao.HamletDao.getlastneckletrealtime";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.HamletDao.getlastneckletrealtime"; 
 			Lastneckletrealtime lr = session.selectOne(statement,each.getNeckletid());
 			if(lr!=null) {
 				maptemp.put("lng", Double.parseDouble(lr.getNeckletlongitude()));
@@ -244,19 +229,19 @@ private SqlSession session;
         mapparam.put("countyname", countyname);
         mapparam.put("villagename", villagename);
         mapparam.put("hamletname", hamletname);
-		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode"; 
 		String provincecode0to2 = session.selectOne(statement,mapparam).toString().substring(0, 2);
 		mapparam.put("provincecode0to2", provincecode0to2);
-		statement = "sec.secwatchdog.dao.HamletDao.getcitycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcitycode"; 
 		String citycode0to4 = session.selectOne(statement,mapparam).toString().substring(0, 4);
 		mapparam.put("citycode0to4", citycode0to4);
-		statement = "sec.secwatchdog.dao.HamletDao.getcountycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcountycode"; 
 		String countycode0to6 = session.selectOne(statement,mapparam).toString().substring(0, 6);
 		mapparam.put("countycode0to6", countycode0to6);
-		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode"; 
 		String thisvillage0to9 = session.selectOne(statement,mapparam).toString().substring(0, 9);
 		mapparam.put("thisvillage0to9", thisvillage0to9);
-		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode"; 
 		Districts thishamlettemp = session.selectOne(statement,mapparam);
 		String thishamletcode = "";
 		if (thishamlettemp != null)
@@ -276,11 +261,11 @@ private SqlSession session;
 			maptemp.put("dogid", each.getDogid());
 			maptemp.put("dogname", each.getDogname());
 			String feederid = each.getApparatusid();
-			statement = "sec.secwatchdog.dao.HamletDao.getlastappexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.HamletDao.getlastappexhibitrealtime"; 
 			Lastappexhibitrealtime le = session.selectOne(statement,feederid);
 			if(le!=null) {
 				maptemp.put("feederid", feederid);
-				statement = "sec.secwatchdog.dao.HamletDao.getfeederback";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.HamletDao.getfeederback"; 
 				Feederback fb = session.selectOne(statement,feederid);
 				maptemp.put("firstmedtime", fb.getFirstmedtime());
 				maptemp.put("lastmed", le.getRealtime());
@@ -315,19 +300,19 @@ private SqlSession session;
         mapparam.put("countyname", countyname);
         mapparam.put("villagename", villagename);
         mapparam.put("hamletname", hamlet);
-		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.getprovincecode";
 		String provincecode0to2 = session.selectOne(statement,mapparam).toString().substring(0, 2);
 		mapparam.put("provincecode0to2", provincecode0to2);
-		statement = "sec.secwatchdog.dao.HamletDao.getcitycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcitycode";
 		String citycode0to4 = session.selectOne(statement,mapparam).toString().substring(0, 4);
 		mapparam.put("citycode0to4", citycode0to4);
-		statement = "sec.secwatchdog.dao.HamletDao.getcountycode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getcountycode";
 		String countycode0to6 = session.selectOne(statement,mapparam).toString().substring(0, 6);
 		mapparam.put("countycode0to6", countycode0to6);
-		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.getvillagecode";
 		String thisvillage0to9 = session.selectOne(statement,mapparam).toString().substring(0, 9);
 		mapparam.put("thisvillage0to9", thisvillage0to9);
-		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.gethamletcode";
 		Districts thishamlettemp = session.selectOne(statement,mapparam);
 		String thishamletcode = "";
 		if (thishamlettemp != null)
@@ -338,7 +323,7 @@ private SqlSession session;
         {
             return null;
         }
-		statement = "sec.secwatchdog.dao.HamletDao.Getupuser_page_farmDogFeederList";//ӳ��sql�ı�ʶ�ַ���  
+		statement = "sec.secwatchdog.dao.HamletDao.Getupuser_page_farmDogFeederList";
 		List<Sheepdogs> doginfo = new ArrayList<Sheepdogs>();
 		doginfo = session.selectList(statement,thishamletcode);
 		int i = 0;
@@ -347,7 +332,7 @@ private SqlSession session;
 			maptemp.put("dogid", each.getDogid());
 			maptemp.put("feederid", each.getApparatusid());
 			maptemp.put("dogname", each.getDogname());
-			statement = "sec.secwatchdog.dao.HamletDao.getlastapparatusrealtime";//ӳ��sql�ı�ʶ�ַ���  
+			statement = "sec.secwatchdog.dao.HamletDao.getlastapparatusrealtime";
 			Lastapparatusrealtime lu = session.selectOne(statement,each.getApparatusid());
 			if(lu!=null) {
 				maptemp.put("lng", Double.parseDouble(lu.getApparatuslongitude()));
@@ -372,7 +357,7 @@ private SqlSession session;
     {
 		Map<String,Object> GetLevel6AdminDogNum = new HashMap<String,Object>();
 		
-		String statement = "sec.secwatchdog.dao.HamletDao.GetLevel6AdminDogNum";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.GetLevel6AdminDogNum";
 		List<Sheepdogs> thisadmin = session.selectList(statement,username);
 		if(thisadmin.size() ==0) {
 			GetLevel6AdminDogNum.put("dogtotalnum", 0);
@@ -395,7 +380,7 @@ private SqlSession session;
 	public String GovToEchartsAreaName(String areaname)
     {
         String echartsareaname = "";
-        String statement = "sec.secwatchdog.dao.HamletDao.GovToEchartsAreaName";//ӳ��sql�ı�ʶ�ַ���  
+        String statement = "sec.secwatchdog.dao.HamletDao.GovToEchartsAreaName";
         String echartsareanametemp = session.selectOne(statement,areaname);
         if (echartsareanametemp != null && echartsareanametemp.length() !=0)
         {
@@ -408,7 +393,7 @@ private SqlSession session;
     public String EchartsAreaNameToGov(String areaname)
     {
     	String govareaname = "";
-        String statement = "sec.secwatchdog.dao.HamletDao.EchartsAreaNameToGov";//ӳ��sql�ı�ʶ�ַ���  
+        String statement = "sec.secwatchdog.dao.HamletDao.EchartsAreaNameToGov";
         String govareanametemp = session.selectOne(statement,areaname);
         if (govareanametemp != null && govareanametemp.length() !=0)
         {
@@ -421,7 +406,7 @@ private SqlSession session;
     public Map<String,Object> CombineNeckletAndFeederDogList(PageBean pageBean,String username){
 		Map<String,Object> combineneckletandfeederdoglist = new HashMap<String,Object>();
 		
-		String statement = "sec.secwatchdog.dao.HamletDao.combineneckletandfeederdoglist";//ӳ��sql�ı�ʶ�ַ���  
+		String statement = "sec.secwatchdog.dao.HamletDao.combineneckletandfeederdoglist";
 		Map<String, Object> paramsmap = new HashMap<String, Object>();
 		paramsmap.put("pageBean1", pageBean);
 		if(pageBean!=null){
@@ -439,11 +424,11 @@ private SqlSession session;
 			String neckletid = each.getNeckletid();
 			String feederid = each.getApparatusid();
 			if(feederid.equals("-1") && !neckletid.equals("-1")) {
-				statement = "sec.secwatchdog.dao.HamletDao.getlastexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.HamletDao.getlastexhibitrealtime";
 				Lastexhibitrealtime lb = session.selectOne(statement,neckletid);
 				if(lb != null) {
 					maptemp.put("neckletid",  neckletid);
-					statement = "sec.secwatchdog.dao.HamletDao.getfeedback";//ӳ��sql�ı�ʶ�ַ���  
+					statement = "sec.secwatchdog.dao.HamletDao.getfeedback";
 					Feedback feedback = session.selectOne(statement,neckletid);
 					maptemp.put("firstmedtime",  feedback.getFirstmedtime());
 					maptemp.put("lastmed",  lb.getRealtime());
@@ -459,11 +444,11 @@ private SqlSession session;
 					maptemp.put("exhibitcycle","10000");
 				}
 			}else if(!feederid.equals("-1") && neckletid.equals("-1")){
-				statement = "sec.secwatchdog.dao.HamletDao.getlastappexhibitrealtime";//ӳ��sql�ı�ʶ�ַ���  
+				statement = "sec.secwatchdog.dao.HamletDao.getlastappexhibitrealtime";
 				Lastappexhibitrealtime le = session.selectOne(statement,feederid);
 				if(le!=null) {
 					maptemp.put("feederid", feederid);
-					statement = "sec.secwatchdog.dao.HamletDao.getfeederback";//ӳ��sql�ı�ʶ�ַ���  
+					statement = "sec.secwatchdog.dao.HamletDao.getfeederback";
 					Feederback fb = session.selectOne(statement,feederid);
 					maptemp.put("firstmedtime", fb.getFirstmedtime());
 					maptemp.put("lastmed", le.getRealtime());
@@ -486,7 +471,7 @@ private SqlSession session;
 	}
     
     public Integer CombineNeckletAndFeederDogTotal(String username) {
-    	String statement = "sec.secwatchdog.dao.HamletDao.combineneckletandfeederdogtotal";//ӳ��sql�ı�ʶ�ַ���  
+    	String statement = "sec.secwatchdog.dao.HamletDao.combineneckletandfeederdogtotal";
 		int total = session.selectOne(statement,username);
 		return total;
     }
