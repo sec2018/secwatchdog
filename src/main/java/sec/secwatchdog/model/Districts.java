@@ -1,8 +1,14 @@
 package sec.secwatchdog.model;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+@Entity
 public class Districts {
     public int districtlevel;
-
+    @Id
+    @GeneratedValue
     public String districtcode;
 
     public String districtname;

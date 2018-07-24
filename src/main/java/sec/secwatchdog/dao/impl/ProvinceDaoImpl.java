@@ -19,7 +19,6 @@ import sec.secwatchdog.util.NameConversionUtil;
 public class ProvinceDaoImpl implements ProvinceDao {
 	@Autowired
     private SqlSession session;
-	
 	@Override
 	public Map<String, Integer> GetIndexLogoInfo(String provincename) {	
 		 

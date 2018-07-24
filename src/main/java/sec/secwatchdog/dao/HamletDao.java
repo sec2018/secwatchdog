@@ -6,7 +6,7 @@ import sec.secwatchdog.model.PageBean;
 
 public interface HamletDao {
 
-	public Map<String,Object> CheckUser(String username);
+/*	public Map<String,Object> CheckUser(String username);*/
 
 	public Map<String, Object> Getuser_page_farmDogList(PageBean pageBean,String username);
 	

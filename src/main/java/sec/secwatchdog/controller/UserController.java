@@ -1,31 +1,18 @@
 ﻿package sec.secwatchdog.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,13 +20,10 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.service.UserService;
-import sec.secwatchdog.shiro.BusinessException;
-import sec.secwatchdog.shiro.LuoErrorCode;
-import sec.secwatchdog.util.AESUtil;
 import sec.secwatchdog.util.CommonThreadPool;
 
 import net.sf.json.JSONObject;
@@ -119,7 +103,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("/index")
-	public String index(HttpServletRequest request,ModelMap model){
+	public String index(HttpServletRequest request,ModelMap model,RedirectAttributes redirectAttributes) throws UnsupportedEncodingException{
 		
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){;
@@ -130,6 +114,7 @@ public class UserController {
 		System.out.println(resultUser.getPrivilegelevel());
 		StringBuilder url = new StringBuilder("index/");
 		JSONObject jsStr = null;
+		 
 		switch(resultUser.getPrivilegelevel()) {
 			case 1:
 				StopWatch stopWatch = new StopWatch();  
@@ -237,34 +222,27 @@ public class UserController {
 				stopWatch.stop();
 				System.out.println(stopWatch.getTotalTimeMillis());
 				break;
-			case 2:
-                if (resultUser.getProvince().equals("建设兵团"))
-                {
-                	url.append("page_corps");
-                }
-                else
-                {
-                	
-                    url.append("page_province");
-                }
-                break;
+			case 2:              
+            	redirectAttributes.addAttribute("province", resultUser.getProvince());
+            	return "redirect:/province/province.do";
+              
             case 3:
-                if (resultUser.getProvince().equals("建设兵团"))
-                {
-                    url.append("page_division");
-                }
-                else
-                {
-                    url.append("page_city");
-                }
-                break;
+            	redirectAttributes.addAttribute("city", resultUser.getCity());
+            	redirectAttributes.addAttribute("province", resultUser.getProvince());
+            	return "redirect:/city/city.do";
+              
             case 4:
-                url.append("page_county");
-                break;
+            	redirectAttributes.addAttribute("county", resultUser.getCounty());
+            	redirectAttributes.addAttribute("city", resultUser.getCity());
+            	redirectAttributes.addAttribute("province", resultUser.getProvince());
+            	return "redirect:/county/county.do";
+              
             case 5:
-                url.append("page_village");
-                
-                break;
+            	redirectAttributes.addAttribute("village", resultUser.getVillage());
+            	redirectAttributes.addAttribute("county", resultUser.getCounty());
+            	redirectAttributes.addAttribute("city", resultUser.getCity());
+            	redirectAttributes.addAttribute("province", resultUser.getProvince());
+            	return "redirect:/village/village.do";
             case 6:
                 url.append("page_hamlet");
                 break;

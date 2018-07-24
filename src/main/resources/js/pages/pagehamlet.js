@@ -1,13 +1,16 @@
-﻿$.ajax({
+﻿
+$.ajax({
     url: "../hamlet/hamletapi",
     type: "POST",
+    data: JSON.stringify({'province': provincename,'city':cityname,'county':countyname,'village':villagename,'hamlet':hamletname}),
+    contentType: "application/json",
     success: function (data) {
         if (data == "failed") {
             window.location.href = "/login.jsp";
             return;
         } else {
             data = eval("(" + data + ")");
-
+console.log(provincename);
             var html = "";
             var firstrealtime = "";
             var lastrealtime = "";
