@@ -14,15 +14,7 @@ import sec.secwatchdog.service.HamletService;
 public class HamletServiceImpl implements HamletService{
 	@Resource
 	private HamletDao hamletDao;
-	
-//	public Map<String, Object> Getuser_page_farmDogList(PageBean pageBean,String username){
-//		return hamletDao.Getuser_page_farmDogList(pageBean,username);
-//	}
-//	
-//	public Integer Getuser_page_farmDogListtotal(String username) {
-//		return hamletDao.Getuser_page_farmDogListtotal(username);
-//	}
-//	
+ 	
 	public Map<String, Object> GetHamletMap(String province, String city, String county, String village, String hamlet){
 		return hamletDao.GetHamletMap(province, city, county, village, hamlet);
 	}
@@ -31,10 +23,6 @@ public class HamletServiceImpl implements HamletService{
 		return hamletDao.GovToEchartsAreaName(city);
 	}
 
-	public Map<String, Object> Getupuser_page_farmDogFeederList(String province, String city, String county,
-			String village, String hamlet){
-		return hamletDao.Getupuser_page_farmDogFeederList(province, city, county, village, hamlet);
-	}
 
 	public Map<String, Object> GetHamletFeederMap(String province, String city, String county, String village,
 			String hamlet){
