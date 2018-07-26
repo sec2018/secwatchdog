@@ -1,11 +1,13 @@
 package sec.secwatchdog.model;
 
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 @Entity
-public class Districts {
+public class Districts implements Serializable{
     public int districtlevel;
     @Id
     @GeneratedValue

@@ -14,6 +14,7 @@ import sec.secwatchdog.mapper.DistrictsDao;
 import sec.secwatchdog.mapper.ExhibitrealtimeDao;
 import sec.secwatchdog.mapper.ManagersDao;
 import sec.secwatchdog.mapper.SheepdogsDao;
+import sec.secwatchdog.mapper.UserDao;
 import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.Sheepdogs;
@@ -22,17 +23,18 @@ import sec.secwatchdog.util.AESUtil;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
-
+	@Autowired
+	private DistrictsDao districtsDao;
 	@Autowired
 	private ManagersDao managersDao;
 	@Autowired
 	private SheepdogsDao sheepdogsDao;
 	@Autowired
-	private DistrictsDao districtsDao;
-	@Autowired
 	private ExhibitrealtimeDao exhibitrealtimeDao;
 	@Autowired 
 	private AppexhibitrealtimeDao appexhibitrealtimeDao;
+	@Autowired
+	private UserDao userDao;
 	
 	@Override
 	public Managers login(Managers manager) {
@@ -257,4 +259,18 @@ public class UserServiceImpl implements UserService{
 		resultUser = managersDao.checkLogin(userName);
 		return resultUser;
 	}
+	   public Managers findUserByName(String name){
+	        return userDao.findUserByName(name);
+	    }
+
+	/*    public List<Role> findLoginUserRoles(Managers manager){
+	        List<Role> list = new ArrayList<>();
+	        Role role = userDao.findLoginUserRole(manager.getManagerid());
+	        list.add(role);
+	        return list;
+	    }
+
+	    public String getUserPassword(Integer uid){
+	        return userDao.getUserPassword(uid);
+	    }*/
 }

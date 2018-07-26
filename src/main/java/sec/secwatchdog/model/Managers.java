@@ -1,11 +1,13 @@
 package sec.secwatchdog.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Managers {
+public class Managers implements Serializable{
     @Id
     @GeneratedValue
     public int managerid;

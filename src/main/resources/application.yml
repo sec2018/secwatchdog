@@ -32,7 +32,7 @@ spring:
 #	        min-idle: 5       # 连接池中的最小空闲连接
 mybatis:
   #*Mapper.java可以随便放，只要和mapper.xml对应上就行
-   mapper-locations: classpath:mapper/*.xml
+   #mapper-locations: classpath:mapper/*.xml
    #type-aliases-package: sec.secwatchdog.model
 
 #这个插件是mybatis的分页查询

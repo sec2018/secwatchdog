@@ -22,8 +22,6 @@
             $("#countryratedognumtotal").text(((data.data2.neckdognumtotal + 0) * 100 / data.data2.alldognumtotal).toFixed(6));
             $("#countrymednumtotal").text(data.data2.countrymednumtotal);
          
-            var cityGov;
-            var provinceGov;
             GetCityEcharts(data);
 
             //$("#tr_admin").click(function () {
@@ -44,7 +42,7 @@
                 //});
             }
             else if (data.data1.privilegelevel == 2) {
-                $("#span_leftscan").html(provinceGov + "总览");
+                $("#span_leftscan").html(data.data4.provinceGov + "总览");
                 $("#a_managepage").click(function () {
                     window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=3";
                 })
@@ -56,7 +54,7 @@
                 //    return false;
                 //});
             } else if (data.data1.privilegelevel == 3) {
-                $("#span_leftscan").html(cityGov + "总览");
+                $("#span_leftscan").html(data.data4.cityGov + "总览");
                 $("#a_managepage").click(function () {
                     window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=3";
                 })
@@ -130,10 +128,10 @@ function objToArray(array) {
 
 function GetCityEcharts(data) {
 	
-	cityGov = "" + data.data4.cityGov;
+	var cityGov = "" + data.data4.cityGov;
 
 	var cityEchartsAreaName="" + data.data4.cityEchartsAreaName;
-	provinceGov = "" + data.data4.provinceGov;
+	var provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;
     var p_names = new Array();
     var p_town_values = new Array();
