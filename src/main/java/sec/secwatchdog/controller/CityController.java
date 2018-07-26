@@ -1,4 +1,4 @@
-﻿package sec.secwatchdog.controller;
+package sec.secwatchdog.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.sf.json.JSONObject;
 import sec.secwatchdog.model.Managers;
@@ -56,7 +55,7 @@ public class CityController {
 			data.put("data3", armyCityMap);
 			Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得师的区域编码
 			data.put("data4", data4);
-		}else {//����ǽ�����ţ���ʡ
+		}else {
 			url.append("page_city");//转到页面index/page_city.jsp
 
 			Map<String,Integer> cityIndexInfo = cityService.GetIndexLogoInfo(province, city);//获得该市的总体数据信息

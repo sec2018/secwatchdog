@@ -23,6 +23,22 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+            <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	if(session.getAttribute("currentUser")==null){
+		response.sendRedirect(request.getContextPath()+"/login.jsp");
+		return;
+	}
+%>
+<script  type="text/javascript">
+
+	var provincename ="<%=request.getAttribute("provincename")%>";
+	var cityname ="<%=request.getAttribute("cityname")%>";
+	var countyname ="<%=request.getAttribute("countyname")%>";
+	var villagename ="<%=request.getAttribute("villagename")%>";
+	var hamletname ="<%=request.getAttribute("hamletname")%>";
+
+</script>
 </head>
 <body>
 

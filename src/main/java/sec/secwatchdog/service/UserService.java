@@ -1,5 +1,6 @@
 package sec.secwatchdog.service;
 
+import java.util.List;
 import java.util.Map;
 
 import sec.secwatchdog.model.Managers;
@@ -15,5 +16,11 @@ public interface UserService {
 	public Map<String, Object> GetXinJiangArmyCountryMap();
 	
 	public Managers checklogin(String username);
+	
+	Managers findUserByName(String name);
+
+  /*  List<Role> findLoginUserRoles(Managers manager);
+
+    String getUserPassword(Integer uid);*/
 }
 

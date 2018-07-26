@@ -1,4 +1,4 @@
-﻿package sec.secwatchdog.util;
+package sec.secwatchdog.util;
 
 import java.util.concurrent.*;
 

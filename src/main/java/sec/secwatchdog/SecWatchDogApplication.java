@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@MapperScan("sec.secwatchdog.mapper")
 public class SecWatchDogApplication{
     public static void main( String[] args ){
     	SpringApplication.run(SecWatchDogApplication.class, args);

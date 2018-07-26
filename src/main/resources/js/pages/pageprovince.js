@@ -22,8 +22,7 @@
             $("#countrywsqdognumtotal").text(data.data2.feedernumtotal);
             $("#countryratedognumtotal").text(((data.data2.neckdognumtotal + data.data2.feedernumtotal) * 100 / data.data2.alldognumtotal).toFixed(6));
             $("#countrymednumtotal").text(data.data2.countrymednumtotal);
-
-            var provinceGov;
+ 
             GetProvinceEcharts(data);
 
             //$("#tr_admin").click(function () {
@@ -44,7 +43,7 @@
                 //});
             }
             else if (data.data1.privilegelevel == 2) {
-                $("#span_leftscan").html(provinceGov + "总览");
+                $("#span_leftscan").html(data.data4.provinceGov + "总览");
                 $("#a_managepage").click(function () {
                     window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=2";
                 })
@@ -128,7 +127,7 @@ function GetProvinceEcharts(data) {
     var p_feeders = new Array();
 
   
-    provinceGov = "" + data.data4.provinceGov;
+    var provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;
     $("#h3_logtitle").html(provinceGov);
     var map_ctrl = {};
