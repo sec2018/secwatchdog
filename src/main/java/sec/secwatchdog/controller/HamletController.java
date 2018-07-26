@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.StringUtil;
 
 import net.sf.json.JSONObject;
+import sec.secwatchdog.mapper.SheepdogsDao;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.PageBean;
 import sec.secwatchdog.service.HamletService;
@@ -34,6 +35,8 @@ public class HamletController {
 	
 	@Resource
 	private HamletService hamletService;
+	@Resource
+	private SheepdogsDao sheepdogsDao;
 	
 	@RequestMapping(value="/hamletapi", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
@@ -67,8 +70,8 @@ public class HamletController {
 //		Getuser_page_farmDogList = hamletService.Getuser_page_farmDogList(pageBean,resultUser.getUsername());
 //		data.put("data2", Getuser_page_farmDogList);
 		Map<String,Object> gethamletmap = new HashMap<String,Object>();
-		System.out.println(json);
-	    gethamletmap = hamletService.GetHamletMap(province,city,county,village,hamlet);
+	 
+	    gethamletmap = hamletService.GetHamletMap(province,city,county,village,hamlet,request);
 		data.put("data3", gethamletmap);
 		Map<String,String> data4 = new HashMap<String,String>();
 		data4.put("provincename", hamletService.GovToEchartsAreaName(province));
@@ -88,10 +91,11 @@ public class HamletController {
 		data.put("data7", getLevel6AdminDogNum);
 		
 		Map<String,Object> combineneckletandfeederdoglist = new HashMap<String,Object>();
-		combineneckletandfeederdoglist = hamletService.CombineNeckletAndFeederDogList(pageBean,resultUser.getUsername());
+
+		combineneckletandfeederdoglist = hamletService.CombineNeckletAndFeederDogList(pageBean,session.getAttribute("hamletcode").toString());
 		data.put("data8", combineneckletandfeederdoglist);
 		
-		int total=hamletService.CombineNeckletAndFeederDogTotal(resultUser.getUsername());
+		int total=hamletService.CombineNeckletAndFeederDogTotal(session.getAttribute("hamletcode").toString());
 		String pageCode=PageUtil.getPagation(request.getContextPath()+"/hamlet/hamletpage.do", total, Integer.parseInt(page), 6);
 		data.put("pageCode", pageCode);
 		JSONObject jsStr = JSONObject.fromObject(data);
@@ -101,7 +105,7 @@ public class HamletController {
 	@RequestMapping(value="/hamletpage", produces="text/html;charset=UTF-8")
 	public String GoToHamletPage(@RequestParam(value="page",required=false)String page,HttpServletRequest request) {
 		HttpSession session=request.getSession();
-		if(session.getAttribute("currentUser")==null){;
+		if(session.getAttribute("currentUser")==null || session.getAttribute("hamletcode") == null){;
 			return "redirect:/login.jsp";
 		}
 		if(StringUtil.isEmpty(page)){
@@ -110,10 +114,10 @@ public class HamletController {
 		Managers resultUser= (Managers) session.getAttribute("currentUser");
 		PageBean pageBean=new PageBean(Integer.parseInt(page),6);
 		Map<String,Object> combineneckletandfeederdoglist = new HashMap<String,Object>();
-		combineneckletandfeederdoglist = hamletService.CombineNeckletAndFeederDogList(pageBean,resultUser.getUsername());
+		combineneckletandfeederdoglist = hamletService.CombineNeckletAndFeederDogList(pageBean,session.getAttribute("hamletcode").toString());
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data8", combineneckletandfeederdoglist);
-		int total=hamletService.CombineNeckletAndFeederDogTotal(resultUser.getUsername());
+		int total=hamletService.CombineNeckletAndFeederDogTotal(session.getAttribute("hamletcode").toString());
 		String pageCode=PageUtil.getPagation(request.getContextPath()+"/hamlet/hamletpage.do", total, Integer.parseInt(page), 6);
 		data.put("pageCode", pageCode);
 		JSONObject jsStr = JSONObject.fromObject(data);

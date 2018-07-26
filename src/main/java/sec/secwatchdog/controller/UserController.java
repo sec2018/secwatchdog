@@ -109,8 +109,7 @@ public class UserController {
 			return "redirect:/login.jsp";
 		}
 		Managers resultUser= (Managers) session.getAttribute("currentUser");
-		System.out.println(resultUser.getAddress());
-		System.out.println(resultUser.getPrivilegelevel());
+	
 		StringBuilder url = new StringBuilder("index/");
 		JSONObject jsStr = null;
 
