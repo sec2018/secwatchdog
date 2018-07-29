@@ -40,6 +40,9 @@ public interface SheepdogsDao {
 	@Select("SELECT count(*) FROM sheepdogs WHERE districtcode=#{hamletCode}")
 	public Integer combiNeckletAndFeederDogTotal(String hamletCode);
 	
+	@Select("SELECT dogid,dogname,neckletid,apparatusid,managername FROM sheepdogs WHERE neckletid=#{param1} and districtcode=#{param2}")
+	public List<Sheepdogs> getCombineNeckletAndFeederDogByNeckletId(String neckletId, String hamletCode);
+	
 }
 
 

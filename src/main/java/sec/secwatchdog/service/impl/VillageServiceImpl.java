@@ -40,6 +40,7 @@ public class VillageServiceImpl implements VillageService {
 		provinceName = nameConversionUtil.EchartsAreaNameToGov(provinceName);
 		cityName = nameConversionUtil.EchartsAreaNameToGov(cityName);
 		countyName = nameConversionUtil.EchartsAreaNameToGov(countyName);
+		villageName = nameConversionUtil.EchartsAreaNameToGov(villageName);
 		Map<String, Integer> map = new HashMap<String,Integer>();		 
 		//获得该地区地区编码前两位(省)
 		Districts province = districtsDao.getDistrictsByDistrictName(provinceName);

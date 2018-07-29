@@ -28,11 +28,12 @@
 	    GetCountryEcharts(data);
 
 	    $("#a_managepage").click(function () {
-	        window.location.href = timestamp("/PageManageCommon?districtcode=" + escape("0"));
+	        //window.location.href = timestamp("/pageManageCommon/index.do?districtcode=0");
+	        window.location.href ="../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
 	    }); 
 	    
 	    $("#quit").click(function () {
-	        window.location = "/Login/Index?clicktype=quit";
+	        window.location = "../user/logout.do";
 	    });
 
 	    $("#pagereflash").click(function () {

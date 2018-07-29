@@ -1,24 +1,23 @@
 ﻿
 $.ajax({
-    url: "../hamlet/hamletapi",
+    url: "../hamlet/hamletapi.do",
     type: "POST",
     data: JSON.stringify({'province': provincename,'city':cityname,'county':countyname,'village':villagename,'hamlet':hamletname}),
     contentType: "application/json",
     success: function (data) {
         if (data == "failed") {
-            window.location.href = "/login.jsp";
+            window.location.href = "../login.jsp";
             return;
         } else {
             data = eval("(" + data + ")");
-console.log(provincename);
             var html = "";
             var firstrealtime = "";
             var lastrealtime = "";
             var nextrealtime = "";
 
-            data.data2 = objToArray(data.data2);
+           // data.data2 = objToArray(data.data2);
             data.data3 = objToArray(data.data3);
-            data.data5 = objToArray(data.data5);
+            //data.data4 = objToArray(data.data4);
             data.data6 = objToArray(data.data6);
             data.data8 = objToArray(data.data8);
             for (var i = 0; i < data.data8.length; i++) {
@@ -103,91 +102,125 @@ console.log(provincename);
             $("#div_usersearch").click(function () {
                 var neckletid = $("#input_managername").val();
                 var searchhtml = "";
-                for (var i = 0; i < data.data2.length; i++) {
-                    if (data.data2[i].neckletid.indexOf(neckletid) >= 0) {
+                if(neckletid == ""){
+                	
+                }else{
+                	$.ajax({
+                	    url: "../hamlet/CombineNeckletAndFeederDog.do",
+                	    type: "POST",
+                	    data: {"neckletId": neckletid},
+                	   // data: JSON.stringify({"page":page}),
+                	   // contentType: "application/json",
+                	    success: function (data) {
+                	        if (data == "failed") {
+                	            window.location.href = "../login.jsp";
+                	            return;
+                	        } else {
+                	            data = eval("(" + data + ")");
 
-                        //修正信息
-                        //var datenow = new Date();//获取系统当前时间
-                        var timestampnow = Date.parse(new Date()) / 1000;
-                        //上次投药时间  20180323155000
-                        var lastmedtime_1 = data.data2[i].lastmed;
-                        var firstmedtime_1 = data.data2[i].firstmedtime;
-                        var nextmedtime_1 = data.data2[i].nextmed;
+                	            $("#tbody_userprofilefarm").empty();
+                	            //document.getElementById("barcon").innerHTML = pagecode;
 
-                        var medcycle = data.data2[i].exhibitcycle * 1440 * 60;
-                        var lastmedtime_2 = lastmedtime_1.substring(0, 4) + "/" + lastmedtime_1.substring(4, 6) + "/" + lastmedtime_1.substring(6, 8) + " " + lastmedtime_1.substring(8, 10) + ":" + lastmedtime_1.substring(10, 12) + ":" + lastmedtime_1.substring(12, 14);
-                        var firstmedtime_2 = firstmedtime_1.substring(0, 4) + "/" + firstmedtime_1.substring(4, 6) + "/" + firstmedtime_1.substring(6, 8) + " " + firstmedtime_1.substring(8, 10) + ":" + firstmedtime_1.substring(10, 12) + ":" + firstmedtime_1.substring(12, 14);
-                        //var nextmedtime_2 = nextmedtime_1.substring(0, 4) + "/" + nextmedtime_1.substring(4, 6) + "/" + nextmedtime_1.substring(6, 8) + " " + nextmedtime_1.substring(8, 10) + ":" + nextmedtime_1.substring(10, 12) + ":" + nextmedtime_1.substring(12, 14);
+                	            $(".pagination").empty();
+                	            
+                	            var html = "";
+                	            var firstrealtime = "";
+                	            var lastrealtime = "";
+                	            var nextrealtime = "";
 
-                        var lastmedtimestamp = new Date(lastmedtime_2).getTime() / 1000;
-                        var firstmedtimestamp = new Date(firstmedtime_2).getTime() / 1000;
+                	            data = objToArray(data);
+                	            for (var i = 0; i < data.length; i++) {
+                                    if (data[i].neckletid.indexOf(neckletid) >= 0) {
 
-                        var lastmedtimeres = ChangeTimeFormat(lastmedtime_1).split(" ")[0];
-                        var firstrealtime = ChangeTimeFormat(firstmedtime_1).split(" ")[0];
-                        var nextmedtimeres = firstrealtime;
+                                        //修正信息
+                                        //var datenow = new Date();//获取系统当前时间
+                                        var timestampnow = Date.parse(new Date()) / 1000;
+                                        //上次投药时间  20180323155000
+                                        var lastmedtime_1 = data[i].lastmed;
+                                        var firstmedtime_1 = data[i].firstmedtime;
+                                        var nextmedtime_1 = data[i].nextmed;
 
-                        if (firstmedtimestamp < timestampnow) {
-                            var forgetmedtimes = Math.floor((timestampnow - lastmedtimestamp) / medcycle);
-                            var lastmedtimeres_ = lastmedtimestamp + forgetmedtimes * medcycle;
-                            var nextmedtimeres_ = lastmedtimeres_ + medcycle;
-                            var d = new Date(lastmedtimeres_ * 1000);
-                            var n = new Date(lastmedtimeres_ * 1000);
-                            var year = d.getFullYear();
-                            var month = d.getMonth() + 1;
-                            var day = d.getDate();
-                            var hour = d.getHours();
-                            var min = d.getMinutes();
-                            var sec = d.getSeconds();
-                            if ((month + '').length < 2) {
-                                month = "0" + month;
-                            }
-                            if ((day + '').length < 2) {
-                                day = "0" + day;
-                            }
-                            lastmedtimeres = year + "-" + month + "-" + day;
+                                        var medcycle = data[i].exhibitcycle * 1440 * 60;
+                                        var lastmedtime_2 = lastmedtime_1.substring(0, 4) + "/" + lastmedtime_1.substring(4, 6) + "/" + lastmedtime_1.substring(6, 8) + " " + lastmedtime_1.substring(8, 10) + ":" + lastmedtime_1.substring(10, 12) + ":" + lastmedtime_1.substring(12, 14);
+                                        var firstmedtime_2 = firstmedtime_1.substring(0, 4) + "/" + firstmedtime_1.substring(4, 6) + "/" + firstmedtime_1.substring(6, 8) + " " + firstmedtime_1.substring(8, 10) + ":" + firstmedtime_1.substring(10, 12) + ":" + firstmedtime_1.substring(12, 14);
+                                        //var nextmedtime_2 = nextmedtime_1.substring(0, 4) + "/" + nextmedtime_1.substring(4, 6) + "/" + nextmedtime_1.substring(6, 8) + " " + nextmedtime_1.substring(8, 10) + ":" + nextmedtime_1.substring(10, 12) + ":" + nextmedtime_1.substring(12, 14);
 
-                            var year2 = n.getFullYear();
-                            var month2 = n.getMonth() + 1;
-                            var day2 = n.getDate();
-                            var hour2 = n.getHours();
-                            var min2 = n.getMinutes();
-                            var sec2 = n.getSeconds();
-                            if ((month2 + '').length < 2) {
-                                month2 = "0" + month2;
-                            }
-                            if ((day2 + '').length < 2) {
-                                day2 = "0" + day2;
-                            }
-                            nextmedtimeres = year2 + "-" + month2 + "-" + day2;
+                                        var lastmedtimestamp = new Date(lastmedtime_2).getTime() / 1000;
+                                        var firstmedtimestamp = new Date(firstmedtime_2).getTime() / 1000;
 
-                            firstrealtime = ChangeTimeFormat(data.data2[i].firstmedtime).split(" ")[0];
-                        }
-                        //lastrealtime = ChangeTimeFormat(data.data2[i].lastmed).split(" ")[0];
-                        //nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];
-                        lastrealtime = lastmedtimeres;
-                        nextrealtime = nextmedtimeres;
+                                        var lastmedtimeres = ChangeTimeFormat(lastmedtime_1).split(" ")[0];
+                                        var firstrealtime = ChangeTimeFormat(firstmedtime_1).split(" ")[0];
+                                        var nextmedtimeres = firstrealtime;
 
-                        //searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-                        searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-                    }
+                                        if (firstmedtimestamp < timestampnow) {
+                                            var forgetmedtimes = Math.floor((timestampnow - lastmedtimestamp) / medcycle);
+                                            var lastmedtimeres_ = lastmedtimestamp + forgetmedtimes * medcycle;
+                                            var nextmedtimeres_ = lastmedtimeres_ + medcycle;
+                                            var d = new Date(lastmedtimeres_ * 1000);
+                                            var n = new Date(lastmedtimeres_ * 1000);
+                                            var year = d.getFullYear();
+                                            var month = d.getMonth() + 1;
+                                            var day = d.getDate();
+                                            var hour = d.getHours();
+                                            var min = d.getMinutes();
+                                            var sec = d.getSeconds();
+                                            if ((month + '').length < 2) {
+                                                month = "0" + month;
+                                            }
+                                            if ((day + '').length < 2) {
+                                                day = "0" + day;
+                                            }
+                                            lastmedtimeres = year + "-" + month + "-" + day;
+
+                                            var year2 = n.getFullYear();
+                                            var month2 = n.getMonth() + 1;
+                                            var day2 = n.getDate();
+                                            var hour2 = n.getHours();
+                                            var min2 = n.getMinutes();
+                                            var sec2 = n.getSeconds();
+                                            if ((month2 + '').length < 2) {
+                                                month2 = "0" + month2;
+                                            }
+                                            if ((day2 + '').length < 2) {
+                                                day2 = "0" + day2;
+                                            }
+                                            nextmedtimeres = year2 + "-" + month2 + "-" + day2;
+
+                                            firstrealtime = ChangeTimeFormat(data[i].firstmedtime).split(" ")[0];
+                                        }
+                                        //lastrealtime = ChangeTimeFormat(data.data2[i].lastmed).split(" ")[0];
+                                        //nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];
+                                        lastrealtime = lastmedtimeres;
+                                        nextrealtime = nextmedtimeres;
+
+                                        //searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+                                        searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data[i].dogid + "\">" + data[i].neckletid + "</a></td><td>" + data[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+                                    }
+                                }
+//                	            for (var i = 0; i < data.data5.length; i++) {
+//                	                firstrealtime = ChangeTimeFormat(data.data5[i].firstmedtime).split(" ")[0];
+//                	                lastrealtime = ChangeTimeFormat(data.data5[i].lastmed).split(" ")[0];
+//                	                nextrealtime = ChangeTimeFormat(data.data5[i].nextmed).split(" ")[0];
+//                	                html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data5[i].dogid + "\">" + data.data5[i].feederid + "</a></td><td>" + data.data5[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data5[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+//                	            }
+                	     /*       $("#tbody_userprofilefarm").append(html);
+                	            //document.getElementById("barcon").innerHTML = pagecode;
+
+                	            $(".pagination").append(data.pageCode);*/
+                	        
+                	            $("#tbody_userprofilefarm").append(searchhtml);
+
+
+                                $(".neckletid").click(function () {
+                                    GetDogPage(this.id);
+                                });
+                                }
+                	    }
+                	})
+                   
+
                 }
-                
-                for (var i = 0; i < data.data5.length; i++) {
-                    if (data.data5[i].feederid.indexOf(neckletid) >= 0) {
-                        searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data5[i].dogid + "\">" + data.data5[i].feederid + "</a></td><td>" + data.data5[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data5[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-                    }
-                }
-                $("#tbody_userprofilefarm").html(searchhtml);
-//                goPage(1, 8);
-//                var tempOption = "";
-//                for (var i = 1; i <= totalPage; i++) {
-//                    tempOption += '<option value=' + i + '>' + i + '</option>'
-//                }
-//                $("#jumpWhere").html(tempOption);
-
-                $(".neckletid").click(function () {
-                    GetDogPage(this.id);
-                });
+            	
             });
 
             if (data.data1.privilegelevel == 1) {
@@ -261,14 +294,6 @@ console.log(provincename);
                 });
                 $("#goback").css("display", "none");
             }
-
-
-//            goPage(1, 8);
-//            var tempOption = "";
-//            for (var i = 1; i <= totalPage; i++) {
-//                tempOption += '<option value=' + i + '>' + i + '</option>'
-//            }
-//            $("#jumpWhere").html(tempOption);
 
             $(".neckletid").click(function () {
                 GetDogPage(this.id);
@@ -722,12 +747,18 @@ function objToArray(array) {
 }
 
 function gopage(e){
+	var href = e.href.split("?")[0];
+	var page = e.href.split("=")[1];
 	$.ajax({
-	    url: e.href,
+	    url: href,
 	    type: "POST",
+	    data: {"page": page},
+	   // data: JSON.stringify({"page":page}),
+	   // contentType: "application/json",
 	    success: function (data) {
+	    	console.log(data);
 	        if (data == "failed") {
-	            window.location.href = "/login.jsp";
+	            window.location.href = "../login.jsp";
 	            return;
 	        } else {
 	            data = eval("(" + data + ")");

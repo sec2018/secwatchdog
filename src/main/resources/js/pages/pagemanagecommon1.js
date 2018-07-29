@@ -1,26 +1,18 @@
-﻿var senddata = {};
-senddata.username = username;
-senddata.manageusername = username;
-$.ajax({
-    url: "/api/pagemanagecommonapi",
-    type: "POST",
-    data: senddata,
-    success: function (data) {
-        if (data == "failed") {
-            window.location.href = "/Login/SignIn";
-            return;
-        } else {
-            data = eval("(" + data + ")");
+﻿var num = data.total;
+var searchNum;
+$(function(){
             var html = "";
             var logintime = "";
+
             if (data != null) {
-                if (data.data3[0].privilegelevel == 1) {
-                    //$("#h3_adminname").html("国家管理员——" + data.data1[0].managername);
+                if (data.data3.privilegelevel == 1) {
+                    // $("#h3_adminname").html("国家管理员——" +
+					// data.data1.managername);
                     $("#h3_adminname").html("国家管理员");
+                    data.data2 = objToArray(data.data2);
                     for (var i = 0; i < data.data2.length; i++) {
                         logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
-                        html += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</a></td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";
-                        //html += "<tr><td><a class=\"name\" onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</a></td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].officecall + "</td><td><a href=\"#\">" + data.data2[i].telphonecall + "</a></td></tr>";
+                        html += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</a></td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";              
                     }
 
                 } else {
@@ -29,65 +21,40 @@ $.ajax({
             }
 
             $("#tbody_pagemanagecommon").append(html);
-
-
-            $("#div_usersearch").click(function () {
-                var searchhtml = "";
-                var managername = $("#input_managername").val();
-                if ($.trim(managername) == "") {
-                    for (var i = 0; i < data.data2.length; i++) {
-                        logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
-                        searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</a></td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";
-                    }
-                    $("#tbody_pagemanagecommon").html(searchhtml);
-                    goPage(1, 8);
-                    var tempOption = "";
-                    for (var i = 1; i <= totalPage; i++) {
-                        tempOption += '<option value=' + i + '>' + i + '</option>'
-                    }
-                    $("#jumpWhere").html(tempOption);
-                }
-                else {
-                    var searchcontent = {};
-                    searchcontent.clicktype = "onlynextonlinename";
-                    searchcontent.managername = managername;    //managername 可能是姓名或区域或手机
-                    searchcontent.username = username;
-                    searchcontent.districtcode = "0";
-                    $.ajax({
-                        url: "/api/searchmanagerapi",
-                        type: "POST",
-                        data: searchcontent,
-                        success: function (data) {
-                            data = eval("(" + data + ")");
-                            for (var i = 0; i < data.length; i++) {
-                                logintime = ChangeTimeFormat(data[i].logintime).split(" ")[0];
-                                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data[i].username + "\">" + data[i].managername + "</a></td><td>" + logintime + "</td><td>" + data[i].managearea + "</td><td>" + data[i].job + "</td><td>" + data[i].dogtotalnum + "</td><td>" + data[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data[i].officecall + "</td><td>" + data[i].telphonecall + "</td></tr>";
-                            }
-                            $("#tbody_pagemanagecommon").html(searchhtml);
-                            goPage(1, 8);
-                            var tempOption = "";
-                            for (var i = 1; i <= totalPage; i++) {
-                                tempOption += '<option value=' + i + '>' + i + '</option>'
-                            }
-                            $("#jumpWhere").html(tempOption);
-                        }
-                    });
-                }
-            });
-
-            goPage(1, 8);
+            Page(1, 8);
             var tempOption = "";
             for (var i = 1; i <= totalPage; i++) {
                 tempOption += '<option value=' + i + '>' + i + '</option>'
             }
             $("#jumpWhere").html(tempOption);
+            document.getElementById("jumpWhere").options[0].selected = true;       
+           
+            $("#div_usersearch").click(function () {
+                var searchhtml = "";
+                var managername = $("#input_managername").val();
+                if ($.trim(managername) == "") {
+                	goPage(0,8);
+                	 
+                }
+                else {
+                	goSearchPage(0,8);
+                
+                }
+            });
 
             $("#li_countrysee").click(function () {
-                window.location.href = "/Index?UserName="+username+"&Ticket="+Ticket;
+                window.location.href = "../user/index.do";
             });
         }
+  )
+
+  function objToArray(array) {
+    var arr = []
+    for (var i in array) {
+        arr.push(array[i]); 
     }
-})
+    return arr;
+}
 
 $(function () {
     $("#pagereflash").click(function () {
@@ -99,14 +66,12 @@ function areaOnClick(id, privilegelevel) {
     switch (privilegelevel) {
         case 2:
             id = id.substring(0, id.length - 1);
-            //alert(id);
-            //setCookie("page_farmusername_2", id, "s6000");
             window.location.href = "/PageManageCommon/ManageToNext?clickname=" + id + "&clicknamelevel=" + privilegelevel;
     }
 }
 
 function nameOnClick(id) {
-    //alert("跳转至" + id + "信息页面");
+    // alert("跳转至" + id + "信息页面");
     window.location.href = "/Index/UserProfile?viewuser=" + id;
 }
 
@@ -119,7 +84,7 @@ function getCookie(name) {
 }
 
 function ChangeTimeFormat(logintime) {
-    //	20170926084552 ---> 2017.09.26 08:45:52
+    // 20170926084552 ---> 2017.09.26 08:45:52
     var year = logintime.substring(0, 4);
     var month = logintime.substring(4, 6);
     var day = logintime.substring(6, 8);
@@ -129,9 +94,9 @@ function ChangeTimeFormat(logintime) {
     return year + "." + month + "." + day + " " + hour + ":" + min + ":" + sec;
 }
 
-//如果需要设定自定义过期时间
-//那么把上面的setCookie　函数换成下面两个函数就ok;
-//程序代码
+// 如果需要设定自定义过期时间
+// 那么把上面的setCookie 函数换成下面两个函数就ok;
+// 程序代码
 function setCookie(name, value, time) {
     var strsec = getsec(time);
     var exp = new Date();
@@ -152,56 +117,37 @@ function getsec(str) {
     }
 }
 
-/** 
-* 分页函数 
-* pno--页数 
-* psize--每页显示记录数 
-* 分页部分是从真实数据行开始，因而存在加减某个常数，以确定真正的记录数 
-* 纯js分页实质是数据行全部加载，通过是否显示属性完成分页功能 
-**/
+/**
+ * 分页函数 pno--页数 psize--每页显示记录数 分页部分是从真实数据行开始，因而存在加减某个常数，以确定真正的记录数
+ * 纯js分页实质是数据行全部加载，通过是否显示属性完成分页功能
+ */
 
-var pageSize = 0;//每页显示行数  
-var currentPage_ = 1;//当前页全局变量，用于跳转时判断是否在相同页，在就不跳，否则跳转。  
-var totalPage;//总页数  
-function goPage(pno, psize) {
-    var itable = document.getElementById("tbody_pagemanagecommon");
-    var num = itable.rows.length;//表格所有行数(所有记录数)  
+var pageSize = 0;// 每页显示行数
+var currentPage_ = 1;// 当前页全局变量，用于跳转时判断是否在相同页，在就不跳，否则跳转。
+var totalPage;// 总页数
+function Page(pno, psize) {
 
-    pageSize = psize;//每页显示行数  
-    //总共分几页   
+    pageSize = psize;// 每页显示行数
+    // 总共分几页
     if (num / pageSize > parseInt(num / pageSize)) {
         totalPage = parseInt(num / pageSize) + 1;
     } else {
         totalPage = parseInt(num / pageSize);
     }
-    var currentPage = pno;//当前页数  
+    var currentPage = pno;// 当前页数
     currentPage_ = currentPage;
-    var startRow = (currentPage - 1) * pageSize + 1;
-    var endRow = currentPage * pageSize;
-    endRow = (endRow > num) ? num : endRow;
-    //遍历显示数据实现分页  
-    /*for(var i=1;i<(num+1);i++){     
-        var irow = itable.rows[i-1]; 
-        if(i>=startRow && i<=endRow){ 
-            irow.style.display = "";     
-        }else{ 
-            irow.style.display = "none"; 
-        } 
-    }*/
+ 
 
-    $("#tbody_pagemanagecommon tr").hide();
-    for (var i = startRow - 1; i < endRow; i++) {
-        $("#tbody_pagemanagecommon tr").eq(i).show();
-    }
     var tempStr = "共" + num + "条记录 分" + totalPage + "页 当前第" + currentPage + "页";
     document.getElementById("barcon1").innerHTML = tempStr;
 
     if (currentPage > 1) {
         $("#firstPage").on("click", function () {
-            goPage(1, psize);
+        	 goPage(0, psize);
+
         }).removeClass("ban");
         $("#prePage").on("click", function () {
-            goPage(currentPage - 1, psize);
+        	 goPage((currentPage -1 -1)*psize, psize);
         }).removeClass("ban");
     } else {
         $("#firstPage").off("click").addClass("ban");
@@ -210,23 +156,151 @@ function goPage(pno, psize) {
 
     if (currentPage < totalPage) {
         $("#nextPage").on("click", function () {
-            goPage(currentPage + 1, psize);
+        	goPage((currentPage + 1 -1)*psize , psize);
         }).removeClass("ban")
         $("#lastPage").on("click", function () {
-            goPage(totalPage, psize);
+        	goPage((totalPage-1)*psize, psize);
         }).removeClass("ban")
     } else {
         $("#nextPage").off("click").addClass("ban");
         $("#lastPage").off("click").addClass("ban");
     }
-
-    $("#jumpWhere").val(currentPage);
+    $("#jumpPage").on("click", function(){
+    	jumpPage();
+    })
+ 
 }
-
 
 function jumpPage() {
-    var num = parseInt($("#jumpWhere").val());
-    if (num != currentPage_) {
-        goPage(num, pageSize);
+    var toPage = parseInt($("#jumpWhere").val());
+    if (toPage != currentPage_) {
+    	goPage((toPage-1)*pageSize, pageSize);
     }
 }
+
+
+function jumpSearchPage() {
+    var toPage = parseInt($("#jumpWhere").val());
+    if (toPage != currentPage_) {
+    	goSearchPage((toPage-1)*pageSize, pageSize);
+    }
+}
+
+
+function goPage(pno, psize){
+
+    $.ajax({
+        url: "../pageManageCommon/indexApi.do",
+        type: "POST",
+        data: JSON.stringify({'districtcode': "0",'managername': data.data3.managername,'startItem': pno, 'pageSize': psize}),                    
+        contentType: "application/json",
+        success: function (data) {
+            data = eval("(" + data + ")");
+            data.data2 = objToArray(data.data2);
+            var searchhtml = "";
+            var logintime = "";
+            for (var i = 0; i < data.data2.length; i++) {
+                logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
+                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data2[i].managearea + "</td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";
+            }
+            $("#tbody_pagemanagecommon").html(searchhtml);
+            num = data.total;
+            Page(pno/psize+1, psize);
+            var tempOption = "";
+            for (var i = 1; i <= totalPage; i++) {
+                tempOption += '<option value=' + i + '>' + i + '</option>'
+            }
+            $("#jumpWhere").html(tempOption);
+            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+        }
+    });
+} 
+
+function searchPage(pno, psize) {
+
+    pageSize = psize;// 每页显示行数
+    // 总共分几页
+    if (searchNum / pageSize > parseInt(searchNum / pageSize)) {
+        totalPage = parseInt(searchNum / pageSize) + 1;
+    } else {
+        totalPage = parseInt(searchNum / pageSize);
+    }
+    var currentPage = pno;// 当前页数
+    currentPage_ = currentPage;
+ 
+
+    var tempStr = "共" + searchNum + "条记录 分" + totalPage + "页 当前第" + currentPage + "页";
+    document.getElementById("barcon1").innerHTML = tempStr;
+
+    if (currentPage > 1) {
+        $("#firstPage").on("click", function () {
+        	goSearchPage(0, psize);
+
+         //   Page(1, psize);
+        }).removeClass("ban");
+        $("#prePage").on("click", function () {
+        	goSearchPage((currentPage -1 -1)*psize, psize);
+  
+          //  Page(currentPage - 1, psize);
+        }).removeClass("ban");
+    } else {
+        $("#firstPage").off("click").addClass("ban");
+        $("#prePage").off("click").addClass("ban");
+    }
+
+    if (currentPage < totalPage) {
+        $("#nextPage").on("click", function () {
+        	goSearchPage((currentPage + 1 -1)*psize , psize);
+          //  Page(currentPage + 1, psize);
+        }).removeClass("ban")
+        $("#lastPage").on("click", function () {
+        	goSearchPage((totalPage-1)*psize, psize)
+        //    Page(totalPage, psize);
+        }).removeClass("ban")
+    } else {
+        $("#nextPage").off("click").addClass("ban");
+        $("#lastPage").off("click").addClass("ban");
+    }
+    $("#jumpPage").on("click", function(){
+    	jumpSearchPage();
+    })
+   
+
+}
+
+function goSearchPage(pno, psize){
+	var searchhtml = "";
+    var managername = $("#input_managername").val();
+    var logintime = "";
+
+    if ($.trim(managername) == "") {
+    	goPage(0,8);
+    	Page(1,8);
+    }
+    else{
+	    $.ajax({        
+	        url: "../pageManageCommon/searchManagerApi.do",
+	        type: "POST",
+	        data: JSON.stringify({'clicktype': "onlynextonlinename",'managername':managername,'username':data.data1.username,'districtcode':"0",'startItem': pno, 'pageSize': psize}),                    
+	        contentType: "application/json",
+	        success: function (data) {
+	            data = eval("(" + data + ")");
+	            data.data1 = objToArray(data.data1);
+	            for (var i = 0; i < data.data1.length; i++) {
+	                logintime = ChangeTimeFormat(data.data1[i].logintime).split(" ")[0];
+	                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data1[i].username + "\">" + data.data1[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data1[i].managearea + "</td><td>" + data.data1[i].job + "</td><td>" + data.data1[i].dogtotalnum + "</td><td>" + data.data1[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data1[i].officecall + "</td><td>" + data.data1[i].telphonecall + "</td></tr>";
+	            }
+	            $("#tbody_pagemanagecommon").html(searchhtml);
+	            searchNum = data.searchTotal
+	            searchPage(pno/psize+1, psize)
+	            var tempOption = "";
+	            for (var i = 1; i <= totalPage; i++) {
+	                tempOption += '<option value=' + i + '>' + i + '</option>'
+	            }
+	            $("#jumpWhere").html(tempOption);
+	            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+	      
+	        }
+	    });
+    }
+} 

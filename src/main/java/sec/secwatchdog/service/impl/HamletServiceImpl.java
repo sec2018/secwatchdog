@@ -244,5 +244,61 @@ public class HamletServiceImpl implements HamletService{
 		int total = sheepdogsdao.combiNeckletAndFeederDogTotal(hamletCode);
 		return total;
 	}
+
+	@Override
+	public Map<String, Object> getCombineNeckletAndFeederDogByNeckletId(String neckletId, String hamletCode) {
+		Map<String,Object> combineneckletandfeederdog = new HashMap<String,Object>();
+		
+		List<Sheepdogs> doglist = new ArrayList<Sheepdogs>();
+		doglist = sheepdogsdao.getCombineNeckletAndFeederDogByNeckletId(neckletId, hamletCode);
+		int i = 0;
+		for(Sheepdogs each:doglist) {
+			Map<String, Object> maptemp = new HashMap<String,Object>();
+			maptemp.put("dogid", each.getDogid());
+			maptemp.put("dogname", each.getDogname());
+			String neckletid = each.getNeckletid();
+			String apparatusid = each.getApparatusid();
+			if(apparatusid.equals("-1") && !neckletid.equals("-1")) {
+				Lastexhibitrealtime lb = lastexhibitrealtimedao.getLastexhibitrealtime(neckletid);
+				if(lb != null) {
+					maptemp.put("neckletid",  neckletid);
+					Feedback feedback = feedbackdao.getFeedback(neckletid);
+					maptemp.put("firstmedtime",  feedback.getFirstmedtime());
+					maptemp.put("lastmed",  lb.getRealtime());
+					maptemp.put("timemed",  feedback.getMedtotal() - lb.getTableremain());
+					maptemp.put("nextmed",  lb.getNextexhibittime());
+					maptemp.put("exhibitcycle", (Double.parseDouble(feedback.getExhibitcycle())/1440)+"");
+				}else {
+					maptemp.put("neckletid",  "----");
+					maptemp.put("firstmedtime",  "");
+					maptemp.put("lastmed",  "");
+					maptemp.put("timemed",  0);
+					maptemp.put("nextmed",  "");
+					maptemp.put("exhibitcycle","10000");
+				}
+			}else if(!apparatusid.equals("-1") && neckletid.equals("-1")){
+				Lastappexhibitrealtime le = lastappexhibitrealtimedao.getLastappexhibitrealtime(apparatusid);
+				if(le!=null) {
+					maptemp.put("feederid", apparatusid);
+					Feederback fb = feederbackdao.getFeederback(apparatusid);
+					maptemp.put("firstmedtime", fb.getFirstmedtime());
+					maptemp.put("lastmed", le.getRealtime());
+					maptemp.put("timemed", fb.getMedtotal()-le.getTableremain());
+					maptemp.put("nextmed", le.getNextexhibittime());
+					maptemp.put("exhibitcycle", "10000");
+				}else {
+					maptemp.put("feederid", "----");
+					maptemp.put("firstmedtime", "");
+					maptemp.put("lastmed", "");
+					maptemp.put("timemed", 0);
+					maptemp.put("nextmed", "");
+					maptemp.put("exhibitcycle","10000");
+				}
+			}
+			combineneckletandfeederdog.put(""+i, maptemp);
+			i++;
+		}
+		return combineneckletandfeederdog;
+	}
 	
 }

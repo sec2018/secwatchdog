@@ -16,7 +16,7 @@ public interface DistrictsDao {
 	@Select("select * from districts where districtname=#{provinceName} or shortname=#{provinceName}")
     public Districts getDistrictsByDistrictName(String provinceName);
 	
-	@Select("select * from districts where districtname=#{param1} or shortname=#{param1} and districtcode like concat(#{param2},'%')")
+	@Select("select * from districts where (districtname=#{param1} or shortname=#{param1}) and districtcode like concat(#{param2},'%')")
 	public Districts getCityAndBelowDistrictsByDistrictName(String districtName,String higherLevelDistrictCode);
 		
 	@Select("select * from districts where districtcode like concat(#{districtCode},'%')")

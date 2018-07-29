@@ -1,5 +1,6 @@
 package sec.secwatchdog.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -35,4 +36,13 @@ public interface ManagersDao {
 
 	@Select("select privilegelevel from managers where province=#{param1} and city=#{param2} and county=#{param3} and village=#{param4} and hamlet=#{param5}")
 	public List<Integer> getHamletManagerByDistrictName(String provinceName,String cityName, String countyName, String villageName ,String hamletName);
+
+	@Select("select * from managers where username=#{managerName}")
+	public Managers getManagerByName(String managerName);
+	
+	@Select("select username,managername,logintime,province,workplace,managertel,officecall from managers where privilegelevel=#{privilegelevel}")
+	public List<Managers> getManagersByPrivilegelevel(int privilegelevel);
+	
+	@Select("select * from managers where privilegelevel > #{param1} and ( managername REGEXP #{param2} or province REGEXP #{param2} or city REGEXP #{param2} or village REGEXP #{param2} or hamlet REGEXP #{param2} or managertel REGEXP #{param2} )")
+	public List<Managers> getAllManagersByManagerName(int getPrivilegelevel, String managerName);
 }
