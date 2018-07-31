@@ -41,6 +41,9 @@ $(function(){
                 
                 }
             });
+            $("#div_newuserpage").click(function () { 
+            	  window.location.href = "../newUser/newUserPage.do?managername=" + data.data3.username
+            });
 
             $("#li_countrysee").click(function () {
                 window.location.href = "../user/index.do";
@@ -72,7 +75,7 @@ function areaOnClick(id, privilegelevel) {
 
 function nameOnClick(id) {
     // alert("跳转至" + id + "信息页面");
-    window.location.href = "/Index/UserProfile?viewuser=" + id;
+    window.location.href = "../userProfile/userProfilePage.do?viewuser=" + id;
 }
 
 function getCookie(name) {

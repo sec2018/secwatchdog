@@ -77,7 +77,7 @@
 			</li>
 			<li><a style="cursor: pointer"> <i class="icon-cogs"></i> <span>统计分析</span>
 			</a></li>
-			<li><a href="/Index/PagePersonal" style="cursor: pointer"> <i
+			<li><a href="../personal/pagePersonal.do" style="cursor: pointer"> <i
 					class="icon-user"></i> <span>个人信息</span>
 			</a></li>
 			<!--<li>
@@ -109,8 +109,8 @@
 					<!-- styles are located in css/elements.css -->
 					<!-- script that enables this dropdown is located in js/theme.js -->
 					<a id="div_usersearch" class="btn-flat default"
-						style='margin-left: 5px'> 点击搜索 </a> <a
-						href="/PageManageCommon/NewUser"
+						style='margin-left: 5px'> 点击搜索 </a>
+				    <a id="div_newuserpage"
 						class="btn-flat success pull-right  style='margin:5px'"> <span>&#43;</span>
 						添加管理员
 					</a>

@@ -29,10 +29,7 @@ import sec.secwatchdog.util.PageUtil;
 @Controller
 @RequestMapping("/hamlet")
 public class HamletController {
-	
-	@Resource
-	private UserService userService;
-	
+ 
 	@Resource
 	private HamletService hamletService;
 	@Resource

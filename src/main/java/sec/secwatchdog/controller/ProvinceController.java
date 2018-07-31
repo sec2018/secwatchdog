@@ -22,9 +22,7 @@ import sec.secwatchdog.service.UserService;
 @Controller
 @RequestMapping("/province")
 public class ProvinceController {
-
-	@Resource
-	private UserService userService;
+ 
 	
 	@Resource
 	private ProvinceService provinceService;

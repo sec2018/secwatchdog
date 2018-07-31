@@ -34,12 +34,11 @@ public class PageManageCommonController {
 		int startItem = 0;
 		int pageSize = 8;
 		Managers user= (Managers) session.getAttribute("currentUser");
-		StringBuilder url = new StringBuilder("index/");
+		StringBuilder url = new StringBuilder("index/page_managecommon1");//转到页面index/page_managecommon1.jsp
 		JSONObject jsStr = null;
 			
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",user);//data1保存登录用户信息
-		url.append("page_managecommon1");//转到页面index/page_managecommon1.jsp
 		int totalNum = manageService.getNextLevelAdminInfoTotalNum(managername);
 		data.put("total", totalNum);
 		Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//当前管理员的下一级管理员信息
@@ -65,12 +64,10 @@ public class PageManageCommonController {
 		int pageSize = json.getInt("pageSize");
 		 
 		Managers user= (Managers) session.getAttribute("currentUser");
-		StringBuilder url = new StringBuilder("index/");
 		JSONObject jsStr = null;
 			
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",user);//data1保存登录用户信息
-		url.append("page_managecommon1");//转到页面index/page_managecommon1.jsp
 		int totalNum = manageService.getNextLevelAdminInfoTotalNum(managername);
 		data.put("total", totalNum);
 		Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//当前管理员的下一级管理员信息

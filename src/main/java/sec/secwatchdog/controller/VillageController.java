@@ -20,9 +20,7 @@ import sec.secwatchdog.service.VillageService;
 @Controller
 @RequestMapping("/village")
 public class VillageController {
-	@Resource
-	private UserService userService;
-	
+ 
 	@Resource
 	private VillageService villageService;
  /***
