@@ -28,6 +28,7 @@ public interface HamletService {
 	public Map<String, Object> CombineNeckletAndFeederDogList(PageBean pageBean, String hamletCode);
 
 	public Integer CombineNeckletAndFeederDogTotal(String hamletCode);
+	public Map<String, Object> getCombineNeckletAndFeederDogByNeckletId(String neckletId, String hamletCode);
 	
 	
 }

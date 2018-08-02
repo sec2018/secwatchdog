@@ -80,7 +80,7 @@
                 </a>
             </li>
             <li>
-                <a href="/Index/PagePersonal" style="cursor: pointer">
+                <a style="cursor: pointer" id="a_personalpage">
                     <i class="icon-user"></i>
                     <span>个人信息</span>
                 </a>

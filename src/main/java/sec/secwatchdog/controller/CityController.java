@@ -19,10 +19,7 @@ import sec.secwatchdog.service.UserService;
 @Controller
 @RequestMapping("/city")
 public class CityController {
-
-	@Resource
-	private UserService userService;
-	
+ 
 	@Resource
 	private CityService cityService;
 /***

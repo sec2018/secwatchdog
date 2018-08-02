@@ -15,9 +15,9 @@ import sec.secwatchdog.util.OrderProvider;
 
 @Mapper
 public interface SheepdogsDao {
-	@Select("select * from sheepdogs where (neckletid ='-1' and apparatusid !='-1') or (apparatusid ='-1' and neckletid !='-1')")
+	@Select("select * from sheepdogs")
 	public List<Sheepdogs> getIndexInfor();
-	@Select("select * from sheepdogs where districtcode like concat(#{districtCode},'%') and ((neckletid ='-1' and apparatusid !='-1') or (apparatusid ='-1' and neckletid !='-1'))")
+	@Select("select * from sheepdogs where districtcode like concat(#{districtCode},'%') ")//and ((neckletid ='-1' and apparatusid !='-1') or (apparatusid ='-1' and neckletid !='-1'))
     public List<Sheepdogs> getIndexInforByDistrictcode(String districtCode);
 	@Select("select neckletid from sheepdogs where districtcode like concat(#{districtCode},'%')")
 	public List<String> getAllNeckletIdByDistrictcode(String districtCode);
@@ -39,6 +39,9 @@ public interface SheepdogsDao {
 
 	@Select("SELECT count(*) FROM sheepdogs WHERE districtcode=#{hamletCode}")
 	public Integer combiNeckletAndFeederDogTotal(String hamletCode);
+	
+	@Select("SELECT dogid,dogname,neckletid,apparatusid,managername FROM sheepdogs WHERE neckletid=#{param1} and districtcode=#{param2}")
+	public List<Sheepdogs> getCombineNeckletAndFeederDogByNeckletId(String neckletId, String hamletCode);
 	
 }
 

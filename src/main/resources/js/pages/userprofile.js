@@ -1,174 +1,159 @@
-﻿//var personinfo = "";
-////if (location.search.length > 0) {
-////    personinfo = unescape(location.search.split('?')[1].split('=')[1]);
-////}
-//if (getCookie("watchdogusername") == null || getCookie("watchdogusername") == "") {
-//    window.location.href = "signin.html";
-//} else {
-    
-//}
-var senddata = {};
-senddata.personinfo = personinfo;
-senddata.clicktype = "userprofile";
-$.ajax({
-    url: "/api/userprofileapi",
-    type: "POST",
-    data: senddata,
-    success: function (data) {
-        if (data == "failed") {
-            window.location.href = "/Login/SignIn";
-            return;
-        } else {
-            data = eval("(" + data + ")");
-            if (data[0].privilegelevel == 1) {
-                $("#h3_managername").html(data[0].managername + " (国家级管理员)");
+﻿var username_userprofile;
+$(function(){
+            if (data.privilegelevel == 1) {
+                $("#h3_managername").html(data.managername + " (国家级管理员)");
+                username_userprofile = data.username;
                 $("#span_adminlevel").text("国家级管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);<a href=\"tel:" + data.data2[i].telphonecall + "\">
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);<a href=\"tel:" + data.data2[i].telphonecall + "\">
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
 
-                $("#a_managepage").click(function () {
+              /*  $("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon1.html";
                     window.location.href = "/PageManageCommon/Manage";
-                });
+                });*/
 
             }
-            else if (data[0].privilegelevel == 2) {
-                $("#h3_managername").html(data[0].managername + " (省级管理员)");
+            else if (data.privilegelevel == 2) {
+                $("#h3_managername").html(data.managername + " (省级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("省级管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
-                if (data[0].adminstatus == "已激活") {
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
+                if (data.adminstatus == "已激活") {
                     $("#a_activeadmin").text("账户冻结");
                 } else {
                     $("#a_activeadmin").text("账户激活");
                 }
-
+/*
                 $("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon2.html";
                     window.location.href = "/PageManageCommon/Manage";
-                })
+                })*/
             }
-            else if (data[0].privilegelevel == 3) {
-                $("#h3_managername").html(data[0].managername + " (市级管理员)");
+            else if (data.privilegelevel == 3) {
+                $("#h3_managername").html(data.managername + " (市级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("市级管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
-                if (data[0].adminstatus == "已激活") {
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
+                if (data.adminstatus == "已激活") {
                     $("#a_activeadmin").text("账户冻结");
                 } else {
                     $("#a_activeadmin").text("账户激活");
                 }
 
-                $("#a_managepage").click(function () {
+                /*$("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon3.html";
                     window.location.href = "/PageManageCommon/Manage";
-                })
+                })*/
             }
-            else if (data[0].privilegelevel == 4) {
-                $("#h3_managername").html(data[0].managername + " (县级管理员)");
+            else if (data.privilegelevel == 4) {
+                $("#h3_managername").html(data.managername + " (县级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("县级管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
-                if (data[0].adminstatus == "已激活") {
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
+                if (data.adminstatus == "已激活") {
                     $("#a_activeadmin").text("账户冻结");
                 } else {
                     $("#a_activeadmin").text("账户激活");
                 }
 
-                $("#a_managepage").click(function () {
+             /*   $("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon4.html";
                     window.location.href = "/PageManageCommon/Manage";
-                })
+                })*/
             }
-            else if (data[0].privilegelevel == 5) {
-                $("#h3_managername").html(data[0].managername + " (乡级管理员)");
+            else if (data.privilegelevel == 5) {
+                $("#h3_managername").html(data.managername + " (乡级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("乡级管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
-                if (data[0].adminstatus == "已激活") {
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
+                if (data.adminstatus == "已激活") {
                     $("#a_activeadmin").text("账户冻结");
                 } else {
                     $("#a_activeadmin").text("账户激活");
                 }
 
-                $("#a_managepage").click(function () {
+              /*  $("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon.html";
                     window.location.href = "/PageManageCommon/Manage";
-                })
+                })*/
             }
-            else if (data[0].privilegelevel == 6) {
-                $("#h3_managername").html(data[0].managername + " (牧犬管理员)");
+            else if (data.privilegelevel == 6) {
+                $("#h3_managername").html(data.managername + " (牧犬管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("牧犬管理员");
-                $("#td_area").text(data[0].area);
-                $("#td_job").text(data[0].job);
-                $("#td_address").text(data[0].useraddress);
-                $("#td_officecall").text(data[0].officecall);
-                //$("#td_telphone").text(data[0].telphonecall);
-                $("#td_telphone").html("<a href=\"tel:" + data[0].telphonecall + "\">" + data[0].telphonecall + "</a>");
-                var logintime = ChangeTimeFormat(data[0].logintime);
+                $("#td_area").text(data.area);
+                $("#td_job").text(data.job);
+                $("#td_address").text(data.useraddress);
+                $("#td_officecall").text(data.officecall);
+                //$("#td_telphone").text(data.telphonecall);
+                $("#td_telphone").html("<a href=\"tel:" + data.telphonecall + "\">" + data.telphonecall + "</a>");
+                var logintime = ChangeTimeFormat(data.logintime);
                 $("#td_registertime").text(logintime);
-                $("#td_dogtotal").text(data[0].dogtotalnum);
-                $("#td_neckletedtotal").text(data[0].neckletedtotal);
-                $("#td_adminstatus").text(data[0].adminstatus);
-                if (data[0].adminstatus == "已激活") {
+                $("#td_dogtotal").text(data.dogtotalnum);
+                $("#td_neckletedtotal").text(data.neckletedtotal);
+                $("#td_adminstatus").text(data.adminstatus);
+                if (data.adminstatus == "已激活") {
                     $("#a_activeadmin").text("账户冻结");
                 } else {
                     $("#a_activeadmin").text("账户激活");
                 }
 
-                $("#a_managepage").click(function () {
+              /*  $("#a_managepage").click(function () {
                     //window.location.href = "page_managecommon6.html";
                     window.location.href = "/PageManageCommon/Manage";
-                })
+                })*/
             }
         }
-    }
-})
+  );
 
 function ChangeTimeFormat(logintime) {
     //	20170926084552 ---> 2017.09.26 08:45:52
@@ -222,20 +207,21 @@ function getCookie(name) {
 
 $(function () {
     $("#a_areasee").click(function () {
-        window.location.href = "index.html";
+        window.location.href = "../user/index.do";
     });
 
     $("#a_rebackpwd").click(function () {
         var clicktype = "rebackpwd";
-        var username = getCookie("watchdogusername");
+      //  var username = getCookie("watchdogusername");
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
-        senddata.rebackusername = personinfo;
+        //senddata.username = username_userprofile;
+        senddata.rebackusername = username_userprofile;
         $.ajax({
-            url: "/api/userprofileapi",
+            url: "../userProfile/userProfileApi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType:"application/Json",
             success: function (data) {
                 alert(data);
                 window.location.reload();
@@ -251,12 +237,13 @@ $(function () {
         }
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
-        senddata.activeusername = personinfo;
+        //senddata.username = username;
+        senddata.activeusername = username_userprofile;
         $.ajax({
-            url: "/api/userprofileapi",
+            url: "../userProfile/userProfileApi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType:"application/Json",
             success: function (data) {
                 alert(data);
                 window.location.reload();

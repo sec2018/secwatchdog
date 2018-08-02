@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.pagehelper.StringUtil;
 
 import net.sf.json.JSONObject;
 import sec.secwatchdog.mapper.SheepdogsDao;
@@ -24,31 +23,33 @@ import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.PageBean;
 import sec.secwatchdog.service.HamletService;
 import sec.secwatchdog.service.UserService;
+import sec.secwatchdog.util.NameConversionUtil;
 import sec.secwatchdog.util.PageUtil;
 
 @Controller
 @RequestMapping("/hamlet")
 public class HamletController {
-	
-	@Resource
-	private UserService userService;
-	
+ 
 	@Resource
 	private HamletService hamletService;
 	@Resource
 	private SheepdogsDao sheepdogsDao;
+	@Autowired
+	private NameConversionUtil nameConversionUtil;
 	
 	@RequestMapping(value="/hamletapi", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
-	public String GoToHamlet(@RequestParam(value="page",required=false)String page,@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
+	public String GoToHamlet(@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
 		}		
 		String province,city, county,village,hamlet;
-		if(StringUtil.isEmpty(page)){
+		/*if(StringUtil.isEmpty(page)){
 			page="1";
-		}
+		}*/
+		
+		String page = "1";
 		PageBean pageBean=new PageBean(Integer.parseInt(page),6);
 		Managers resultUser= (Managers) session.getAttribute("currentUser");
 		if(json.getString("hamlet").equals("null")) {	
@@ -74,11 +75,13 @@ public class HamletController {
 	    gethamletmap = hamletService.GetHamletMap(province,city,county,village,hamlet,request);
 		data.put("data3", gethamletmap);
 		Map<String,String> data4 = new HashMap<String,String>();
-		data4.put("provincename", hamletService.GovToEchartsAreaName(province));
-		data4.put("cityname", hamletService.GovToEchartsAreaName(city));
-		data4.put("countyname", hamletService.GovToEchartsAreaName(county));
-		data4.put("villagename", hamletService.GovToEchartsAreaName(village));
-		data4.put("hamletname", hamletService.GovToEchartsAreaName(hamlet));
+
+		data4.put("provincename", nameConversionUtil.GovToEchartsAreaName(province));
+		data4.put("cityname", nameConversionUtil.GovToEchartsAreaName(city));
+		data4.put("countyname", nameConversionUtil.GovToEchartsAreaName(county));
+		data4.put("villagename", nameConversionUtil.GovToEchartsAreaName(village));
+		data4.put("hamletname", nameConversionUtil.GovToEchartsAreaName(hamlet));
+		System.out.println(data4);
 		data.put("data4", data4);
 //		Map<String,Object> getupuser_page_farmDogFeederList = new HashMap<String,Object>();
 //		getupuser_page_farmDogFeederList = hamletService.Getupuser_page_farmDogFeederList(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
@@ -102,16 +105,14 @@ public class HamletController {
 		return jsStr.toString();
 	}
 	
-	@RequestMapping(value="/hamletpage", produces="text/html;charset=UTF-8")
-	public String GoToHamletPage(@RequestParam(value="page",required=false)String page,HttpServletRequest request) {
+	@RequestMapping(value="/hamletpage", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
+	@ResponseBody
+	public String GoToHamletPage(@RequestBody String page,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null || session.getAttribute("hamletcode") == null){;
 			return "redirect:/login.jsp";
 		}
-		if(StringUtil.isEmpty(page)){
-			page="1";
-		}
-		Managers resultUser= (Managers) session.getAttribute("currentUser");
+		page = page.split("=")[1];
 		PageBean pageBean=new PageBean(Integer.parseInt(page),6);
 		Map<String,Object> combineneckletandfeederdoglist = new HashMap<String,Object>();
 		combineneckletandfeederdoglist = hamletService.CombineNeckletAndFeederDogList(pageBean,session.getAttribute("hamletcode").toString());
@@ -121,6 +122,24 @@ public class HamletController {
 		String pageCode=PageUtil.getPagation(request.getContextPath()+"/hamlet/hamletpage.do", total, Integer.parseInt(page), 6);
 		data.put("pageCode", pageCode);
 		JSONObject jsStr = JSONObject.fromObject(data);
+		return jsStr.toString();
+
+	}
+	
+	@RequestMapping(value="/CombineNeckletAndFeederDog", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
+	@ResponseBody
+	public String getCombineNeckletAndFeederDogByNeckletId(@RequestBody String neckletId,HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		if(session.getAttribute("currentUser")==null || session.getAttribute("hamletcode") == null){;
+			return "redirect:/login.jsp";
+		}
+		
+		neckletId = neckletId.split("=")[1];
+		System.out.println(neckletId);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data = hamletService.getCombineNeckletAndFeederDogByNeckletId(neckletId,session.getAttribute("hamletcode").toString());
+		JSONObject jsStr = JSONObject.fromObject(data);
+		System.out.println(jsStr);
 		return jsStr.toString();
 	}
 	
