@@ -29,7 +29,7 @@
 
 	    $("#a_managepage").click(function () {
 	        //window.location.href = timestamp("/pageManageCommon/index.do?districtcode=0");
-	        window.location.href ="../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.username;
+	        window.location.href ="../pageManageCommon/index.do?districtcode=0";
 	    }); 
 	    $("#a_personalpage").click(function () {
 	       window.location.href ="../personal/pagePersonal.do";

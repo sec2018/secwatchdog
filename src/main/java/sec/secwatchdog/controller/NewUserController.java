@@ -94,7 +94,7 @@ public class NewUserController {
 		try {
 			 result = newUserService.addUser(addtype, privilegelevel, username, managername, address, identity, area, officecall, tel, password);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			result = "添加用户失败！";
 		}
 	 

@@ -5,21 +5,57 @@ $(function(){
             var logintime = "";
 
             if (data != null) {
-                if (data.data3.privilegelevel == 1) {
-                    // $("#h3_adminname").html("国家管理员——" +
-					// data.data1.managername);
-                    $("#h3_adminname").html("国家管理员");
-                    data.data2 = objToArray(data.data2);
+            	data.data2 = objToArray(data.data2);
+            	if(data.data5==true){
+            		switch(data.data3.privilegelevel){
+	            		case 1:
+	            			 $("#h3_adminname").html("国家管理员");
+	            		     $("#li_countrysee").click(function () {
+	                             window.location.href = "../user/index.do";
+	                         });
+	            			break;
+	            		case 2:
+		            		 $("#h3_adminname").html("省级管理员(" + data.data3.province + ")");       
+		            		 $("#span_leftscan").html(data.data3.province + "总览");
+		                     $("#li_countrysee").click(function () {
+		                         //window.location.href = "page_province.html?province=" + escape(data.data3[0].province);
+		                         window.location.href = "../province/province.do?province=" + data.data3.province;
+		                     });
+	            			break;
+	            		case 3:
+	            			break;
+	            		case 4:
+	            			break;
+	            		case 5:
+	            			break;
+            		}
+            	}else{
+            		switch(data.districtInfo.districtlevel){
+            		case 0:
+            			 $("#h3_adminname").html("省级管理员(" + data.districtInfo.districtname + ")");       
+	            		 $("#span_leftscan").html(data.districtInfo.districtname + "总览");
+	                     $("#li_countrysee").click(function () {
+	                         //window.location.href = "page_province.html?province=" + escape(data.data3[0].province);
+	                         window.location.href = "../province/province.do?province=" + data.districtInfo.districtname;
+	                     });
+            			break;
+            		case 1:
+	            		 
+            			break;
+            		case 2:
+            			break;
+            		case 3:
+            			break;
+            		case 4:
+            			break;
+            		}
+            	}
+
                     for (var i = 0; i < data.data2.length; i++) {
                         logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
                         html += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</a></td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";              
                     }
-
-                } else {
-
-                }
             }
-
             $("#tbody_pagemanagecommon").append(html);
             Page(1, 8);
             var tempOption = "";
@@ -44,10 +80,12 @@ $(function(){
             $("#div_newuserpage").click(function () { 
             	  window.location.href = "../newUser/newUserPage.do?managername=" + data.data3.username
             });
+            
+            if(data.data4 == false){
+            	$("#div_newuserpage").css("display", "none");
+            }
 
-            $("#li_countrysee").click(function () {
-                window.location.href = "../user/index.do";
-            });
+           
         }
   )
 
@@ -69,7 +107,7 @@ function areaOnClick(id, privilegelevel) {
     switch (privilegelevel) {
         case 2:
             id = id.substring(0, id.length - 1);
-            window.location.href = "/PageManageCommon/ManageToNext?clickname=" + id + "&clicknamelevel=" + privilegelevel;
+            window.location.href = "../pageManageCommon/index.do?managername=" + id;
     }
 }
 
@@ -191,11 +229,15 @@ function jumpSearchPage() {
 
 
 function goPage(pno, psize){
-
+	if(data.data5 == true){
+		districtcode = '0';
+	}else{
+		districtcode = data.districtInfo.districtcode;
+	}
     $.ajax({
         url: "../pageManageCommon/indexApi.do",
         type: "POST",
-        data: JSON.stringify({'districtcode': "0",'managername': data.data3.managername,'startItem': pno, 'pageSize': psize}),                    
+        data: JSON.stringify({'districtcode': districtcode,'managername': data.data3.managername,'startItem': pno, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
             data = eval("(" + data + ")");
@@ -204,7 +246,7 @@ function goPage(pno, psize){
             var logintime = "";
             for (var i = 0; i < data.data2.length; i++) {
                 logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
-                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data2[i].managearea + "</td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";
+                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td><a onclick=\"areaOnClick(this.id,2)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "*\">" + data.data2[i].managearea + "</td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";
             }
             $("#tbody_pagemanagecommon").html(searchhtml);
             num = data.total;
@@ -275,35 +317,43 @@ function goSearchPage(pno, psize){
 	var searchhtml = "";
     var managername = $("#input_managername").val();
     var logintime = "";
+    var districtcode;
+    var districtlevel="";
 
     if ($.trim(managername) == "") {
     	goPage(0,8);
-    	Page(1,8);
     }
     else{
-	    $.ajax({        
-	        url: "../pageManageCommon/searchManagerApi.do",
-	        type: "POST",
-	        data: JSON.stringify({'clicktype': "onlynextonlinename",'managername':managername,'username':data.data1.username,'districtcode':"0",'startItem': pno, 'pageSize': psize}),                    
-	        contentType: "application/json",
-	        success: function (data) {
-	            data = eval("(" + data + ")");
-	            data.data1 = objToArray(data.data1);
-	            for (var i = 0; i < data.data1.length; i++) {
-	                logintime = ChangeTimeFormat(data.data1[i].logintime).split(" ")[0];
-	                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data1[i].username + "\">" + data.data1[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data1[i].managearea + "</td><td>" + data.data1[i].job + "</td><td>" + data.data1[i].dogtotalnum + "</td><td>" + data.data1[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data1[i].officecall + "</td><td>" + data.data1[i].telphonecall + "</td></tr>";
-	            }
-	            $("#tbody_pagemanagecommon").html(searchhtml);
-	            searchNum = data.searchTotal
-	            searchPage(pno/psize+1, psize)
-	            var tempOption = "";
-	            for (var i = 1; i <= totalPage; i++) {
-	                tempOption += '<option value=' + i + '>' + i + '</option>'
-	            }
-	            $("#jumpWhere").html(tempOption);
-	            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
-	      
-	        }
-	    });
+    	if(data.data5 == true){
+    		districtcode = '0';
+    	}else{
+    		districtcode = data.districtInfo.districtcode;
+    		districtlevel = data.districtInfo.districtlevel
+    	}
+    	  $.ajax({        
+  	        url: "../pageManageCommon/searchManagerApi.do",
+  	        type: "POST",
+  	        data: JSON.stringify({'clicktype': "onlynextonlinename",'managername':managername,'username':data.data3.username,'districtcode':districtcode,'districtlevel':districtlevel,'startItem': pno, 'pageSize': psize}),                    
+  	        contentType: "application/json",
+  	        success: function (data) {
+  	            data = eval("(" + data + ")");
+  	            data.data1 = objToArray(data.data1);
+  	            for (var i = 0; i < data.data1.length; i++) {
+  	                logintime = ChangeTimeFormat(data.data1[i].logintime).split(" ")[0];
+  	                searchhtml += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data1[i].username + "\">" + data.data1[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data1[i].managearea + "</td><td>" + data.data1[i].job + "</td><td>" + data.data1[i].dogtotalnum + "</td><td>" + data.data1[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data1[i].officecall + "</td><td>" + data.data1[i].telphonecall + "</td></tr>";
+  	            }
+  	            $("#tbody_pagemanagecommon").html(searchhtml);
+  	            searchNum = data.searchTotal
+  	            searchPage(pno/psize+1, psize)
+  	            var tempOption = "";
+  	            for (var i = 1; i <= totalPage; i++) {
+  	                tempOption += '<option value=' + i + '>' + i + '</option>'
+  	            }
+  	            $("#jumpWhere").html(tempOption);
+  	            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+  	      
+  	        }
+  	    });
+	  
     }
 } 

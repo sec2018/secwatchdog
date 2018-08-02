@@ -160,7 +160,7 @@
 	<!--  <script src="../js/Jquery_ajax_extention.js"></script>  -->
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/theme.js"></script>
-	<script src="../js/pages/pagemanagecommon1.js"
+	<script src="../js/pages/pagemanagecommon.js"
 		type="text/javascript"></script>
 </body>
 </html>

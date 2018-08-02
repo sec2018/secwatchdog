@@ -57,8 +57,7 @@
     <div id="sidebar-nav">
         <ul id="dashboard-menu">
 
-            <li >
-                
+            <li >            
                 <a style="cursor:pointer" id="a_areasee" href="#">
                     <i class="icon-home"></i>
                     <span id="span_leftscan">地区总览</span>

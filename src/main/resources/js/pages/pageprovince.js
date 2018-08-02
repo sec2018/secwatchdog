@@ -32,7 +32,7 @@
             if (data.data1.privilegelevel == 1) {
                 $("#span_leftscan").html("全国总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode+"&arealevel=2";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -45,7 +45,7 @@
             else if (data.data1.privilegelevel == 2) {
                 $("#span_leftscan").html(data.data4.provinceGov + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=2";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";

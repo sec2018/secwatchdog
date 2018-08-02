@@ -1,6 +1,8 @@
-﻿$(function(){
+﻿var username_userprofile;
+$(function(){
             if (data.privilegelevel == 1) {
                 $("#h3_managername").html(data.managername + " (国家级管理员)");
+                username_userprofile = data.username;
                 $("#span_adminlevel").text("国家级管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -22,6 +24,7 @@
             }
             else if (data.privilegelevel == 2) {
                 $("#h3_managername").html(data.managername + " (省级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("省级管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -47,6 +50,7 @@
             }
             else if (data.privilegelevel == 3) {
                 $("#h3_managername").html(data.managername + " (市级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("市级管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -72,6 +76,7 @@
             }
             else if (data.privilegelevel == 4) {
                 $("#h3_managername").html(data.managername + " (县级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("县级管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -97,6 +102,7 @@
             }
             else if (data.privilegelevel == 5) {
                 $("#h3_managername").html(data.managername + " (乡级管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("乡级管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -122,6 +128,7 @@
             }
             else if (data.privilegelevel == 6) {
                 $("#h3_managername").html(data.managername + " (牧犬管理员)");
+                username_userprofile = data.username;
                 //$("#span_adminlevel").text("牧犬管理员");
                 $("#td_area").text(data.area);
                 $("#td_job").text(data.job);
@@ -205,15 +212,16 @@ $(function () {
 
     $("#a_rebackpwd").click(function () {
         var clicktype = "rebackpwd";
-        var username = getCookie("watchdogusername");
+      //  var username = getCookie("watchdogusername");
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
-        senddata.rebackusername = personinfo;
+        //senddata.username = username_userprofile;
+        senddata.rebackusername = username_userprofile;
         $.ajax({
-            url: "/api/userprofileapi",
+            url: "../userProfile/userProfileApi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType:"application/Json",
             success: function (data) {
                 alert(data);
                 window.location.reload();
@@ -229,12 +237,13 @@ $(function () {
         }
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
-        senddata.activeusername = personinfo;
+        //senddata.username = username;
+        senddata.activeusername = username_userprofile;
         $.ajax({
-            url: "/api/userprofileapi",
+            url: "../userProfile/userProfileApi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType:"application/Json",
             success: function (data) {
                 alert(data);
                 window.location.reload();

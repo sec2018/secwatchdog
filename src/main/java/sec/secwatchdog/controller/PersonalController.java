@@ -72,16 +72,16 @@ public class PersonalController {
                 try {
 					temp = personalService.activeAdmin(username, namearr[i]);
 				} catch (Exception e) {
-					result += namearr[i] + "激活失败！";
+					result += namearr[i] + "激活失败!";
 				}
                 if (temp.equals("11"))
                 {
-                	result += namearr[i] + "激活成功！";
+                	result += namearr[i] + "激活成功!";
                    
                 }else if(temp.equals("00")) {
-                	result += namearr[i] + "：您不能激活同级或上级管理员账号  ";
+                	result += namearr[i] + "您不能激活同级或上级管理员账号 !";
                 } else {
-                	result += namearr[i] + "激活失败！";
+                	result += namearr[i] + "激活失败!";
                 }
             }
 

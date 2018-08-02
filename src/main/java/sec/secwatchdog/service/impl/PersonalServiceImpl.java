@@ -60,7 +60,7 @@ public class PersonalServiceImpl implements PersonalService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String activeAdmin(String username, String activeUsername) throws Exception{
-		 String result = null;
+		 String result = "激活失败";
 		 List<Managers> userAll = managersDao.getUserAndActiveUser(username,activeUsername);
 		 if (userAll.size() != 2)
          {
@@ -71,7 +71,7 @@ public class PersonalServiceImpl implements PersonalService {
         	 Managers user = userAll.get(0).getUsername().equals(username)?userAll.get(0):userAll.get(1);
         	 Managers activeUser=userAll.get(0).getUsername().equals(activeUsername)?userAll.get(0):userAll.get(1);
         	 
-        	 if (user.getPrivilegelevel() >= activeUser.getPrivilegelevel())
+        	 if (user.getPrivilegelevel() > activeUser.getPrivilegelevel())
              {
                  return "00";//您不能激活同级或上级管理员账号
              }

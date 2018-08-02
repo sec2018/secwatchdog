@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import sec.secwatchdog.mapper.DistrictsDao;
 import sec.secwatchdog.mapper.ManagersDao;
@@ -14,6 +17,7 @@ import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.Sheepdogs;
 import sec.secwatchdog.service.UserProfileService;
+import sec.secwatchdog.util.AESUtil;
 @Service("userProfileService")
 public class UserProfileServiceImpl implements UserProfileService {
 	
@@ -26,7 +30,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	@Override
 	public Map<String, Object> getUserProfile(String userName) {
-		System.out.println(userName);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		Managers manager = managersDao.getManagerByName(userName);
@@ -109,6 +112,84 @@ public class UserProfileServiceImpl implements UserProfileService {
 			break;	
 		}	
 		return map;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String rebackPwd(String userName, String rebackUserName) throws Exception{
+		String result = "重置失败!";
+		 List<Managers> userAll = managersDao.getUserAndRebackUser(userName,rebackUserName);
+		 if (userAll.size() != 2)
+        {
+            return result;
+        }
+        else
+        {
+       	 Managers user = userAll.get(0).getUsername().equals(userName)?userAll.get(0):userAll.get(1);
+       	 Managers rebackUser=userAll.get(0).getUsername().equals(rebackUserName)?userAll.get(0):userAll.get(1);
+
+       	 if (user.getPrivilegelevel() + 1 != rebackUser.getPrivilegelevel())
+            {
+                return "00";//您只能重置下一级管理员密码
+            }
+       	 String password = "admin";
+     	 AESUtil aes = new AESUtil();
+	     managersDao.rebackManager(rebackUserName,aes.encryptData(password));
+         result = "11";//重置成功		 
+        }
+	return result;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String activeUser(String username, String activeUsername) throws Exception {
+		String result = "激活失败";
+		 List<Managers> userAll = managersDao.getUserAndActiveUser(username,activeUsername);
+		 if (userAll.size() != 2)
+        {
+            return result;
+        }
+        else
+        {
+       	 Managers user = userAll.get(0).getUsername().equals(username)?userAll.get(0):userAll.get(1);
+       	 Managers activeUser=userAll.get(0).getUsername().equals(activeUsername)?userAll.get(0):userAll.get(1);
+       	 
+       	 if (user.getPrivilegelevel() > activeUser.getPrivilegelevel())
+            {
+                return "00";//您不能激活同级或上级管理员账号
+            }
+       	 
+			 managersDao.activeManager(activeUser.getUsername());
+            result = "11";//激活成功
+			 
+        }
+	return result;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String freezeUser(String username, String activeUsername) throws Exception {
+		String result = "冻结失败";
+		 List<Managers> userAll = managersDao.getUserAndActiveUser(username,activeUsername);
+		 if (userAll.size() != 2)
+       {
+           return result;
+       }
+       else
+       {
+      	 Managers user = userAll.get(0).getUsername().equals(username)?userAll.get(0):userAll.get(1);
+      	 Managers activeUser=userAll.get(0).getUsername().equals(activeUsername)?userAll.get(0):userAll.get(1);
+      	 
+      	 if (user.getPrivilegelevel() > activeUser.getPrivilegelevel())
+           {
+               return "00";//您不能冻结同级或上级管理员账号
+           }
+      	 
+			 managersDao.freezeManager(activeUser.getUsername());
+           result = "11";//冻结成功
+			 
+       }
+	return result;
 	}
 
 }
