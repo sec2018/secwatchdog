@@ -22,10 +22,12 @@ public class PersonalServiceImpl implements PersonalService {
 	private ManagersDao managersDao;
 	@Override
 	public Map<String, Object> getUnActiveUsers(String usrname) {
+		//当前管理员
 		Managers manager = managersDao.getManagerByName(usrname);
 		Map<String, Object> map = new HashMap<String,Object>();
 		List<Managers> magagers = new ArrayList<Managers>();
 		int i = 0;
+		//不同等级和区域的管理员可激活不同的管理员
 		switch(manager.getPrivilegelevel()) {
 			case 1:
 				magagers = managersDao.getManagersByPrivilegelevelAndManagerstatus(2);

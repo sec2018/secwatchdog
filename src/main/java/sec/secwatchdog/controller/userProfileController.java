@@ -97,7 +97,7 @@ public class UserProfileController {
  				result = "激活成功!";
 
  			} else if (result.equals("00")) {
- 				result = "您只能激活下一级管理员密码!";
+ 				result = "您只能激活下一级管理员!";
  			} else {
  				result = "激活失败!";
  			}
@@ -117,7 +117,7 @@ public class UserProfileController {
  				result = "冻结成功!";
 
  			} else if (result.equals("00")) {
- 				result = "您只能冻结下一级管理员密码!";
+ 				result = "您只能冻结下一级管理员!";
  			} else {
  				result = "冻结失败!";
  			}

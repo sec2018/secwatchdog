@@ -79,7 +79,7 @@ public class PersonalController {
                 	result += namearr[i] + "激活成功!";
                    
                 }else if(temp.equals("00")) {
-                	result += namearr[i] + "您不能激活同级或上级管理员账号 !";
+                	result += namearr[i] + "您不能激活同级或上级管理员账号!";
                 } else {
                 	result += namearr[i] + "激活失败!";
                 }

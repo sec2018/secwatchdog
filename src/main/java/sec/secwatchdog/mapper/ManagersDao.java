@@ -43,9 +43,15 @@ public interface ManagersDao {
 	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where privilegelevel=#{privilegelevel}")
 	public List<Managers> getManagersByPrivilegelevel(int privilegelevel);
 
-	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where province = #{param1} and privilegelevel=#{param2}")
-	public List<Managers> getManagersByProvinceNameAndPrivilegelevel(String provinceName, int privilegelevel);
-	
+//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where province = #{param1} and privilegelevel=#{param2}")
+//	public List<Managers> getManagersByProvinceNameAndPrivilegelevel(String provinceName, int privilegelevel);
+//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where city = #{param1} and privilegelevel=#{param2}")
+//	public List<Managers> getManagersByCityNameAndPrivilegelevel(String cityName, int privilegelevel);
+//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where county = #{param1} and privilegelevel=#{param2}")
+//	public List<Managers> getManagersByCountyNameAndPrivilegelevel(String countyName, int privilegelevel);
+//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where village = #{param1} and privilegelevel=#{param2}")
+//	public List<Managers> getManagersByVillageNameAndPrivilegelevel(String villageName, int privilegelevel);
+//	
 	
 	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where districtcode like concat(#{param1},'%') and privilegelevel=#{param2}")
 	public List<Managers> getManagersByDistrictcodeAndPrivilegelevel(String districtcode, int privilegelevel);

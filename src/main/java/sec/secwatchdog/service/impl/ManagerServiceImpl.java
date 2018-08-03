@@ -45,8 +45,8 @@ public class ManagerServiceImpl implements ManageService {
 		int i = 0;
 		Page page = PageHelper.startPage(startItem, pageSize);
 		switch(thismanager.getPrivilegelevel()) {
-			case 1:
-				magagers = managersDao.getManagersByPrivilegelevel(2);
+			case 1://全国级别管理员
+				magagers = managersDao.getManagersByPrivilegelevel(2);//所用省级管理员
 				for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
 					maptemp.put("username", magager.getUsername());
@@ -85,8 +85,9 @@ public class ManagerServiceImpl implements ManageService {
 					
 				}
 				break;
-			case 2:
-				magagers = managersDao.getManagersByProvinceNameAndPrivilegelevel(thismanager.getProvince(), 3);
+			case 2://省级管理员
+				//该省级管理员所在省份的所有市级管理员
+				magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(String.valueOf(thismanager.getDistrictcode()).substring(0, 2), 3);
 				for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
 					maptemp.put("username", magager.getUsername());
@@ -133,10 +134,172 @@ public class ManagerServiceImpl implements ManageService {
 				}
 				break;
 			case 3:
+				magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(String.valueOf(thismanager.getDistrictcode()).substring(0, 4), 4);
+				for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getCounty());
+					maptemp.put("upmanagerarea", magager.getCity());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+			        //获得该县所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(countyCode0to6);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
 			case 4:
+				magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(String.valueOf(thismanager.getDistrictcode()).substring(0, 6), 5);
+				for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getVillage());
+					maptemp.put("upmanagerarea", magager.getCounty());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+					//获得该地区地区编码前九位(乡)
+					Districts village= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getVillage(), countyCode0to6);
+					String villageCode = village.getDistrictcode();
+					String villageCode0to9 = villageCode.substring(0,9);	
+			        //获得该乡所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(villageCode0to9);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
 			case 5:
+				System.err.println(thismanager.getVillage());
+				magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(String.valueOf(thismanager.getDistrictcode()).substring(0, 9), 6);
+				for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getHamlet());
+					maptemp.put("upmanagerarea", magager.getVillage());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+					//获得该地区地区编码前九位(乡)
+					Districts village= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getVillage(), countyCode0to6);
+					String villageCode = village.getDistrictcode();
+					String villageCode0to9 = villageCode.substring(0,9);	
+					//获得该地区地区编码(村)
+					Districts hamlet= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getHamlet(), villageCode0to9);
+					String hamletCode = hamlet.getDistrictcode();
+			        //获得该村所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(hamletCode);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
 				
 		}
@@ -188,10 +351,12 @@ public class ManagerServiceImpl implements ManageService {
 		List<Managers> magagers = new ArrayList<Managers>();
 		int i = 0;
 		Page page = PageHelper.startPage(startItem, pageSize);
+		System.out.println(districtcodetemp.length());
+		System.out.println(districtcodetemp);
         switch(districtcodetemp.length()) {
         	case 2:
         		districtInfo.put("districtlevel", district.getDistrictlevel());
-        		districtInfo.put("districtname", district.getDistrictname());
+        		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
         		districtInfo.put("districtcode", districtcode);
         		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 3);
             	for(Managers magager : magagers) {
@@ -240,10 +405,187 @@ public class ManagerServiceImpl implements ManageService {
             	break;
 
 			case 4:
+				System.out.println(districtcode);
+				districtInfo.put("districtlevel", district.getDistrictlevel());
+        		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
+        		districtInfo.put("city", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 4)+"00000000"));
+        		districtInfo.put("districtcode", districtcode);
+        		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 4);
+				for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getCounty());
+					maptemp.put("upmanagerarea", magager.getCity());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+			        //获得该县所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(countyCode0to6);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
 			case 6:
+				districtInfo.put("districtlevel", district.getDistrictlevel());
+        		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
+        		districtInfo.put("city", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 4)+"00000000"));
+        		districtInfo.put("county", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 6)+"000000"));
+        		districtInfo.put("districtcode", districtcode);
+        		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 5);
+				for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getVillage());
+					maptemp.put("upmanagerarea", magager.getCounty());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+					//获得该地区地区编码前九位(乡)
+					Districts village= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getVillage(), countyCode0to6);
+					String villageCode = village.getDistrictcode();
+					String villageCode0to9 = villageCode.substring(0,9);	
+			        //获得该乡所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(villageCode0to9);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
 			case 9:
+				districtInfo.put("districtlevel", district.getDistrictlevel());
+        		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
+        		districtInfo.put("city", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 4)+"00000000"));
+        		districtInfo.put("county", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 6)+"000000"));
+        		districtInfo.put("village", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 9)+"000"));
+        		districtInfo.put("districtcode", districtcode);
+        		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 6);
+        		for(Managers magager : magagers) {
+					Map<String, Object> maptemp = new HashMap<String,Object>();
+					maptemp.put("username", magager.getUsername());
+					maptemp.put("managername", magager.getManagername());
+					maptemp.put("logintime", magager.getLogintime());
+					maptemp.put("managearea", magager.getHamlet());
+					maptemp.put("upmanagerarea", magager.getVillage());
+					maptemp.put("job", magager.getWorkplace());
+				
+					String provinceName = nameConversionUtil.EchartsAreaNameToGov(magager.getProvince().toString());
+					//String cityName = nameConversionUtil.EchartsAreaNameToGov(magager.getCity().toString());
+					//获得该地区地区编码前两位(省)
+					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
+					String provinceCode = districtsist.getDistrictcode();
+					String provinceCode0to2 = provinceCode.substring(0,2);	
+					//获得该地区地区编码前四位(市)
+					Districts city = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCity(), provinceCode0to2);
+					String cityCode = city.getDistrictcode();
+					String cityCode0to4 = cityCode.substring(0,4);	
+					
+					//获得该地区地区编码前六位(县)
+					Districts county = districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getCounty(), cityCode0to4);
+					String countyCode = county.getDistrictcode();
+					String countyCode0to6 = countyCode.substring(0,6);	 
+					//获得该地区地区编码前九位(乡)
+					Districts village= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getVillage(), countyCode0to6);
+					String villageCode = village.getDistrictcode();
+					String villageCode0to9 = villageCode.substring(0,9);	
+					//获得该地区地区编码(村)
+					Districts hamlet= districtsDao.getCityAndBelowDistrictsByDistrictName(magager.getHamlet(), villageCode0to9);
+					String hamletCode = hamlet.getDistrictcode();
+			        //获得该村所有的狗
+					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(hamletCode);
+					//佩戴项圈牧犬数量和喂食器数量
+					int neckletedtotal = 0;
+					int feederedtotal = 0;
+					for(Sheepdogs each:sdlist){
+						//"-1"表示未佩戴项圈
+						if(!each.getNeckletid().equals("-1")) {
+							neckletedtotal++;
+						}
+						//"-1"表示无喂食器
+						if(!each.getApparatusid().equals("-1")) {
+							feederedtotal++;
+						}
+					}
+					maptemp.put("dogtotalnum", sdlist.size());
+					maptemp.put("neckletedtotal", neckletedtotal);
+					maptemp.put("feederedtotal", feederedtotal);
+					maptemp.put("officecall", magager.getOfficecall());
+					maptemp.put("telphonecall", magager.getManagertel());
+					data.put(""+i, maptemp);
+					
+					i++;
+					
+				}
 				break;
         }
         //每页管理员信息
@@ -265,23 +607,24 @@ public class ManagerServiceImpl implements ManageService {
 					map.put("area", "全国");
 					  break;
 	            case 2:
-	                 
+	            	map.put("area", manager.getProvince());
 	                break;
 	            case 3:
-	                
+	            	map.put("area", manager.getProvince()+manager.getCity());            
 	                break;
 	            case 4:
-	                 
+	            	map.put("area",  manager.getProvince()+manager.getCity()+manager.getCounty());
 	                break;
 	            case 5:
-	                 
+	            	map.put("area",  manager.getProvince()+manager.getCity()+manager.getCounty()+manager.getVillage());
 	                break;
 	            case 6:
-	                
-	                break;
+	            	map.put("area",  manager.getProvince()+manager.getCity()+manager.getCounty()+manager.getVillage()+manager.getHamlet());
+	            	break;
 	            case 7:
-	                
-	                break;
+	            	map.put("area",  "游客模式");
+	            	break;
+	     
 			}
 			map.put("username", manager.getUsername());
 			map.put("managername", manager.getManagername());
@@ -343,10 +686,13 @@ public class ManagerServiceImpl implements ManageService {
 				 magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(manager.getPrivilegelevel(),String.valueOf(manager.getDistrictcode()).substring(0, 2),managerName);			   
                  break;
              case 3:
+            	 magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(manager.getPrivilegelevel(),String.valueOf(manager.getDistrictcode()).substring(0, 4),managerName);			  
                   break;
              case 4:
+            	 magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(manager.getPrivilegelevel(),String.valueOf(manager.getDistrictcode()).substring(0, 6),managerName);			  
                  break;
              case 5:
+            	 magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(manager.getPrivilegelevel(),String.valueOf(manager.getDistrictcode()).substring(0, 9),managerName);			  
                 break;
 		}
  
@@ -540,18 +886,21 @@ public class ManagerServiceImpl implements ManageService {
                 break;
         }
 		Page page = PageHelper.startPage(startItem, pageSize);
+		System.out.println(districtlevel);
 		switch(Integer.parseInt(districtlevel)) {
 			case 0:
 			    magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(2,districtcodetemp,managerName);
 			    break;
 			 case 1:
+				  magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(3,districtcodetemp,managerName);
 				  break;
              case 2:
+            	  magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(4,districtcodetemp,managerName);
                   break;
              case 3:
+            	  magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(5,districtcodetemp,managerName);
                  break;
-             case 4:
-                break;
+       
 		}
  
 		   for (Managers item:magagers)

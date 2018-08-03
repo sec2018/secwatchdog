@@ -47,6 +47,119 @@ public class NewUserServiceImpl implements NewUserService {
 		}
 		return map;
 	}
+	
+	@Override
+	public Map<String, Object> getCitys(String provincename) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		//获得该地区地区编码前两位(省)
+		Districts districtsist = districtsDao.getDistrictsByDistrictName(provincename);
+		String provinceCode = districtsist.getDistrictcode();
+		String provinceCode0to2 = provinceCode.substring(0,2);	
+		List<Districts> citys =  districtsDao.getCities(provinceCode0to2);
+		int i=0;
+		for(Districts each : citys) {
+			Map<String, Object> maptemp = new HashMap<String,Object>();
+			maptemp.put("districtlevel", each.getDistrictlevel());
+			maptemp.put("districtcode", each.getDistrictcode());
+			maptemp.put("districtname", each.getDistrictname());
+			maptemp.put("epidemic", each.getEpidemic());
+			map.put(""+i, maptemp);
+			i++;
+			
+		}
+		return map;
+	}
+
+
+	@Override
+	public Map<String, Object> getCountys(String provincename,String cityname) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		//获得该地区地区编码前两位(省)
+		Districts districtsist = districtsDao.getDistrictsByDistrictName(provincename);
+		String provinceCode = districtsist.getDistrictcode();
+		String provinceCode0to2 = provinceCode.substring(0,2);	
+		//获得该地区地区编码前四位(市)
+   		String cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(cityname, provinceCode0to2).getDistrictcode();
+   		String cityCode0to4 = cityCode.substring(0,4);	
+		 
+		List<Districts> countys =  districtsDao.getCounties(cityCode0to4);	 
+		int i=0;
+		for(Districts each : countys) {
+			Map<String, Object> maptemp = new HashMap<String,Object>();
+			maptemp.put("districtlevel", each.getDistrictlevel());
+			maptemp.put("districtcode", each.getDistrictcode());
+			maptemp.put("districtname", each.getDistrictname());
+			maptemp.put("epidemic", each.getEpidemic());
+			map.put(""+i, maptemp);
+			i++;
+			
+		}
+		return map;
+	}
+
+
+	@Override
+	public Map<String, Object> getVillages(String provincename,String cityname,String countyname) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		//获得该地区地区编码前两位(省)
+		Districts districtsist = districtsDao.getDistrictsByDistrictName(provincename);
+		String provinceCode = districtsist.getDistrictcode();
+		String provinceCode0to2 = provinceCode.substring(0,2);	
+		//获得该地区地区编码前四位(市)
+		String cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(cityname, provinceCode0to2).getDistrictcode();
+		String cityCode0to4 = cityCode.substring(0,4);	
+		
+		//获得该地区地区编码前六位(县)
+		String countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(countyname, cityCode0to4).getDistrictcode();
+		String countyCode0to6 = countyCode.substring(0,6);	 
+		 
+		List<Districts> villages =  districtsDao.getVillages(countyCode0to6);
+		int i=0;
+		for(Districts each : villages) {
+			Map<String, Object> maptemp = new HashMap<String,Object>();
+			maptemp.put("districtlevel", each.getDistrictlevel());
+			maptemp.put("districtcode", each.getDistrictcode());
+			maptemp.put("districtname", each.getDistrictname());
+			maptemp.put("epidemic", each.getEpidemic());
+			map.put(""+i, maptemp);
+			i++;
+			
+		}
+		return map;
+	}
+
+
+	@Override
+	public Map<String, Object> getHamlets(String provincename,String cityname,String countyname,String villagename) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		//获得该地区地区编码前两位(省)
+		Districts districtsist = districtsDao.getDistrictsByDistrictName(provincename);
+		String provinceCode = districtsist.getDistrictcode();
+		String provinceCode0to2 = provinceCode.substring(0,2);	
+		//获得该地区地区编码前四位(市)
+		String cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(cityname, provinceCode0to2).getDistrictcode();
+		String cityCode0to4 = cityCode.substring(0,4);	
+		
+		//获得该地区地区编码前六位(县)
+		String countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(countyname, cityCode0to4).getDistrictcode();
+		String countyCode0to6 = countyCode.substring(0,6);	 
+		//获得该地区地区编码前九位(乡)
+		String villageCode = districtsDao.getCityAndBelowDistrictsByDistrictName(villagename, countyCode0to6).getDistrictcode();
+		String villageCode0to9 = villageCode.substring(0,9);	
+		List<Districts> hamlets =  districtsDao.getHamlets(villageCode0to9);
+		int i=0;
+		for(Districts each : hamlets) {
+			Map<String, Object> maptemp = new HashMap<String,Object>();
+			maptemp.put("districtlevel", each.getDistrictlevel());
+			maptemp.put("districtcode", each.getDistrictcode());
+			maptemp.put("districtname", each.getDistrictname());
+			maptemp.put("epidemic", each.getEpidemic());
+			map.put(""+i, maptemp);
+			i++;
+			
+		}
+		return map;
+	}
 
 	
 	@Override
@@ -121,7 +234,6 @@ public class NewUserServiceImpl implements NewUserService {
 		manager.setHamlet(hamlet);
 		manager.setChargehamlet(hamlet);
 		
- 
 		manager.setUsername(username);
 		manager.setManagername(managername); 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -154,4 +266,5 @@ public class NewUserServiceImpl implements NewUserService {
 		result = "添加用户成功！";
 		return result;
 	}
+
 }

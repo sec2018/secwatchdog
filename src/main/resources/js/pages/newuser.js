@@ -35,7 +35,7 @@ $(function(){
                         privilegelevel = 3;
                         adduserarea = data.data3.province;
                         $("#span_leftscan").html(adduserarea+"总览");
-
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
@@ -77,7 +77,7 @@ $(function(){
                         adduserarea = data.data3.province + "-" + data.data3.city + "-" + data.data3.county;
 
                         $("#span_leftscan").html(data.data3.county + "总览");
-
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
@@ -98,7 +98,7 @@ $(function(){
                         adduserarea = data.data3.province + "-" + data.data3.city + "-" + data.data3.county + "-" + data.data3.village;
 
                         $("#span_leftscan").html(data.data3.village + "总览");
-
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));

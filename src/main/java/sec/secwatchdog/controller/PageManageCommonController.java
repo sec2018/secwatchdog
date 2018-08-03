@@ -62,8 +62,11 @@ public class PageManageCommonController {
 
 			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//当前管理员的下一级管理员信息
 			data.put("data2",nextLevelManagersInfo.get("data"));
+			Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
 			data.put("total", nextLevelManagersInfo.get("totalNum"));
 			data.put("data5", true);//表示从全国地图、村级地图进入或者通过上一级管理员页面进入管理员页面
+			data.put("districtlevel",(Integer.parseInt(manager.get("privilegelevel").toString())-2)+"");
 
 
 		}
@@ -73,15 +76,17 @@ public class PageManageCommonController {
 			managername = user.getUsername();
 			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, districtcode, startItem, pageSize);//当前管理员的下一级管理员信息
 			data.put("data2",nextLevelManagersInfo.get("data"));
+			Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
 			data.put("total", nextLevelManagersInfo.get("totalNum"));
 			data.put("data5", false);//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
-			data.put("districtInfo", nextLevelManagersInfo.get("districtInfo"));//地区编码
-
+			Map<String, Object> districtinfo = (Map<String, Object>) nextLevelManagersInfo.get("districtInfo");
+			data.put("districtInfo", districtinfo);//地区编码
+			data.put("districtlevel",districtinfo.get("districtlevel"));
 			
 		}
 		
-		Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
-		data.put("data3", manager);
+	
 		
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 
@@ -150,13 +155,11 @@ public class PageManageCommonController {
                 if (districtcode.equals("0"))
                 {
                     //管理页面跳转或全国、村地图页面进入
-                	//searchTotal = manageService.getSearchByAdminInfoTotal(username, managername,startItem,pageSize);
-                	data1 = manageService.getSearchByAdminInfo(username, managername,startItem,pageSize);
+                    data1 = manageService.getSearchByAdminInfo(username, managername,startItem,pageSize);
                 }
                 else
                 {
                     //其他地图页面跳转到管理员页面
-//                    String privilegelevel = json.getString("privilegelevel");
                     data1 =  manageService.getSearchByAdminInfo(districtlevel, managername, districtcode,startItem,pageSize);
                }
             }

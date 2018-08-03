@@ -37,30 +37,47 @@ public class NewUserController {
 		StringBuilder url = new StringBuilder("index/newuser");//转到页面index/newuser.jsp
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
+		Map<String, Object> manager = new HashMap<String,Object>();
 		switch(user.getPrivilegelevel()) {
 		case 1:			
 			data.put("data1",user);//data1保存登录用户信息	 
-			Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
+			manager = manageService.getManagerInfo(managername);//当前管理员信息
 			data.put("data3", manager);
 			Map<String, Object> provinceInfo = newUserService.getProvinces();
 			data.put("data4", provinceInfo);
 			break;
 		case 2:
-			
+			data.put("data1",user);//data1保存登录用户信息	 
+			manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
+			Map<String, Object> cityInfo = newUserService.getCitys(user.getProvince());
+			data.put("data4", cityInfo);
 			break;
+		
 		case 3:
-			
+			data.put("data1",user);//data1保存登录用户信息	 
+		    manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
+			Map<String, Object> countyInfo = newUserService.getCountys(user.getProvince(),user.getCity());
+			data.put("data4", countyInfo);
 			break;
+			
 		case 4:
-			
+			data.put("data1",user);//data1保存登录用户信息	 
+			manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
+			Map<String, Object> villageInfo = newUserService.getVillages(user.getProvince(),user.getCity(),user.getCounty());
+			data.put("data4", villageInfo);
 			break;
+			
 		case 5:
-			
+			data.put("data1",user);//data1保存登录用户信息	 
+			manager = manageService.getManagerInfo(managername);//当前管理员信息
+			data.put("data3", manager);
+			Map<String, Object> hamletInfo = newUserService.getHamlets(user.getProvince(),user.getCity(),user.getCounty(),user.getVillage());
+			data.put("data4", hamletInfo);
 			break;
-		case 6:
-			
-			break;
-			
+	
 		}
 			
  
