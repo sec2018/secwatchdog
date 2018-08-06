@@ -10,10 +10,22 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+import sec.secwatchdog.mapper.AppexhibitrealtimeDao;
 import sec.secwatchdog.mapper.DistrictsDao;
+import sec.secwatchdog.mapper.ExhibitrealtimeDao;
+import sec.secwatchdog.mapper.FeedbackDao;
+import sec.secwatchdog.mapper.FeederbackDao;
 import sec.secwatchdog.mapper.ManagersDao;
 import sec.secwatchdog.mapper.SheepdogsDao;
 import sec.secwatchdog.model.Districts;
+import sec.secwatchdog.model.Feedback;
+import sec.secwatchdog.model.Feederback;
+import sec.secwatchdog.model.Lastapparatusrealtime;
+import sec.secwatchdog.model.Lastappexhibitrealtime;
+import sec.secwatchdog.model.Lastexhibitrealtime;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.Sheepdogs;
 import sec.secwatchdog.service.UserProfileService;
@@ -27,6 +39,14 @@ public class UserProfileServiceImpl implements UserProfileService {
 	private SheepdogsDao sheepdogsDao;
 	@Autowired
 	private DistrictsDao districtsDao;
+	@Autowired
+	private AppexhibitrealtimeDao appexhibitrealtimeDao;
+	@Autowired
+	private ExhibitrealtimeDao exhibitrealtimeDao;
+	@Autowired
+	private FeedbackDao feedbackDao;
+	@Autowired
+	private FeederbackDao feederbackDao;
 
 	@Override
 	public Map<String, Object> getUserProfile(String userName) {
@@ -110,7 +130,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 				map.put("username", manager.getUsername());
 				map.put("managername", manager.getManagername());
 				map.put("privilegelevel", manager.getPrivilegelevel());
-				map.put("area", manager.getProvince());
+				map.put("area", manager.getProvince()+manager.getCity());
 				map.put("job", manager.getWorkplace());
 				map.put("officecall", manager.getOfficecall());
 				map.put("telphonecall", manager.getManagertel());
@@ -125,6 +145,7 @@ public class UserProfileServiceImpl implements UserProfileService {
            		cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCity(), provinceCode0to2).getDistrictcode();
            		cityCode0to4 = cityCode.substring(0,4);	
            		sdlist = sheepdogsDao.getIndexInforByDistrictcode(cityCode0to4);
+           		map.put("dogtotalnum", sdlist.size());
 
 				for(Sheepdogs each:sdlist){
 					//"-1"表示未佩戴项圈
@@ -147,7 +168,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 				map.put("username", manager.getUsername());
 				map.put("managername", manager.getManagername());
 				map.put("privilegelevel", manager.getPrivilegelevel());
-				map.put("area", manager.getProvince());
+				map.put("area", manager.getProvince()+manager.getCity()+manager.getCounty());
 				map.put("job", manager.getWorkplace());
 				map.put("officecall", manager.getOfficecall());
 				map.put("telphonecall", manager.getManagertel());
@@ -166,6 +187,7 @@ public class UserProfileServiceImpl implements UserProfileService {
            		countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCounty(), cityCode0to4).getDistrictcode();
         		countyCode0to6 = countyCode.substring(0,6);	 
         		sdlist = sheepdogsDao.getIndexInforByDistrictcode(countyCode0to6);
+        		map.put("dogtotalnum", sdlist.size());
 				for(Sheepdogs each:sdlist){
 					//"-1"表示未佩戴项圈
 					if(!each.getNeckletid().equals("-1")) {
@@ -186,7 +208,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 				map.put("username", manager.getUsername());
 				map.put("managername", manager.getManagername());
 				map.put("privilegelevel", manager.getPrivilegelevel());
-				map.put("area", manager.getProvince());
+				map.put("area", manager.getProvince()+manager.getCity()+manager.getCounty()+manager.getVillage());
 				map.put("job", manager.getWorkplace());
 				map.put("officecall", manager.getOfficecall());
 				map.put("telphonecall", manager.getManagertel());
@@ -208,6 +230,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         		villageCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getVillage(), countyCode0to6).getDistrictcode();
         		villageCode0to9 = villageCode.substring(0,9);	
         		sdlist = sheepdogsDao.getIndexInforByDistrictcode(villageCode0to9);
+        		map.put("dogtotalnum", sdlist.size());
 				for(Sheepdogs each:sdlist){
 					//"-1"表示未佩戴项圈
 					if(!each.getNeckletid().equals("-1")) {
@@ -228,7 +251,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 				map.put("username", manager.getUsername());
 				map.put("managername", manager.getManagername());
 				map.put("privilegelevel", manager.getPrivilegelevel());
-				map.put("area", manager.getProvince());
+				map.put("area", manager.getProvince()+manager.getCity()+manager.getCounty()+manager.getVillage()+manager.getHamlet());
 				map.put("job", manager.getWorkplace());
 				map.put("officecall", manager.getOfficecall());
 				map.put("telphonecall", manager.getManagertel());
@@ -249,8 +272,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         		//获得该地区地区编码前九位(乡)
         		villageCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getVillage(), countyCode0to6).getDistrictcode();
         		villageCode0to9 = villageCode.substring(0,9);	
+        		
         		hamletCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getHamlet(), villageCode0to9).getDistrictcode();
         		sdlist = sheepdogsDao.getIndexInforByDistrictcode(hamletCode);
+        		map.put("dogtotalnum", sdlist.size());
 				for(Sheepdogs each:sdlist){
 					//"-1"表示未佩戴项圈
 					if(!each.getNeckletid().equals("-1")) {
@@ -348,5 +373,98 @@ public class UserProfileServiceImpl implements UserProfileService {
        }
 	return result;
 	}
+
+	@Override
+	public Map<String, Object> getFarmDogList(String userName, int startItem, int pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String,Object>();
+
+		Page page = PageHelper.startPage(startItem, pageSize);
+		//该管理员管理的项圈狗
+		List<Sheepdogs> dogs = sheepdogsDao.getFarmDogList(userName);
+		int i=0;
+		System.out.println(dogs.size());
+		if(dogs.size() == 0) {
+		/*	maptemp.put("dogid", "暂无条目");
+			maptemp.put("dogname", "暂无条目");
+			maptemp.put("neckletid", "----");
+			maptemp.put("firstmedtime", "");
+			maptemp.put("lastmed", "");
+			maptemp.put("timemed", 0);
+			maptemp.put("nextmed", "");*/
+		//	maptemp.put("exhibitcycle", "----");
+			//map.put(""+i, maptemp);
+		}else {
+			for(Sheepdogs item :dogs) {
+				Map<String, Object> maptemp = new HashMap<String, Object>();
+				maptemp.put("dogid", item.getDogid());
+				maptemp.put("dogname", item.getDogname());
+				//String neckletid = item.getNeckletid();
+				if(item.getApparatusid().equals("-1")) {
+					  Lastexhibitrealtime dogInfo = exhibitrealtimeDao.getDogInfo(item.getNeckletid());
+					  if(dogInfo == null) {
+					    	maptemp.put("neckletid", "----");
+					    	maptemp.put("firstmedtime", "");
+					    	maptemp.put("lastmed", "");
+					    	maptemp.put("timemed", 0);
+					    	maptemp.put("nextmed", "");
+					    	data.put(""+i, maptemp);
+		                    i++;
+					    }else {
+					    	maptemp.put("neckletid", item.getNeckletid());
+					    	Feedback feedback = feedbackDao.getFeedback(item.getNeckletid());
+					    	maptemp.put("firstmedtime", feedback.getFirstmedtime().toString());
+					    	maptemp.put("lastmed", dogInfo.getRealtime());
+		                     
+		                    int tableremain = dogInfo.getTableremain();
+		                    maptemp.put("timemed", feedback.getMedtotal()- tableremain);
+		                    maptemp.put("nextmed",dogInfo.getNextexhibittime());
+
+		                  //  maptemp.put("exhibitcycle", Integer.parseInt(feedback.getExhibitcycle()) / 1440);
+		                    data.put(""+i, maptemp);
+		                    i++;
+					    	
+					    }
+				}else {
+	
+					Lastappexhibitrealtime dogInfo = appexhibitrealtimeDao.getDogInfo(item.getApparatusid());
+					  if(dogInfo == null) {
+					    	maptemp.put("neckletid", "----");
+					    	maptemp.put("firstmedtime", "");
+					    	maptemp.put("lastmed", "");
+					    	maptemp.put("timemed", 0);
+					    	maptemp.put("nextmed", "");
+					    	data.put(""+i, maptemp);
+		                    i++;
+					    }else {
+					    	maptemp.put("neckletid", item.getApparatusid());
+					  
+					    	Feederback feederback = feederbackDao.getFeederback(item.getApparatusid());
+					    	
+					    	maptemp.put("firstmedtime", feederback.getFirstmedtime().toString());
+					    	maptemp.put("lastmed", dogInfo.getRealtime());
+		              
+
+		                    int tableremain = dogInfo.getTableremain();
+		                    maptemp.put("timemed", feederback.getMedtotal()- tableremain);
+		                    maptemp.put("nextmed",dogInfo.getNextexhibittime());
+
+		                  //  maptemp.put("exhibitcycle", Integer.parseInt(feedback.getExhibitcycle()) / 1440);
+		                    data.put(""+i, maptemp);
+					    	i++;
+					    }
+			    	}	  
+			   
+			}
+			
+		}
+		 //每页狗信息
+        map.put("data", data);
+        //狗总数
+		map.put("dogTotal",page.getTotal());
+		return map;
+	}
+
+ 
 
 }

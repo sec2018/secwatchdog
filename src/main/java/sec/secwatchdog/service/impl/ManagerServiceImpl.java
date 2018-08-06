@@ -311,7 +311,7 @@ public class ManagerServiceImpl implements ManageService {
 		
 		return map;
 	}
-
+//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
 	@Override
 	public Map<String, Object> getNextLevelAdminInfo(String managerName, String districtcode, int startItem,
 			int pageSize) {

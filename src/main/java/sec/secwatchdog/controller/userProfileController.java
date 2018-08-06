@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.sf.json.JSONObject;
 import sec.secwatchdog.model.Managers;
+import sec.secwatchdog.service.HamletService;
+import sec.secwatchdog.service.ManageService;
 import sec.secwatchdog.service.UserProfileService;
 
 @Controller
@@ -24,6 +26,11 @@ import sec.secwatchdog.service.UserProfileService;
 public class UserProfileController {
 	@Autowired
 	private UserProfileService userProfileService;
+
+	@Autowired
+	private ManageService manageService;
+	@Autowired
+	private HamletService hamletService;
 	/***
 	 * 
 	 * @param username 当前点击的管理员用户名
@@ -47,6 +54,77 @@ public class UserProfileController {
 	jsStr = JSONObject.fromObject(data);
 	model.addAttribute("model",jsStr.toString());	 
 	return url.toString();
+}
+    /***
+     * 
+     * @param username
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("userProfileFarmPage")
+	public String GoToUserProfileFarmPage(@RequestParam(value="viewuser") String username, HttpServletRequest request,ModelMap model ) {
+	HttpSession session=request.getSession();
+	//session失效，退出登录页面
+	if(session.getAttribute("currentUser")==null){;
+		return "redirect:/login.jsp";
+	}
+	int startItem = 0;
+	int pageSize = 8;
+	Managers manager= (Managers) session.getAttribute("currentUser");
+	StringBuilder url = new StringBuilder("index/user_profile_farm");//转到页面index/user_profile.jsp
+	JSONObject jsStr = null;
+	Map<String,Object> data = new HashMap<String,Object>();
+	//获取被点击的管理员信息
+	Map<String,Object> data1  = manageService.getManagerInfo(username);
+	data.put("data1", data1);
+	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+	data.put("data2", dogList.get("data"));
+	data.put("total", dogList.get("dogTotal"));
+	data.put("data3", manager);
+	Map<String,Object> data4 = hamletService.GetLevel6AdminDogNum(username);
+	data.put("data4", data4);
+	/*Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
+	data.put("data4", data4);*/
+	jsStr = JSONObject.fromObject(data);
+	model.addAttribute("model",jsStr.toString());	 
+	return url.toString();
+}
+ /***
+  *    
+  * @param json
+  * @param request
+  * @return
+  */
+    @RequestMapping("userProfileFarmPageApi")
+    @ResponseBody
+	public String GoToUserProfileFarmPageApi(@RequestBody JSONObject json, HttpServletRequest request) {
+	HttpSession session=request.getSession();
+	//session失效，退出登录页面
+	if(session.getAttribute("currentUser")==null){;
+		return "redirect:/login.jsp";
+	}
+	JSONObject jsStr = null;
+	String username = json.getString("username"); 
+	int startItem = json.getInt("startItem");
+	int pageSize = json.getInt("pageSize");
+	System.out.println(username);
+	System.out.println(startItem);
+	System.out.println(pageSize);
+	Managers manager= (Managers) session.getAttribute("currentUser");
+
+	Map<String,Object> data = new HashMap<String,Object>();
+	
+	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+	data.put("data2", dogList.get("data"));
+	data.put("total", dogList.get("dogTotal"));
+//	data.put("data3", manager);
+/*
+	Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
+	data.put("data4", data4);*/
+	jsStr = JSONObject.fromObject(data); 
+	System.out.println(jsStr);
+	return jsStr.toString();
 }
     /***
      * 

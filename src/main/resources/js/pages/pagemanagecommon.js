@@ -98,7 +98,7 @@ $(function(){
             	if(data.districtlevel ==3){
             		for (var i = 0; i < data.data2.length; i++) {
                         logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
-                        html += "<tr><td><a onclick=\"nameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data2[i].managearea + "</td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";              
+                        html += "<tr><td><a onclick=\"hamletManagernameOnClick(this.id)\" style=\"cursor:pointer;\" id=\"" + data.data2[i].username + "\">" + data.data2[i].managername + "</a></td><td>" + logintime + "</td><td>" + data.data2[i].managearea + "</td><td>" + data.data2[i].job + "</td><td>" + data.data2[i].dogtotalnum + "</td><td>" + data.data2[i].neckletedtotal + "</td><td>" + 0 + "</td><td>" + data.data2[i].officecall + "</td><td>" + data.data2[i].telphonecall + "</td></tr>";              
                     }
             	}
             	else{
@@ -168,6 +168,11 @@ function areaOnClick(id, privilegelevel) {
 function nameOnClick(id) {
     // alert("跳转至" + id + "信息页面");
     window.location.href = "../userProfile/userProfilePage.do?viewuser=" + id;
+}
+
+function hamletManagernameOnClick(id) {
+	// alert("跳转至" + id + "信息页面");
+	window.location.href = "../userProfile/userProfileFarmPage.do?viewuser=" + id;
 }
 
 function getCookie(name) {

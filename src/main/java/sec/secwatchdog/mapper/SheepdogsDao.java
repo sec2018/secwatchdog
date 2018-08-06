@@ -33,6 +33,9 @@ public interface SheepdogsDao {
 
 	@Select("select neckletid from sheepdogs where username = #{username}")
 	public List<Sheepdogs>  getLevel6AdminDogNum(String username);
+	
+	@Select("select dogid,dogname,neckletid,apparatusid from sheepdogs where username = #{username} and (apparatusid  = '-1' or neckletid = '-1')")
+	public List<Sheepdogs>  getFarmDogList(String username);
 
 	@SelectProvider(type = OrderProvider.class, method = "combineNeckletAndFeederDogListStr")
 	public List<Sheepdogs> combineNeckletAndFeederDogList(Map<String, Object> paramsmap);
