@@ -1,6 +1,5 @@
 ﻿$(function(){
 
-
             $("#td_areadognumtotal").html("全县总数");
             $("#td_areaalldognumtotal").html("全县总数");
             $("#td_areamednumtotal").html("全县总数");
