@@ -31,87 +31,244 @@ public class UserProfileServiceImpl implements UserProfileService {
 	@Override
 	public Map<String, Object> getUserProfile(String userName) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+		//被点击的管理员
 		Managers manager = managersDao.getManagerByName(userName);
+		List<Sheepdogs> sdlist = null;
+		Districts districtsist = null;
+		//佩戴项圈牧犬数量
+		int neckdognumtotal = 0;
+		String provinceCode,provinceCode0to2,cityCode,cityCode0to4,countyCode,countyCode0to6,villageCode,villageCode0to9,hamletCode;
 		switch(manager.getPrivilegelevel()) {
-		case 1:
-		/*	map.put("username", manager.getUsername());
-			map.put("managername", manager.getManagername());
-			map.put("area", manager.getProvince());
-			map.put("job", manager.getWorkplace());
-			map.put("officecall", manager.getOfficecall());
-			map.put("telphonecall", manager.getManagertel());
-			map.put("useraddress", manager.getAddress());
-			map.put("logintime", manager.getLogintime());
-			
-			map.put("dogtotalnum", manager.getUsername());
-			//获得所有的狗
-			List<Sheepdogs> sdlist = sheepdogsDao.getIndexInfor();
-			//佩戴项圈牧犬数量
-			int neckdognumtotal = 0;
-			for(Sheepdogs each:sdlist){
-				//"-1"表示未佩戴项圈
-				if(!each.getNeckletid().equals("-1")) {
-					neckdognumtotal++;
-				}			 
-			}
-			map.put("neckletedtotal", neckdognumtotal);
-            if (manager.getManagerstatus() == 0)
-            {
-            	map.put("adminstatus", "未激活");
-            }
-            else if (manager.getManagerstatus() == 1)
-            {
-            	map.put("adminstatus", "已激活");
-            }*/
-			break;
-		case 2:
-			map.put("username", manager.getUsername());
-			map.put("managername", manager.getManagername());
-			map.put("privilegelevel", manager.getPrivilegelevel());
-			map.put("area", manager.getProvince());
-			map.put("job", manager.getWorkplace());
-			map.put("officecall", manager.getOfficecall());
-			map.put("telphonecall", manager.getManagertel());
-			map.put("useraddress", manager.getAddress());
-			map.put("logintime", manager.getLogintime());
-			
-			//获得该地区地区编码前两位(省)
-			Districts districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
-			String provinceCode = districtsist.getDistrictcode();
-			String provinceCode0to2 = provinceCode.substring(0,2);	
-	        //获得该省所有的狗
-			List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(provinceCode0to2);
-			map.put("dogtotalnum", sdlist.size());
-			//佩戴项圈牧犬数量
-			int neckdognumtotal = 0;
-			for(Sheepdogs each:sdlist){
-				//"-1"表示未佩戴项圈
-				if(!each.getNeckletid().equals("-1")) {
-					neckdognumtotal++;
-				}			 
-			}
-			map.put("neckletedtotal", neckdognumtotal);
-            if (manager.getManagerstatus() == 0)
-            {
-            	map.put("adminstatus", "未激活");
-            }
-            else if (manager.getManagerstatus() == 1)
-            {
-            	map.put("adminstatus", "已激活");
-            }
-			break;
-		case 3:
-			break;
-			
-		case 4:
-			 break;
-		case 5:
-			 break;
-		case 6:
-			break;	
-		}	
-		return map;
+		
+			case 1:
+			/*	map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				map.put("dogtotalnum", manager.getUsername());
+				//获得所有的狗
+				List<Sheepdogs> sdlist = sheepdogsDao.getIndexInfor();
+				//佩戴项圈牧犬数量
+				int neckdognumtotal = 0;
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }*/
+				break;
+			case 2:
+				map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("privilegelevel", manager.getPrivilegelevel());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				//获得该地区地区编码前两位(省)
+				districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
+				provinceCode = districtsist.getDistrictcode();
+				provinceCode0to2 = provinceCode.substring(0,2);	
+		        //获得该省所有的狗
+				sdlist = sheepdogsDao.getIndexInforByDistrictcode(provinceCode0to2);
+				map.put("dogtotalnum", sdlist.size());
+
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }
+				break;
+			case 3:
+				map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("privilegelevel", manager.getPrivilegelevel());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				//获得该地区地区编码前两位(省)
+				districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
+				provinceCode = districtsist.getDistrictcode();
+				provinceCode0to2 = provinceCode.substring(0,2);	
+				//获得该地区地区编码前四位(市)
+           		cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCity(), provinceCode0to2).getDistrictcode();
+           		cityCode0to4 = cityCode.substring(0,4);	
+           		sdlist = sheepdogsDao.getIndexInforByDistrictcode(cityCode0to4);
+
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }
+				break;
+				
+			case 4:
+				map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("privilegelevel", manager.getPrivilegelevel());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				//获得该地区地区编码前两位(省)
+				districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
+				provinceCode = districtsist.getDistrictcode();
+				provinceCode0to2 = provinceCode.substring(0,2);	
+				//获得该地区地区编码前四位(市)
+           		cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCity(), provinceCode0to2).getDistrictcode();
+           		cityCode0to4 = cityCode.substring(0,4);	
+        		
+        		//获得该地区地区编码前六位(县)
+           		countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCounty(), cityCode0to4).getDistrictcode();
+        		countyCode0to6 = countyCode.substring(0,6);	 
+        		sdlist = sheepdogsDao.getIndexInforByDistrictcode(countyCode0to6);
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }
+				break;
+			case 5:
+				map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("privilegelevel", manager.getPrivilegelevel());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				//获得该地区地区编码前两位(省)
+				districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
+				provinceCode = districtsist.getDistrictcode();
+				provinceCode0to2 = provinceCode.substring(0,2);	
+				//获得该地区地区编码前四位(市)
+           		cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCity(), provinceCode0to2).getDistrictcode();
+           		cityCode0to4 = cityCode.substring(0,4);	
+        		
+        		//获得该地区地区编码前六位(县)
+           		countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCounty(), cityCode0to4).getDistrictcode();
+        		countyCode0to6 = countyCode.substring(0,6);	 
+        		//获得该地区地区编码前九位(乡)
+        		villageCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getVillage(), countyCode0to6).getDistrictcode();
+        		villageCode0to9 = villageCode.substring(0,9);	
+        		sdlist = sheepdogsDao.getIndexInforByDistrictcode(villageCode0to9);
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }
+				break;
+			case 6:
+				map.put("username", manager.getUsername());
+				map.put("managername", manager.getManagername());
+				map.put("privilegelevel", manager.getPrivilegelevel());
+				map.put("area", manager.getProvince());
+				map.put("job", manager.getWorkplace());
+				map.put("officecall", manager.getOfficecall());
+				map.put("telphonecall", manager.getManagertel());
+				map.put("useraddress", manager.getAddress());
+				map.put("logintime", manager.getLogintime());
+				
+				//获得该地区地区编码前两位(省)
+				districtsist = districtsDao.getDistrictsByDistrictName(manager.getProvince());
+				provinceCode = districtsist.getDistrictcode();
+				provinceCode0to2 = provinceCode.substring(0,2);	
+				//获得该地区地区编码前四位(市)
+           		cityCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCity(), provinceCode0to2).getDistrictcode();
+           		cityCode0to4 = cityCode.substring(0,4);	
+        		
+        		//获得该地区地区编码前六位(县)
+           		countyCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getCounty(), cityCode0to4).getDistrictcode();
+        		countyCode0to6 = countyCode.substring(0,6);	             		
+        		//获得该地区地区编码前九位(乡)
+        		villageCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getVillage(), countyCode0to6).getDistrictcode();
+        		villageCode0to9 = villageCode.substring(0,9);	
+        		hamletCode = districtsDao.getCityAndBelowDistrictsByDistrictName(manager.getHamlet(), villageCode0to9).getDistrictcode();
+        		sdlist = sheepdogsDao.getIndexInforByDistrictcode(hamletCode);
+				for(Sheepdogs each:sdlist){
+					//"-1"表示未佩戴项圈
+					if(!each.getNeckletid().equals("-1")) {
+						neckdognumtotal++;
+					}			 
+				}
+				map.put("neckletedtotal", neckdognumtotal);
+	            if (manager.getManagerstatus() == 0)
+	            {
+	            	map.put("adminstatus", "未激活");
+	            }
+	            else if (manager.getManagerstatus() == 1)
+	            {
+	            	map.put("adminstatus", "已激活");
+	            }
+				break;	
+			}	
+			return map;
 	}
 
 	@Override

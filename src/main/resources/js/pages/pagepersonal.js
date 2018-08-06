@@ -144,7 +144,7 @@
                 	window.location.href = "../user/index.do";
                 });
                 $("#a_managepage").click(function () {
-                    window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
+                    window.location.href = "../pageManageCommon/index.do?districtcode=0";
                 });
 
                 var html = "";
