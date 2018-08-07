@@ -375,15 +375,14 @@ public class UserProfileServiceImpl implements UserProfileService {
 	}
 
 	@Override
-	public Map<String, Object> getFarmDogList(String userName, int startItem, int pageSize) {
+	public Map<String, Object> getFarmDogList(String userName, int startPage, int pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> data = new HashMap<String,Object>();
 
-		Page page = PageHelper.startPage(startItem, pageSize);
+		Page page = PageHelper.startPage(startPage, pageSize);
 		//该管理员管理的项圈狗
 		List<Sheepdogs> dogs = sheepdogsDao.getFarmDogList(userName);
 		int i=0;
-		System.out.println(dogs.size());
 		if(dogs.size() == 0) {
 		/*	maptemp.put("dogid", "暂无条目");
 			maptemp.put("dogname", "暂无条目");

@@ -260,7 +260,7 @@ public class NewUserServiceImpl implements NewUserService {
 		// 获取地区编码
 		System.out.println(manager.getLogintime());
 		System.out.println(manager.getPassword());
-		manager.setDistrictcode(Long.valueOf((districtCode.getDistrictCode(province, city, county, village, hamlet))));
+		manager.setDistrictcode(Long.valueOf(districtCode.getDistrictCode(province, city, county, village, hamlet)));
 		managersDao.insertManager(manager);
 
 		result = "添加用户成功！";

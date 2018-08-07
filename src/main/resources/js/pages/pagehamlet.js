@@ -226,7 +226,7 @@ $.ajax({
             if (data.data1.privilegelevel == 1) {
                 $("#span_leftscan").html("全国总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=0";
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -239,7 +239,7 @@ $.ajax({
             else if (data.data1.privilegelevel == 2) {
                 $("#span_leftscan").html(provincename + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data1.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -251,7 +251,7 @@ $.ajax({
             } else if (data.data1.privilegelevel == 3) {
                 $("#span_leftscan").html(cityname + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                	window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data1.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -263,7 +263,7 @@ $.ajax({
             } else if (data.data1.privilegelevel == 4) {
                 $("#span_leftscan").html(countyname + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                	window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data1.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -275,7 +275,7 @@ $.ajax({
             } else if (data.data1.privilegelevel == 5) {
                 $("#span_leftscan").html(villagename + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                	window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data1.districtcode;
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -287,7 +287,7 @@ $.ajax({
             } else {
                 $("#span_leftscan").html("地区总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
+                    window.location.href = "../pageManageCommon/hamletManager.do";
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "#";

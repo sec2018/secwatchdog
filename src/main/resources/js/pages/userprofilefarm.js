@@ -31,7 +31,7 @@ $(function(){
     } else {
         $("#span_leftscan").html("地区总览");
         $("#li_countrysee").click(function () {
-       //     window.location.href = "../page_hamlet";
+         //   window.location.href = "../user/index.do";
         });
     }
 
@@ -188,7 +188,6 @@ $(function () {
 * 分页部分是从真实数据行开始，因而存在加减某个常数，以确定真正的记录数
 * 纯js分页实质是数据行全部加载，通过是否显示属性完成分页功能
 **/
-
 var pageSize = 0;// 每页显示行数
 var currentPage_ = 1;// 当前页全局变量，用于跳转时判断是否在相同页，在就不跳，否则跳转。
 var totalPage;// 总页数
@@ -202,19 +201,18 @@ function Page(pno, psize) {
         totalPage = parseInt(num / pageSize);
     }
     var currentPage = pno;// 当前页数
-    currentPage_ = currentPage;
- 
-
+    currentPage_ = currentPage; 
+    
     var tempStr = "共" + num + "条记录 分" + totalPage + "页 当前第" + currentPage + "页";
     document.getElementById("barcon1").innerHTML = tempStr;
 
     if (currentPage > 1) {
         $("#firstPage").on("click", function () {
-        	 goPage(0, psize);
+        	 goPage(1, psize);
 
         }).removeClass("ban");
         $("#prePage").on("click", function () {
-        	 goPage((currentPage -1 -1)*psize, psize);
+        	 goPage(currentPage_-1, psize);
         }).removeClass("ban");
     } else {
         $("#firstPage").off("click").addClass("ban");
@@ -223,10 +221,10 @@ function Page(pno, psize) {
 
     if (currentPage < totalPage) {
         $("#nextPage").on("click", function () {
-        	goPage((currentPage + 1 -1)*psize , psize);
+        	goPage(currentPage_+1 , psize);
         }).removeClass("ban")
         $("#lastPage").on("click", function () {
-        	goPage((totalPage-1)*psize, psize);
+        	goPage(totalPage, psize);
         }).removeClass("ban")
     } else {
         $("#nextPage").off("click").addClass("ban");
@@ -235,13 +233,14 @@ function Page(pno, psize) {
     $("#jumpPage").on("click", function(){
     	jumpPage();
     })
+   
  
 }
 
 function jumpPage() {
 	   var toPage = parseInt($("#jumpWhere").val());
 	    if (toPage != currentPage_) {
-	    	goPage((toPage-1)*pageSize, pageSize);
+	    	goPage(toPage, pageSize);
 	    }
 }
 
@@ -268,13 +267,13 @@ function goPage(pno, psize){
             }
             $("#tbody_userprofilefarm").html(html);
             num = data.total;
-            Page(pno/psize+1, psize);
+            Page(pno, psize);
             var tempOption = "";
             for (var i = 1; i <= totalPage; i++) {
                 tempOption += '<option value=' + i + '>' + i + '</option>'
             }
             $("#jumpWhere").html(tempOption);
-            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+            document.getElementById("jumpWhere").options[pno-1].selected = true;
         }
     });
 } 

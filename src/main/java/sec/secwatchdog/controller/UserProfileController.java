@@ -56,7 +56,6 @@ public class UserProfileController {
 	return url.toString();
 }
     /***
-     * 
      * @param username
      * @param request
      * @param model

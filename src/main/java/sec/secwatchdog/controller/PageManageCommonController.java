@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.sf.json.JSONObject;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.service.ManageService;
+import sec.secwatchdog.service.UserProfileService;
 
 @Controller
 @RequestMapping("/pageManageCommon")
@@ -25,6 +26,8 @@ public class PageManageCommonController {
 
 	@Autowired
 	private ManageService manageService;
+	@Autowired
+	private UserProfileService userProfileService;
 /***
  * 
  * @param districtcode
@@ -86,7 +89,41 @@ public class PageManageCommonController {
 			
 		}
 		
+		jsStr = JSONObject.fromObject(data);//数据转为json格式
+		model.addAttribute("model",jsStr.toString());	 
+		return url.toString();
+	}
 	
+	/***
+	 * 
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/hamletManager")
+	public String hamletManager(HttpServletRequest request,ModelMap model) {
+		HttpSession session=request.getSession();
+		if(session.getAttribute("currentUser")==null){
+			return "redirect:/login.jsp";
+		}
+
+		int startItem = 0;
+		int pageSize = 8;
+		Managers user= (Managers) session.getAttribute("currentUser");
+		
+		StringBuilder url = new StringBuilder("index/page_managecommon6");//转到页面index/page_managecommon6.jsp
+		JSONObject jsStr = null;
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data1",user);//data1保存登录用户信息
+		Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
+		data.put("data2", dogList.get("data"));
+		data.put("total", dogList.get("dogTotal"));
+		Map<String, Object> data4 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+		data.put("data4", data4);
+		Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
+		data.put("data7", data7);
+		Map<String, Object> data9 = manageService.getFeedersList(user.getUsername());
+		data.put("data9", data9);
 		
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 
@@ -109,7 +146,6 @@ public class PageManageCommonController {
         Managers user= (Managers) session.getAttribute("currentUser");
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
-		
 		//从全国地图、村级地图进入或者通过上一级管理员页面进入管理员页面后，进行下一页操作
 		if(districtcode.equals("0")) {
 			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//下一页管理员信息
@@ -130,11 +166,37 @@ public class PageManageCommonController {
 		return jsStr.toString();
 	}
 	
+	@RequestMapping("/hamletManagerApi")
+	@ResponseBody
+	public String hamletManagerApi(@RequestBody JSONObject json, HttpServletRequest request ) {
+		HttpSession session=request.getSession();
+		if(session.getAttribute("currentUser")==null){
+			return "redirect:/login.jsp";
+		}
+		 
+		  
+		JSONObject jsStr = null;
+		Map<String,Object> data = new HashMap<String,Object>();
+		
+		int startItem = json.getInt("startItem");
+		int pageSize = json.getInt("pageSize");
+	     Managers user= (Managers) session.getAttribute("currentUser");
+
+		data.put("data1",user);//data1保存登录用户信息
+		Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
+		data.put("data2", dogList.get("data"));
+		data.put("total", dogList.get("dogTotal"));
+
+		jsStr = JSONObject.fromObject(data);//数据转为json格式
+		  
+		return jsStr.toString();
+	}
+	
 	@RequestMapping(value="/searchManagerApi", produces="text/html;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
 	public String SearchManagerApi(@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
 		HttpSession session=request.getSession();
-		if(session.getAttribute("currentUser")==null){;
+		if(session.getAttribute("currentUser")==null){
 			return "redirect:/login.jsp";
 		}
 		String username =json.getString("username");
