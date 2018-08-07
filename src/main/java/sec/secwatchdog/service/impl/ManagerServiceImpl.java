@@ -8,15 +8,22 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SystemPropertyUtils;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import sec.secwatchdog.mapper.DistrictsDao;
+import sec.secwatchdog.mapper.DogownersDao;
+import sec.secwatchdog.mapper.FeederDao;
 import sec.secwatchdog.mapper.ManagersDao;
+import sec.secwatchdog.mapper.NeckletDao;
 import sec.secwatchdog.mapper.SheepdogsDao;
 import sec.secwatchdog.model.Districts;
+import sec.secwatchdog.model.Dogowners;
+import sec.secwatchdog.model.Feeder;
 import sec.secwatchdog.model.Managers;
+import sec.secwatchdog.model.Necklet;
 import sec.secwatchdog.model.Sheepdogs;
 import sec.secwatchdog.service.ManageService;
 import sec.secwatchdog.util.NameConversionUtil;
@@ -31,6 +38,12 @@ public class ManagerServiceImpl implements ManageService {
 	private DistrictsDao districtsDao;
 	@Autowired
 	private SheepdogsDao sheepdogsDao;
+	@Autowired
+	private DogownersDao dogownersDao;
+	@Autowired
+	private NeckletDao neckletDao;
+	@Autowired
+	private FeederDao feederDao;
 
 	@Override
 	public Map<String, Object> getNextLevelAdminInfo(String managerName, int startItem, int pageSize) {
@@ -242,7 +255,6 @@ public class ManagerServiceImpl implements ManageService {
 				}
 				break;
 			case 5:
-				System.err.println(thismanager.getVillage());
 				magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(String.valueOf(thismanager.getDistrictcode()).substring(0, 9), 6);
 				for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
@@ -308,7 +320,7 @@ public class ManagerServiceImpl implements ManageService {
         map.put("data", data);
         //管理员总数
         map.put("totalNum", page.getTotal());
-		
+
 		return map;
 	}
 //通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
@@ -350,14 +362,13 @@ public class ManagerServiceImpl implements ManageService {
         }
 		List<Managers> magagers = new ArrayList<Managers>();
 		int i = 0;
-		Page page = PageHelper.startPage(startItem, pageSize);
-		System.out.println(districtcodetemp.length());
-		System.out.println(districtcodetemp);
+		Page page = null;
         switch(districtcodetemp.length()) {
         	case 2:
         		districtInfo.put("districtlevel", district.getDistrictlevel());
         		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
         		districtInfo.put("districtcode", districtcode);
+        		page = PageHelper.startPage(startItem, pageSize);
         		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 3);
             	for(Managers magager : magagers) {
     				Map<String, Object> maptemp = new HashMap<String,Object>();
@@ -405,11 +416,11 @@ public class ManagerServiceImpl implements ManageService {
             	break;
 
 			case 4:
-				System.out.println(districtcode);
 				districtInfo.put("districtlevel", district.getDistrictlevel());
         		districtInfo.put("province", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 2)+"0000000000"));
         		districtInfo.put("city", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 4)+"00000000"));
         		districtInfo.put("districtcode", districtcode);
+        		page = PageHelper.startPage(startItem, pageSize);
         		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 4);
 				for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
@@ -467,6 +478,7 @@ public class ManagerServiceImpl implements ManageService {
         		districtInfo.put("city", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 4)+"00000000"));
         		districtInfo.put("county", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 6)+"000000"));
         		districtInfo.put("districtcode", districtcode);
+        		page = PageHelper.startPage(startItem, pageSize);
         		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 5);
 				for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
@@ -529,6 +541,7 @@ public class ManagerServiceImpl implements ManageService {
         		districtInfo.put("county", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 6)+"000000"));
         		districtInfo.put("village", districtsDao.getDistrictNameByDistrictCode(districtcode.substring(0, 9)+"000"));
         		districtInfo.put("districtcode", districtcode);
+        		page = PageHelper.startPage(startItem, pageSize);
         		magagers = managersDao.getManagersByDistrictcodeAndPrivilegelevel(districtcodetemp, 6);
         		for(Managers magager : magagers) {
 					Map<String, Object> maptemp = new HashMap<String,Object>();
@@ -592,6 +605,7 @@ public class ManagerServiceImpl implements ManageService {
         map.put("data", data);
         //管理员总数
         map.put("totalNum", page.getTotal());
+
         map.put("districtInfo", districtInfo);
       	 
 		return map;
@@ -849,6 +863,7 @@ public class ManagerServiceImpl implements ManageService {
 	
 		//管理员总数
 		map.put("totalNum", page.getTotal());
+
 		return map;
 	}
 
@@ -886,7 +901,7 @@ public class ManagerServiceImpl implements ManageService {
                 break;
         }
 		Page page = PageHelper.startPage(startItem, pageSize);
-		System.out.println(districtlevel);
+
 		switch(Integer.parseInt(districtlevel)) {
 			case 0:
 			    magagers = managersDao.getAllManagersByManagerNameAndDistrictcode(2,districtcodetemp,managerName);
@@ -1057,6 +1072,55 @@ public class ManagerServiceImpl implements ManageService {
 		//管理员总数
 		map.put("totalNum", page.getTotal());
 		return map;
+	}
+	@Override
+	public Map<String, Object> getVillageManagersList(String districtcode) {
+		 Map<String, Object> map = new HashMap<String, Object>();
+		String villagecode0to9 = districtcode.substring(0, 9);
+		List<Dogowners> dogownersList = dogownersDao.getDogownersList(villagecode0to9);
+		int i=0;
+		 for (Dogowners item:dogownersList)
+         {
+			 Map<String, Object> maptemp = new HashMap<String, Object>();
+			 maptemp.put("ownerid", item.getOwnerid());
+			 maptemp.put("ownername", item.getOwnername());
+			 map.put(""+i, maptemp);
+			 i++;
+         }
+		return map;
+	}
+	@Override
+	public Map<String, Object> getNecksList(String username) {
+		 Map<String, Object> map = new HashMap<String, Object>();
+
+			List<Necklet> neckletsList = neckletDao.getNeckletsList(username);
+			int i=0;
+			 for (Necklet item:neckletsList)
+	         {
+				 Map<String, Object> maptemp = new HashMap<String, Object>();
+				 maptemp.put("necid", item.getId());
+				 maptemp.put("neckletid", item.getNeckletid());
+				 map.put(""+i, maptemp);
+				 i++;
+	         }
+			return map;
+	}
+	@Override
+	public Map<String, Object> getFeedersList(String username) {
+		 Map<String, Object> map = new HashMap<String, Object>();
+			 
+			List<Feeder> feedersList = feederDao.getFeedersList(username);
+			
+			int i=0;
+			 for (Feeder item:feedersList)
+	         {
+				 Map<String, Object> maptemp = new HashMap<String, Object>();
+				 maptemp.put("id", item.getId());
+				 maptemp.put("feederid", item.getApparatusid());
+				 map.put(""+i, maptemp);
+				 i++;
+	         }
+			return map;
 	}	
 
 }

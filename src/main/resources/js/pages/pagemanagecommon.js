@@ -123,11 +123,11 @@ $(function(){
                 var searchhtml = "";
                 var managername = $("#input_managername").val();
                 if ($.trim(managername) == "") {
-                	goPage(0,8);
+                	goPage(1,8);
                 	 
                 }
                 else {
-                	goSearchPage(0,8);
+                	goSearchPage(1,8);
                 
                 }
             });
@@ -141,7 +141,7 @@ $(function(){
 
            
         }
-  )
+  );
 
   function objToArray(array) {
     var arr = []
@@ -235,19 +235,18 @@ function Page(pno, psize) {
         totalPage = parseInt(num / pageSize);
     }
     var currentPage = pno;// 当前页数
-    currentPage_ = currentPage;
- 
-
+    currentPage_ = currentPage; 
+    
     var tempStr = "共" + num + "条记录 分" + totalPage + "页 当前第" + currentPage + "页";
     document.getElementById("barcon1").innerHTML = tempStr;
 
     if (currentPage > 1) {
         $("#firstPage").on("click", function () {
-        	 goPage(0, psize);
+        	 goPage(1, psize);
 
         }).removeClass("ban");
         $("#prePage").on("click", function () {
-        	 goPage((currentPage -1 -1)*psize, psize);
+        	 goPage(currentPage_-1, psize);
         }).removeClass("ban");
     } else {
         $("#firstPage").off("click").addClass("ban");
@@ -256,10 +255,10 @@ function Page(pno, psize) {
 
     if (currentPage < totalPage) {
         $("#nextPage").on("click", function () {
-        	goPage((currentPage + 1 -1)*psize , psize);
+        	goPage(currentPage_+1 , psize);
         }).removeClass("ban")
         $("#lastPage").on("click", function () {
-        	goPage((totalPage-1)*psize, psize);
+        	goPage(totalPage, psize);
         }).removeClass("ban")
     } else {
         $("#nextPage").off("click").addClass("ban");
@@ -268,13 +267,14 @@ function Page(pno, psize) {
     $("#jumpPage").on("click", function(){
     	jumpPage();
     })
+   
  
 }
 
 function jumpPage() {
     var toPage = parseInt($("#jumpWhere").val());
     if (toPage != currentPage_) {
-    	goPage((toPage-1)*pageSize, pageSize);
+    	goPage(toPage, pageSize);
     }
 }
 
@@ -282,7 +282,7 @@ function jumpPage() {
 function jumpSearchPage() {
     var toPage = parseInt($("#jumpWhere").val());
     if (toPage != currentPage_) {
-    	goSearchPage((toPage-1)*pageSize, pageSize);
+    	goSearchPage(toPage, pageSize);
     }
 }
 
@@ -296,7 +296,7 @@ function goPage(pno, psize){
     $.ajax({
         url: "../pageManageCommon/indexApi.do",
         type: "POST",
-        data: JSON.stringify({'districtcode': districtcode,'managername': data.data3.managername,'startItem': pno, 'pageSize': psize}),                    
+        data: JSON.stringify({'districtcode': districtcode,'managername': data.data3.username,'startItem': pno, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
             data = eval("(" + data + ")");
@@ -309,13 +309,13 @@ function goPage(pno, psize){
             }
             $("#tbody_pagemanagecommon").html(searchhtml);
             num = data.total;
-            Page(pno/psize+1, psize);
+            Page(pno, psize);
             var tempOption = "";
             for (var i = 1; i <= totalPage; i++) {
                 tempOption += '<option value=' + i + '>' + i + '</option>'
             }
             $("#jumpWhere").html(tempOption);
-            document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+            document.getElementById("jumpWhere").options[pno-1].selected = true;
         }
     });
 } 
@@ -338,12 +338,12 @@ function searchPage(pno, psize) {
 
     if (currentPage > 1) {
         $("#firstPage").on("click", function () {
-        	goSearchPage(0, psize);
+        	goSearchPage(1, psize);
 
          //   Page(1, psize);
         }).removeClass("ban");
         $("#prePage").on("click", function () {
-        	goSearchPage((currentPage -1 -1)*psize, psize);
+        	goSearchPage(currentPage_ -1, psize);
   
           //  Page(currentPage - 1, psize);
         }).removeClass("ban");
@@ -354,11 +354,11 @@ function searchPage(pno, psize) {
 
     if (currentPage < totalPage) {
         $("#nextPage").on("click", function () {
-        	goSearchPage((currentPage + 1 -1)*psize , psize);
+        	goSearchPage(currentPage_ + 1 , psize);
           //  Page(currentPage + 1, psize);
         }).removeClass("ban")
         $("#lastPage").on("click", function () {
-        	goSearchPage((totalPage-1)*psize, psize)
+        	goSearchPage(totalPage, psize)
         //    Page(totalPage, psize);
         }).removeClass("ban")
     } else {
@@ -380,7 +380,7 @@ function goSearchPage(pno, psize){
     var districtlevel="";
 
     if ($.trim(managername) == "") {
-    	goPage(0,8);
+    	goPage(1,8);
     }
     else{
     	if(data.data5 == true){
@@ -405,14 +405,14 @@ function goSearchPage(pno, psize){
 	  	            }
 	  	            $("#tbody_pagemanagecommon").html(searchhtml);
 	  	            searchNum = data.searchTotal
-	  	            searchPage(pno/psize+1, psize)
+	  	            searchPage(pno, psize)
 	  	            var tempOption = "";
 	  	            for (var i = 1; i <= totalPage; i++) {
 	  	                tempOption += '<option value=' + i + '>' + i + '</option>'
 	  	            }
 	  	            $("#jumpWhere").html(tempOption);
 	  	        	if(data.data1.length){
-	  	        		document.getElementById("jumpWhere").options[pno/psize+1-1].selected = true;
+	  	        		document.getElementById("jumpWhere").options[pno-1].selected = true;
   	        	}
   	        }
   	    });
