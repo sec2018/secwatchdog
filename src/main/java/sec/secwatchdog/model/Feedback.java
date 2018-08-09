@@ -1,6 +1,11 @@
 package sec.secwatchdog.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class Feedback {
+	@Id
+    @GeneratedValue
 	public long feedid;
 
     public String neckletid;

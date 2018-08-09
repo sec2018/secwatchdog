@@ -235,4 +235,125 @@ public class PageManageCommonController {
         JSONObject jsStr = JSONObject.fromObject(data);
 		return jsStr.toString();
 	}
+	
+    @RequestMapping("pagedogapi")
+    @ResponseBody
+    public String PagedogApi(@RequestBody JSONObject json, HttpServletRequest request ) {
+		HttpSession session=request.getSession();
+		if(session.getAttribute("currentUser")==null){
+			return "redirect:/login.jsp";
+		}
+		String clicktype = json.getString("clicktype");	 
+		Managers user= (Managers) session.getAttribute("currentUser");
+		String result = "";
+	
+		 if (clicktype.equals("owneradd"))
+		{
+		        String ownername = json.getString("ownername");		       
+		        String owneridentity = json.getString("owneridentity");
+		        String ownersex = json.getString("ownersex");
+		        String ownerhamlet = json.getString("ownerhamlet");
+		        String ownerhamletcode = json.getString("ownerhamletcode");
+		        int ownerage = json.getInt("ownerage");
+		        String ownerjob = json.getString("ownerjob");
+		        String homeaddress = json.getString("homeaddress");
+		        String telphone = json.getString("telphone");
+		      
+			try {
+				 result = manageService.addOwer(ownername, owneridentity, ownersex, ownerhamletcode, ownerage, ownerjob, homeaddress, telphone);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "添加主人失败!";
+			}
+			 
+		}
+
+         else if (clicktype.equals("neckletadd"))
+         {
+        	 String neckletid = json.getString("neckletid");
+        	 int medtotal = json.getInt("medtotal");
+        	 String category = json.getString("category");
+        	 String username = json.getString("username");
+        	 try {
+				 result = manageService.addNecklet(neckletid, medtotal, category, username);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "添加项圈失败!";
+			}
+         }
+
+         else if (clicktype.equals("feederadd"))
+         {  
+      
+        	 String apparatusid = json.getString("feederid");
+        	 int medtotal = json.getInt("medtotal");
+        	 String category = json.getString("category");
+        	 String username = json.getString("username");
+        	 try {
+				 result = manageService.addFeeder(apparatusid, medtotal, category, username);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				result = "添加喂食器失败!";
+			}
+        	 
+         }else if(clicktype.equals("bindfeeder")) {
+                      
+             String username = json.getString("username");
+             String dogname = json.getString("dogname");
+             String dogsex = json.getString("dogsex");
+             String dogbelonghamlet = json.getString("dogbelonghamlet");
+             String ownerhamletcode = json.getString("ownerhamletcode");
+             String dogownerid = json.getString("dogownerid");
+             String dogweight = json.getString("dogweight");
+             String dogcolor = json.getString("dogcolor");
+             String dogage = json.getString("dogage");
+             String dogfeederid = json.getString("dogfeederid");
+             try {
+				 result = manageService.bindFeeder(username, dogname, dogsex, dogbelonghamlet, ownerhamletcode, dogownerid, dogweight, dogcolor, dogage, dogfeederid);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "绑定喂食器失败!";
+			}
+         }else if(clicktype.equals("bindnecklet")) {
+       
+        	 String username = json.getString("username");
+             String dogname = json.getString("dogname");
+             String dogsex = json.getString("dogsex");
+             String dogbelonghamlet = json.getString("dogbelonghamlet");
+             String ownerhamletcode = json.getString("ownerhamletcode");
+             String dogownerid = json.getString("dogownerid");
+             String dogweight = json.getString("dogweight");
+             String dogcolor = json.getString("dogcolor");
+             String dogage = json.getString("dogage");
+             String dogneckletid = json.getString("dogneckletid");
+             try {
+				 result = manageService.bindNecklet(username, dogname, dogsex, dogbelonghamlet, ownerhamletcode, dogownerid, dogweight, dogcolor, dogage, dogneckletid);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			 
+				result = "绑定项圈失败!";
+			}
+         }else if(clicktype.equals("dogadd")) {
+   
+             String username = json.getString("username");
+             String dogname = json.getString("dogname");
+             String dogsex = json.getString("dogsex");
+             String dogbelonghamlet = json.getString("dogbelonghamlet");
+             String ownerhamletcode = json.getString("ownerhamletcode");
+             String dogownerid = json.getString("dogownerid");
+             String dogweight = json.getString("dogweight");
+             String dogcolor = json.getString("dogcolor");
+             String dogage = json.getString("dogage");
+             try {
+				 result = manageService.addDog(username, dogname, dogsex, dogbelonghamlet, ownerhamletcode, dogownerid, dogweight, dogcolor, dogage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "添加牧犬失败!";
+			}
+         }
+
+		return result.toString();
+	}
 }

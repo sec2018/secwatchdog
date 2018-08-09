@@ -1,6 +1,11 @@
 package sec.secwatchdog.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class Feederback {
+	@Id
+    @GeneratedValue
 	public int id;
 
     public String apparatusid;

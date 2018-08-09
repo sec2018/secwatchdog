@@ -1,31 +1,53 @@
 package sec.secwatchdog.service.impl;
 
  
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.SystemPropertyUtils;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import sec.secwatchdog.mapper.ApparatusrealtimeDao;
 import sec.secwatchdog.mapper.DistrictsDao;
 import sec.secwatchdog.mapper.DogownersDao;
+import sec.secwatchdog.mapper.FeedbackDao;
 import sec.secwatchdog.mapper.FeederDao;
+import sec.secwatchdog.mapper.FeederbackDao;
+import sec.secwatchdog.mapper.LastapparatusrealtimeDao;
+import sec.secwatchdog.mapper.LastappexhibitrealtimeDao;
+import sec.secwatchdog.mapper.LastexhibitrealtimeDao;
+import sec.secwatchdog.mapper.LastneckletrealtimeDao;
 import sec.secwatchdog.mapper.ManagersDao;
 import sec.secwatchdog.mapper.NeckletDao;
+import sec.secwatchdog.mapper.NeckletrealtimeDao;
 import sec.secwatchdog.mapper.SheepdogsDao;
+import sec.secwatchdog.model.Apparatusrealtime;
 import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Dogowners;
+import sec.secwatchdog.model.Feedback;
 import sec.secwatchdog.model.Feeder;
+import sec.secwatchdog.model.Feederback;
+import sec.secwatchdog.model.Lastapparatusrealtime;
+import sec.secwatchdog.model.Lastappexhibitrealtime;
+import sec.secwatchdog.model.Lastexhibitrealtime;
+import sec.secwatchdog.model.Lastneckletrealtime;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.Necklet;
+import sec.secwatchdog.model.Neckletrealtime;
 import sec.secwatchdog.model.Sheepdogs;
 import sec.secwatchdog.service.ManageService;
+import sec.secwatchdog.util.ChangeTimeFormat;
 import sec.secwatchdog.util.NameConversionUtil;
 @Service("managerService")
 public class ManagerServiceImpl implements ManageService {
@@ -44,6 +66,22 @@ public class ManagerServiceImpl implements ManageService {
 	private NeckletDao neckletDao;
 	@Autowired
 	private FeederDao feederDao;
+	@Autowired
+	private NeckletrealtimeDao neckletrealtimeDao;
+	@Autowired
+	private LastneckletrealtimeDao lastneckletrealtimeDao;
+	@Autowired
+	private LastexhibitrealtimeDao lastexhibitrealtimeDao;
+	@Autowired
+	private FeedbackDao feedbackDao;
+	@Autowired
+	private ApparatusrealtimeDao apparatusrealtimeDao;
+	@Autowired
+	private LastapparatusrealtimeDao lastapparatusrealtimeDao;
+	@Autowired
+	private LastappexhibitrealtimeDao lastappexhibitrealtimeDao;
+	@Autowired
+	private FeederbackDao feederbackDao;
 
 	@Override
 	public Map<String, Object> getNextLevelAdminInfo(String managerName, int startItem, int pageSize) {
@@ -71,7 +109,7 @@ public class ManagerServiceImpl implements ManageService {
 					//获得该地区地区编码前两位(省)
 					Districts districtsist = districtsDao.getDistrictsByDistrictName(provinceName);
 					String provinceCode = districtsist.getDistrictcode();
-					String provinceCode0to2 = provinceCode.substring(0,2);	
+					String provinceCode0to2 = provinceCode.substring(0,2);
 			        //获得该省所有的狗
 					List<Sheepdogs> sdlist = sheepdogsDao.getIndexInforByDistrictcode(provinceCode0to2);
 					//佩戴项圈牧犬数量和喂食器数量
@@ -1121,6 +1159,314 @@ public class ManagerServiceImpl implements ManageService {
 				 i++;
 	         }
 			return map;
+	}
+	/**
+	 * 添加主人
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String addOwer(String ownername, String owneridentity, String ownersex, String ownerhamletcode, int ownerage,
+			String ownerjob, String homeaddress, String telphone) throws Exception {
+		String result = null;
+		// 如果主人存在，则无法再次创建
+		if (dogownersDao.getOwnerByName(ownername)!=null) {
+			result = "添加失败，主人已经存在！";
+		}	
+	 
+		Dogowners owner = new Dogowners();
+		owner.setOwnername(ownername);
+		owner.setOwnertelphone(telphone);
+		owner.setOwneraddress(homeaddress);
+		owner.setOwnerstatus(1);
+		owner.setOwnerretiretime("");
+		owner.setOwneridentity(owneridentity);
+		owner.setOwnersex(ownersex);
+		owner.setOwnerage(ownerage);
+		owner.setOwnerjob(ownerjob);
+		owner.setDistrictcode(ownerhamletcode);		
+		dogownersDao.addOwner(owner);
+		result = "主人添加成功！";
+		return result;
+		
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String addNecklet(String neckletid, int medtotal, String category, String username) throws Exception {
+		String result = null;
+		// 如果项圈存在，则无法再次创建
+		if (neckletDao.getNeckletByNeckletid(neckletid)!=null) {
+			result = "添加失败，项圈已经存在！";
+		}	
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		Necklet necklet = new Necklet();
+		necklet.setNeckletid(neckletid);
+		necklet.setRetiretime("");
+
+		necklet.setLogintime(ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString()));
+        necklet.setCategory(category);
+        necklet.setDogid(-1);
+        necklet.setUsername(username);
+        necklet.setMedtotal(medtotal);
+        neckletDao.addNecklet(necklet);
+        //除了项圈表，以下四个关联表也要添加数据
+		Neckletrealtime neckletrealtime = new Neckletrealtime();
+		neckletrealtime.setRealtime(nowtime);
+    	neckletrealtime.setNeckletid(neckletid);
+    	neckletrealtime.setNeckletpower("1.0");
+    	neckletrealtime.setNeckletlongitude("121.445274");
+    	neckletrealtime.setNeckletvdoing("31.130922");
+    	neckletrealtime.setNecklethealthy(1);
+    	neckletrealtime.setNeckletbug("0");
+    	neckletrealtimeDao.addNeckletrealtime(neckletrealtime);
+    	
+    	Lastneckletrealtime lastneckletrealtime = new Lastneckletrealtime();
+    	lastneckletrealtime.setRealtime(nowtime);
+    	lastneckletrealtime.setNeckletid(neckletid);
+    	lastneckletrealtime.setNeckletpower("1.0");
+    	lastneckletrealtime.setNeckletlongitude("121.32");
+    	lastneckletrealtime.setNeckletvdoing("40.21");
+    	lastneckletrealtime.setNecklethealthy(1);
+    	lastneckletrealtime.setNeckletbug("0");
+    	lastneckletrealtime.setDistrictcode(-1);
+    	lastneckletrealtimeDao.addLastneckletrealtime(lastneckletrealtime);
+    	
+    	Lastexhibitrealtime lastexhibitrealtime = new Lastexhibitrealtime();
+    	lastexhibitrealtime.setRealtime(nowtime);
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.SECOND, 2592000);
+    	Date nextexhibittime = cal.getTime();
+    	lastexhibitrealtime.setNextexhibittime(ChangeTimeFormat.changeTimeFormat(df.format(nextexhibittime).toString()));
+    	lastexhibitrealtime.setNeckletid(neckletid);
+    	lastexhibitrealtime.setDistrictcode(-1);
+    	lastexhibitrealtime.setExhibitlongitude("121.32");
+    	lastexhibitrealtime.setExhibitvdoing("40.21");
+    	lastexhibitrealtime.setTableremain(12);
+    	lastexhibitrealtimeDao.addLastexhibitrealtime(lastexhibitrealtime);
+    	
+    	Feedback feedback = new Feedback();
+    	feedback.setExhibitcycle("43200");
+    	feedback.setNeckletid(neckletid);
+    	feedback.setFeedcycle("21600");
+    	feedback.setUpdatetime(nowtime);
+    	feedback.setMedtotal(12);
+    	feedback.setFirstmedtime(nowtime);
+    	cal.add(Calendar.YEAR, 1);
+    	Date endmedtime = cal.getTime();
+    	feedback.setEndmedtime(ChangeTimeFormat.changeTimeFormat(df.format(endmedtime).toString()));
+    	feedbackDao.addFeedback(feedback);
+		 
+        result = "项圈添加成功！";
+		return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String addFeeder(String apparatusid, int medtotal, String category, String username) throws Exception {
+		String result = null;
+		// 如果喂食器存在，则无法再次创建
+		if (feederDao.getFeederByFeederid(apparatusid)!=null) {
+			result = "添加失败，喂食器已经存在！";
+		}	
+		
+		Feeder feeder = new Feeder();
+		feeder.setApparatusid(apparatusid);
+		feeder.setRetiretime("");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		feeder.setLogintime(nowtime);
+		feeder.setCategory(category);
+		feeder.setDogid(-1);
+		feeder.setUsername(username);
+		feeder.setMedtotal(medtotal);
+		feeder.setApparatus("良好");
+		feeder.setApparatushealthy(0);
+		feeder.setDistrictcode(-1);
+		feederDao.addFeeder(feeder);
+		//除了喂食器表，以下四个关联表也要添加数据
+		Apparatusrealtime apparatusrealtime = new Apparatusrealtime();
+		apparatusrealtime.setApparatusbug("NO");
+		apparatusrealtime.setApparatushealthy(0);
+		apparatusrealtime.setApparatusid(apparatusid);
+		apparatusrealtime.setApparatuslongitude("121.32");
+		apparatusrealtime.setApparatusvdoing("40.21");
+		apparatusrealtime.setFeederrealtime(nowtime);
+		apparatusrealtime.setApparatuspower("1.0");
+		apparatusrealtimeDao.addApparatusrealtime(apparatusrealtime);
+		
+		Lastapparatusrealtime lastapparatusrealtime = new Lastapparatusrealtime();
+		lastapparatusrealtime.setApparatusbug("NO");
+		lastapparatusrealtime.setApparatushealthy(0);
+		lastapparatusrealtime.setApparatusid(apparatusid);
+		lastapparatusrealtime.setApparatuslongitude("121.32");
+		lastapparatusrealtime.setApparatusvdoing("40.21");
+		lastapparatusrealtime.setFeederrealtime(nowtime);
+		lastapparatusrealtime.setApparatuspower("1.0");
+		lastapparatusrealtime.setDistrictcode(-1);
+		lastapparatusrealtimeDao.addLastapparatusrealtime(lastapparatusrealtime);
+		
+		Lastappexhibitrealtime lastappexhibitrealtime = new Lastappexhibitrealtime();
+		lastappexhibitrealtime.setRealtime(nowtime);
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.SECOND, 2592000);
+    	Date nextexhibittime = cal.getTime();
+    	lastappexhibitrealtime.setNextexhibittime(ChangeTimeFormat.changeTimeFormat(df.format(nextexhibittime).toString()));
+    	lastappexhibitrealtime.setApparatusid(apparatusid);
+    	lastappexhibitrealtime.setDistrictcode(-1);
+    	lastappexhibitrealtime.setExhibitlongitude("121.32");
+    	lastappexhibitrealtime.setExhibitvdoing("40.21");
+    	lastappexhibitrealtime.setTableremain(12);
+    	lastappexhibitrealtime.setApparatuspower("1.0");
+    	lastappexhibitrealtimeDao.addLastappexhibitrealtime(lastappexhibitrealtime);
+     
+		Feederback feederback = new Feederback();
+		feederback.setExhibitcycle("43200");
+		feederback.setApparatusid(apparatusid);
+		feederback.setFeedercycle("21600");;
+		feederback.setUpdatetime(nowtime);
+		feederback.setMedtotal(12);
+		feederback.setFirstmedtime(nowtime);
+    	cal.add(Calendar.YEAR, 1);
+    	Date endmedtime = cal.getTime();
+    	feederback.setEndmedtime(ChangeTimeFormat.changeTimeFormat(df.format(endmedtime).toString()));
+    	feederbackDao.addFeederback(feederback);		
+	
+		result = "喂食器添加成功！";    
+		return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String bindFeeder(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
+			String dogweight, String dogcolor, String dogage, String dogfeederid) throws Exception {
+		String result = null;
+		
+		Sheepdogs sheepdog = new Sheepdogs();
+		sheepdog.setDogname(dogname);
+		sheepdog.setNeckletid("-1");
+		sheepdog.setApparatusid(dogfeederid==""?"-1":dogfeederid);
+		sheepdog.setBelonghamlet(dogbelonghamlet);
+		sheepdog.setUsername(username);
+		sheepdog.setManagername(managersDao.getManagerByName(username).getManagername());
+		sheepdog.setDogownerid(Integer.parseInt(dogownerid));
+		sheepdog.setDogweight(dogweight);
+		sheepdog.setDogcolor(dogcolor);
+		sheepdog.setDogage(dogage);
+		sheepdog.setDoginfo("健康");
+		sheepdog.setDogstatus(1);
+		sheepdog.setDogretirtime("");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		sheepdog.setLogintime(nowtime);
+		sheepdog.setDogsex(dogsex);
+		sheepdog.setDistrictcode(ownerhamletcode);
+		
+		sheepdogsDao.addSheepDog(sheepdog);
+		
+		if(dogfeederid != "") {
+			Feeder feeder = feederDao.getFeederByFeederid(dogfeederid);
+			if(feeder != null) {
+				
+				feeder.setDogid(sheepdogsDao.getLastId());
+				feederDao.updateFeeder(feeder);
+			}
+				    
+		    Lastappexhibitrealtime lastappexhibitrealtime = lastappexhibitrealtimeDao.getLastappexhibitrealtime(dogfeederid);
+		    if(lastappexhibitrealtime != null) {
+		    	lastappexhibitrealtime.setDistrictcode(Long.valueOf(ownerhamletcode));
+		    	lastappexhibitrealtimeDao.updateLastappexhibitrealtime(lastappexhibitrealtime);
+		    }
+		    
+			Lastapparatusrealtime lastapparatusrealtime = lastapparatusrealtimeDao.getLastapparatusrealtime(dogfeederid);
+		    if(lastapparatusrealtime != null) {
+		    	lastapparatusrealtime.setDistrictcode(Long.valueOf(ownerhamletcode));
+		    	lastapparatusrealtimeDao.updateLastapparatusrealtime(lastapparatusrealtime);
+		    }
+		}
+			
+		result = "success";  
+		return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String bindNecklet(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
+			String dogweight, String dogcolor, String dogage, String dogneckletid) throws Exception {
+		String result = null;
+		
+		Sheepdogs sheepdog = new Sheepdogs();
+		sheepdog.setDogname(dogname);
+		sheepdog.setNeckletid(dogneckletid==""?"-1":dogneckletid);
+		sheepdog.setApparatusid("-1");
+		sheepdog.setBelonghamlet(dogbelonghamlet);
+		sheepdog.setUsername(username);
+		sheepdog.setManagername(managersDao.getManagerByName(username).getManagername());
+		sheepdog.setDogownerid(Integer.parseInt(dogownerid));
+		sheepdog.setDogweight(dogweight);
+		sheepdog.setDogcolor(dogcolor);
+		sheepdog.setDogage(dogage);
+		sheepdog.setDoginfo("健康");
+		sheepdog.setDogstatus(1);
+		sheepdog.setDogretirtime("");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		sheepdog.setLogintime(nowtime);
+		sheepdog.setDogsex(dogsex);
+		sheepdog.setDistrictcode(ownerhamletcode);
+		
+		sheepdogsDao.addSheepDog(sheepdog);
+		
+		if(dogneckletid != "") {
+			Necklet necklet = neckletDao.getNeckletByNeckletid(dogneckletid);
+			if(necklet != null) {
+				
+				necklet.setDogid(sheepdogsDao.getLastId());
+				neckletDao.updateNecklet(necklet);
+			}
+			
+			Lastexhibitrealtime lastexhibitrealtime = lastexhibitrealtimeDao.getLastexhibitrealtime(dogneckletid);
+		    if(lastexhibitrealtime != null) {
+		    	lastexhibitrealtime.setDistrictcode(Long.valueOf(ownerhamletcode));
+		    	lastexhibitrealtimeDao.updateLastexhibitrealtime(lastexhibitrealtime);
+		    }
+		    
+		    Lastneckletrealtime lastneckletrealtime = lastneckletrealtimeDao.getLastneckletrealtime(dogneckletid);
+		    if(lastneckletrealtime != null) {
+		    	lastneckletrealtime.setDistrictcode(Long.valueOf(ownerhamletcode));
+		    	lastneckletrealtimeDao.updateLastneckletrealtime(lastneckletrealtime);
+		    }
+		}
+			
+		result = "success";  
+		return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String addDog(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
+			String dogweight, String dogcolor, String dogage) throws Exception {
+		String result = null;
+		
+		Sheepdogs sheepdog = new Sheepdogs();
+		sheepdog.setDogname(dogname);
+		sheepdog.setNeckletid("-1");
+		sheepdog.setApparatusid("-1");
+		sheepdog.setBelonghamlet(dogbelonghamlet);
+		sheepdog.setUsername(username);
+		sheepdog.setManagername(managersDao.getManagerByName(username).getManagername());
+		sheepdog.setDogownerid(Integer.parseInt(dogownerid));
+		sheepdog.setDogweight(dogweight);
+		sheepdog.setDogcolor(dogcolor);
+		sheepdog.setDogage(dogage);
+		sheepdog.setDoginfo("健康");
+		sheepdog.setDogstatus(1);
+		sheepdog.setDogretirtime("");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		sheepdog.setLogintime(nowtime);
+		sheepdog.setDogsex(dogsex);
+		sheepdog.setDistrictcode(ownerhamletcode);
+		
+		sheepdogsDao.addSheepDog(sheepdog);
+			
+		result = "牧犬添加成功！";  
+		return result;
 	}	
 
 }

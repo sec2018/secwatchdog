@@ -12,4 +12,12 @@ public interface ManageService {
 	public Map<String, Object> getManagerInfo(String managerName);
 	public Map<String, Object>  getSearchByAdminInfo(String userName, String managerName,int startItem,int pageSize);
 	public Map<String, Object>  getSearchByAdminInfo(String districtlevel, String managerName, String districtCode, int startItem,int pageSize);
+
+	public String addOwer(String ownername, String owneridentity, String ownersex,String ownerhamletcode, int ownerage, String ownerjob, String homeaddress, String telphone) throws Exception;
+	public String addNecklet(String neckletid,int medtotal, String category, String username) throws Exception;
+	public String addFeeder(String apparatusid, int medtotal, String category, String username) throws Exception;
+	public String bindFeeder(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid, String dogweight, String dogcolor, String dogage, String dogfeederid) throws Exception;
+	public String bindNecklet(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid, String dogweight, String dogcolor, String dogage, String dogneckletid) throws Exception;
+	public String addDog(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid, String dogweight, String dogcolor, String dogage) throws Exception;
+
 }

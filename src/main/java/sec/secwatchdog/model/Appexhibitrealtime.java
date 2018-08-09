@@ -1,32 +1,32 @@
 package sec.secwatchdog.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
-public class Lastexhibitrealtime {
-	@Id
-    @GeneratedValue
-    public long id;
+public class Appexhibitrealtime {
+	public int id;
+	
+	public String realtime;
 
-    public String realtime;
+	public String apparatusid;
 
-    public String neckletid;
-    
-    public String exhibitlongitude;
-    
-    public String exhibitvdoing;
+	public String exhibitlongitude;
 
-    public String nextexhibittime;
+	public String exhibitvdoing;
 
-    public long districtcode;
+	public String nextexhibittime;
 
-    public long getId() {
+	public long districtcode;
+
+	public int tableremain;
+
+	public String apparatuspower;
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -38,12 +38,12 @@ public class Lastexhibitrealtime {
 		this.realtime = realtime;
 	}
 
-	public String getNeckletid() {
-		return neckletid;
+	public String getApparatusid() {
+		return apparatusid;
 	}
 
-	public void setNeckletid(String neckletid) {
-		this.neckletid = neckletid;
+	public void setApparatusid(String apparatusid) {
+		this.apparatusid = apparatusid;
 	}
 
 	public String getExhibitlongitude() {
@@ -78,13 +78,21 @@ public class Lastexhibitrealtime {
 		this.districtcode = districtcode;
 	}
 
-	public Integer getTableremain() {
+	public int getTableremain() {
 		return tableremain;
 	}
 
-	public void setTableremain(Integer tableremain) {
+	public void setTableremain(int tableremain) {
 		this.tableremain = tableremain;
 	}
 
-	public Integer tableremain;
+	public String getApparatuspower() {
+		return apparatuspower;
+	}
+
+	public void setApparatuspower(String apparatuspower) {
+		this.apparatuspower = apparatuspower;
+	}
+
+
 }

@@ -5,28 +5,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Lastapparatusrealtime {
+public class Apparatusrealtime {
 	@Id
-    @GeneratedValue
+	@GeneratedValue
 	public long id;
 
-    public String feederrealtime;
-    
+	public String feederrealtime;
+
 	public String apparatusid;
 
-    public String apparatuspower;
+	public String apparatuspower;
 
-    public String apparatuslongitude;
+	public String apparatuslongitude;
 
-    public String apparatusvdoing;
+	public String apparatusvdoing;
 
-    public Integer apparatushealthy;
+	public int apparatushealthy;
 
-    public String apparatusbug;
+	public String apparatusbug;
 
-    public long districtcode;
-
-    public long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -74,11 +72,11 @@ public class Lastapparatusrealtime {
 		this.apparatusvdoing = apparatusvdoing;
 	}
 
-	public Integer getApparatushealthy() {
+	public int getApparatushealthy() {
 		return apparatushealthy;
 	}
 
-	public void setApparatushealthy(Integer apparatushealthy) {
+	public void setApparatushealthy(int apparatushealthy) {
 		this.apparatushealthy = apparatushealthy;
 	}
 
@@ -89,14 +87,5 @@ public class Lastapparatusrealtime {
 	public void setApparatusbug(String apparatusbug) {
 		this.apparatusbug = apparatusbug;
 	}
-
-	public long getDistrictcode() {
-		return districtcode;
-	}
-
-	public void setDistrictcode(long districtcode) {
-		this.districtcode = districtcode;
-	}
-
 
 }

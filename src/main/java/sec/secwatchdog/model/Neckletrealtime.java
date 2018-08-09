@@ -5,18 +5,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Lastneckletrealtime {
+public class Neckletrealtime {
 	@Id
     @GeneratedValue
 	public long id;
 
-    public String realtime;
+	public String realtime;
 
-    public String neckletid;
+	public String neckletid;
 
-    public String neckletpower;
+	public String neckletpower;
 
-    public long getId() {
+	public String neckletlongitude;
+
+	public String neckletvdoing;
+
+	public int necklethealthy;
+
+	public String neckletbug;
+
+	public long getId() {
 		return id;
 	}
 
@@ -64,11 +72,11 @@ public class Lastneckletrealtime {
 		this.neckletvdoing = neckletvdoing;
 	}
 
-	public Integer getNecklethealthy() {
+	public int getNecklethealthy() {
 		return necklethealthy;
 	}
 
-	public void setNecklethealthy(Integer necklethealthy) {
+	public void setNecklethealthy(int necklethealthy) {
 		this.necklethealthy = necklethealthy;
 	}
 
@@ -79,22 +87,6 @@ public class Lastneckletrealtime {
 	public void setNeckletbug(String neckletbug) {
 		this.neckletbug = neckletbug;
 	}
-
-	public long getDistrictcode() {
-		return districtcode;
-	}
-
-	public void setDistrictcode(long districtcode) {
-		this.districtcode = districtcode;
-	}
-
-	public String neckletlongitude;
-
-    public String neckletvdoing;
-
-    public Integer necklethealthy;
-
-    public String neckletbug;
-
-    public long districtcode;
+	
+	
 }

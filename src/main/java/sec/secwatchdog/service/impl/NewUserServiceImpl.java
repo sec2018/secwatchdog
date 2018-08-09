@@ -170,7 +170,7 @@ public class NewUserServiceImpl implements NewUserService {
 		// 如果用户存在，则无法再次创建
 	
 		if (managersDao.getManagerByName(username)!=null) {
-			result = "添加失败，用户名已经存在！";
+			result = "添加失败，用户已经存在！";
 		}
 		Managers manager = new Managers();
 

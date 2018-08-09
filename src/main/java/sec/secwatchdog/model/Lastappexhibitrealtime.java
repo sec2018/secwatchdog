@@ -1,6 +1,13 @@
 package sec.secwatchdog.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Lastappexhibitrealtime {
+	@Id
+    @GeneratedValue
 	public long id;
 
     public String realtime;
@@ -14,6 +21,10 @@ public class Lastappexhibitrealtime {
     public String nextexhibittime;
 
     public long districtcode;
+    
+	public Integer tableremain;
+
+    public String apparatuspower;
 
     public long getId() {
 		return id;
@@ -87,7 +98,5 @@ public class Lastappexhibitrealtime {
 		this.apparatuspower = apparatuspower;
 	}
 
-	public Integer tableremain;
 
-    public String apparatuspower;
 }

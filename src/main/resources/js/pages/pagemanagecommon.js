@@ -138,7 +138,6 @@ $(function(){
             if(data.data4 == false){
             	$("#div_newuserpage").css("display", "none");
             }
-
            
         }
   );

@@ -13,6 +13,8 @@ public class Sheepdogs {
     public String dogname;
 
     public String neckletid;
+    
+	public String apparatusid;
 
     public String belonghamlet;
 
@@ -176,5 +178,5 @@ public class Sheepdogs {
 		this.apparatusid = apparatusid;
 	}
 
-	public String apparatusid;
+
 }

@@ -2,9 +2,9 @@ package sec.secwatchdog.model;
 
 public class PageBean {
 
-	private int page; // �ڼ�ҳ
-	private int pageSize; // ÿҳ��¼��
-	private int start;  // ��ʼҳ
+	private int page;
+	private int pageSize;
+	private int start; 
 	
 	
 	public PageBean(int page, int pageSize) {

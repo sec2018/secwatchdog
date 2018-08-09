@@ -263,14 +263,5 @@ public class UserServiceImpl implements UserService{
 	        return userDao.findUserByName(name);
 	    }
 
-	/*    public List<Role> findLoginUserRoles(Managers manager){
-	        List<Role> list = new ArrayList<>();
-	        Role role = userDao.findLoginUserRole(manager.getManagerid());
-	        list.add(role);
-	        return list;
-	    }
-
-	    public String getUserPassword(Integer uid){
-	        return userDao.getUserPassword(uid);
-	    }*/
+ 
 }

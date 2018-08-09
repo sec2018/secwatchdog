@@ -28,12 +28,12 @@ $(function(){
         $("#li_countrysee").click(function () {
             window.location.href = "../village/village.do?village=" + data.data3.village + "&county=" + data.data3.county + "&city=" + data.data3.city + "&province=" + data.data3.province;
               });
-    } else {
+    } /*else {
         $("#span_leftscan").html("地区总览");
         $("#li_countrysee").click(function () {
          //   window.location.href = "../user/index.do";
         });
-    }
+    }*/
 
 
            
