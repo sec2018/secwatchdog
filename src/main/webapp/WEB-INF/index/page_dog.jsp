@@ -112,7 +112,7 @@
                 </a>
             </li>
             <li>
-                <a href="/Index/PagePersonal" style="cursor:pointer">
+                <a href="../personal/pagePersonal.do" style="cursor:pointer">
                     <i class="icon-user"></i>
                     <span>个人信息</span>
                 </a>
@@ -124,7 +124,7 @@
                 </a>
             </li>-->
             <li>
-                <a href="/Login/Index?clicktype=quit" style="cursor:pointer">
+                <a href="../user/logout.do" style="cursor:pointer">
                     <i class="icon-off"></i>
                     <span>退出</span>
                 </a>
@@ -347,7 +347,7 @@
                         <div class="form-group">
                             <label for="inputWebsite1" class="col-md-2 control-label">联系方式</label>
                             <div class="col-md-8" id="input_telphone" style="padding-top:7px;">
-                                @*<input type="text" class="form-control" readonly="readonly" id="input_telphone">*@
+                               
                             </div>
                         </div>
                         <div class="form-group">
@@ -445,7 +445,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-8">
                                 <button id="modal_dogmodify" class="btn btn-default" data-dismiss="modal">保存修改</button>
-                                @*&nbsp;&nbsp;(注：<span style="color:red">点击绑定项圈或喂饲器会自动修改该牧犬</span>）*@
+                            <!--     @*&nbsp;&nbsp;(注：<span style="color:red">点击绑定项圈或喂饲器会自动修改该牧犬</span>）*@ -->
                             </div>
                         </div>
                     </form>
@@ -699,6 +699,6 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/theme.js"></script>
     <script src="../js/html5media.min.js"></script>
-    <script src="../js/pages/pagedog6.js" type="text/javascript"></script>
+    <script src="../js/pages/pagedog.js" type="text/javascript"></script>
 </body>
 </html>

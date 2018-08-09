@@ -52,7 +52,7 @@ public class PersonalController {
 	public String indexApi(@RequestBody JSONObject senddata, HttpServletRequest request ) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
  	
 		String clickType = senddata.getString("clicktype");

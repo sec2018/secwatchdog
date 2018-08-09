@@ -173,6 +173,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType:"application/Json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -252,6 +256,10 @@ function goPage(pno, psize){
         data: JSON.stringify({'username': data.data1.username,'startItem': pno, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
+        	if (data == "") {
+	            window.location.href = "../login.jsp";
+	            return;
+        	}
             data = eval("(" + data + ")");
             data.data2 = objToArray(data.data2);
             var html = "";

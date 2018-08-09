@@ -166,7 +166,7 @@ public class NewUserServiceImpl implements NewUserService {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
 	public String addUser(String addtype, int privilegelevel, String username, String managername, String address,
 			String identity, String area, String officecall, String tel, String password) throws Exception {
-		String result = null;
+		String result = "添加用户失败！";
 		// 如果用户存在，则无法再次创建
 	
 		if (managersDao.getManagerByName(username)!=null) {

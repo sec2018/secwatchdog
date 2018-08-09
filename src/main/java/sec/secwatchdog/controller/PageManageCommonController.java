@@ -135,7 +135,7 @@ public class PageManageCommonController {
 	public String indexApi(@RequestBody JSONObject json, HttpServletRequest request ) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
 		String managername = json.getString("managername");
 		String districtcode = json.getString("districtcode");
@@ -171,7 +171,7 @@ public class PageManageCommonController {
 	public String hamletManagerApi(@RequestBody JSONObject json, HttpServletRequest request ) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
 		 
 		  
@@ -197,7 +197,7 @@ public class PageManageCommonController {
 	public String SearchManagerApi(@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
 		String username =json.getString("username");
         String managername = json.getString("managername");
@@ -236,12 +236,46 @@ public class PageManageCommonController {
 		return jsStr.toString();
 	}
 	
+	@RequestMapping("/pagedog")
+	public String PageDog(@RequestParam(value="dogid") int dogId,HttpServletRequest request,ModelMap model) {
+		HttpSession session=request.getSession();
+		if(session.getAttribute("currentUser")==null){
+			return "redirect:/login.jsp";
+		}
+
+		Managers user= (Managers) session.getAttribute("currentUser");
+		
+		StringBuilder url = new StringBuilder("index/page_dog");//转到页面index/page_dog.jsp
+		JSONObject jsStr = null;
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data6",user);//data6保存登录用户信息
+		Map<String,Object> data1 = manageService.getDogInfo(dogId);
+		data.put("data1", data1);
+		Map<String,Object> data2 = manageService.getDogNeckletInfo(dogId);
+		data.put("data2", data2);
+		Map<String,Object> data9 = manageService.getDogFeederInfo(dogId);
+		data.put("data9", data9);
+		Map<String,Object> data3 = manageService.getDogOwnerInfo(dogId);
+		data.put("data3", data3);
+		Map<String,Object> data5 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+		data.put("data5", data5);
+		Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
+		data.put("data7", data7);
+		Map<String, Object> data8 = manageService.getFeedersList(user.getUsername());
+		data.put("data8", data8);
+		 
+		
+		jsStr = JSONObject.fromObject(data);//数据转为json格式
+		model.addAttribute("model",jsStr.toString());	 
+		return url.toString();
+	}
+	
     @RequestMapping("pagedogapi")
     @ResponseBody
     public String PagedogApi(@RequestBody JSONObject json, HttpServletRequest request ) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
 		String clicktype = json.getString("clicktype");	 
 		Managers user= (Managers) session.getAttribute("currentUser");

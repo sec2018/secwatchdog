@@ -42,7 +42,7 @@ public class HamletController {
 	public String GoToHamlet(@RequestBody(required=false) JSONObject json,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){;
-			return "redirect:/login.jsp";
+			return null;
 		}		
 		String province,city, county,village,hamlet;
 		/*if(StringUtil.isEmpty(page)){
@@ -81,7 +81,6 @@ public class HamletController {
 		data4.put("countyname", nameConversionUtil.GovToEchartsAreaName(county));
 		data4.put("villagename", nameConversionUtil.GovToEchartsAreaName(village));
 		data4.put("hamletname", nameConversionUtil.GovToEchartsAreaName(hamlet));
-		System.out.println(data4);
 		data.put("data4", data4);
 //		Map<String,Object> getupuser_page_farmDogFeederList = new HashMap<String,Object>();
 //		getupuser_page_farmDogFeederList = hamletService.Getupuser_page_farmDogFeederList(resultUser.getProvince(),resultUser.getCity(),resultUser.getCounty(),resultUser.getVillage(),resultUser.getHamlet());
@@ -110,7 +109,7 @@ public class HamletController {
 	public String GoToHamletPage(@RequestBody String page,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null || session.getAttribute("hamletcode") == null){;
-			return "redirect:/login.jsp";
+			return null;
 		}
 		page = page.split("=")[1];
 		PageBean pageBean=new PageBean(Integer.parseInt(page),6);
@@ -131,11 +130,11 @@ public class HamletController {
 	public String getCombineNeckletAndFeederDogByNeckletId(@RequestBody String neckletId,HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null || session.getAttribute("hamletcode") == null){;
-			return "redirect:/login.jsp";
+			return null;
 		}
 		
 		neckletId = neckletId.split("=")[1];
-		System.out.println(neckletId);
+	
 		Map<String,Object> data = new HashMap<String,Object>();
 		data = hamletService.getCombineNeckletAndFeederDogByNeckletId(neckletId,session.getAttribute("hamletcode").toString());
 		JSONObject jsStr = JSONObject.fromObject(data);

@@ -1113,7 +1113,7 @@ public class ManagerServiceImpl implements ManageService {
 	}
 	@Override
 	public Map<String, Object> getVillageManagersList(String districtcode) {
-		 Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		String villagecode0to9 = districtcode.substring(0, 9);
 		List<Dogowners> dogownersList = dogownersDao.getDogownersList(villagecode0to9);
 		int i=0;
@@ -1167,7 +1167,7 @@ public class ManagerServiceImpl implements ManageService {
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String addOwer(String ownername, String owneridentity, String ownersex, String ownerhamletcode, int ownerage,
 			String ownerjob, String homeaddress, String telphone) throws Exception {
-		String result = null;
+		String result = "添加失败";
 		// 如果主人存在，则无法再次创建
 		if (dogownersDao.getOwnerByName(ownername)!=null) {
 			result = "添加失败，主人已经存在！";
@@ -1192,7 +1192,7 @@ public class ManagerServiceImpl implements ManageService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String addNecklet(String neckletid, int medtotal, String category, String username) throws Exception {
-		String result = null;
+		String result = "添加失败";
 		// 如果项圈存在，则无法再次创建
 		if (neckletDao.getNeckletByNeckletid(neckletid)!=null) {
 			result = "添加失败，项圈已经存在！";
@@ -1262,7 +1262,7 @@ public class ManagerServiceImpl implements ManageService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String addFeeder(String apparatusid, int medtotal, String category, String username) throws Exception {
-		String result = null;
+		String result = "添加失败";
 		// 如果喂食器存在，则无法再次创建
 		if (feederDao.getFeederByFeederid(apparatusid)!=null) {
 			result = "添加失败，喂食器已经存在！";
@@ -1337,12 +1337,12 @@ public class ManagerServiceImpl implements ManageService {
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String bindFeeder(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
 			String dogweight, String dogcolor, String dogage, String dogfeederid) throws Exception {
-		String result = null;
+		String result = "绑定失败";
 		
 		Sheepdogs sheepdog = new Sheepdogs();
 		sheepdog.setDogname(dogname);
 		sheepdog.setNeckletid("-1");
-		sheepdog.setApparatusid(dogfeederid==""?"-1":dogfeederid);
+		sheepdog.setApparatusid(dogfeederid.equals("")?"-1":dogfeederid);
 		sheepdog.setBelonghamlet(dogbelonghamlet);
 		sheepdog.setUsername(username);
 		sheepdog.setManagername(managersDao.getManagerByName(username).getManagername());
@@ -1389,11 +1389,11 @@ public class ManagerServiceImpl implements ManageService {
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String bindNecklet(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
 			String dogweight, String dogcolor, String dogage, String dogneckletid) throws Exception {
-		String result = null;
+		String result = "绑定失败";
 		
 		Sheepdogs sheepdog = new Sheepdogs();
 		sheepdog.setDogname(dogname);
-		sheepdog.setNeckletid(dogneckletid==""?"-1":dogneckletid);
+		sheepdog.setNeckletid(dogneckletid.equals("")?"-1":dogneckletid);
 		sheepdog.setApparatusid("-1");
 		sheepdog.setBelonghamlet(dogbelonghamlet);
 		sheepdog.setUsername(username);
@@ -1441,7 +1441,7 @@ public class ManagerServiceImpl implements ManageService {
 	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public String addDog(String username, String dogname, String dogsex, String dogbelonghamlet, String ownerhamletcode, String dogownerid,
 			String dogweight, String dogcolor, String dogage) throws Exception {
-		String result = null;
+		String result = "添加失败";
 		
 		Sheepdogs sheepdog = new Sheepdogs();
 		sheepdog.setDogname(dogname);
@@ -1467,6 +1467,136 @@ public class ManagerServiceImpl implements ManageService {
 			
 		result = "牧犬添加成功！";  
 		return result;
+	}
+	@Override
+	public Map<String, Object> getDogInfo(int dogId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Sheepdogs sheepdogs = sheepdogsDao.getSheepdogbyDogId(dogId);
+		if(sheepdogs == null)
+			return null;
+		map.put("dogid", dogId);
+		map.put("dogname", sheepdogs.getDogname());
+		map.put("dogsex", sheepdogs.getDogsex());
+		map.put("belonghamlet", sheepdogs.getBelonghamlet());
+
+		map.put("ownername", dogownersDao.getOwnerById(sheepdogs.getDogownerid()).getOwnername());
+		map.put("dogweight", sheepdogs.getDogweight());
+		map.put("dogcolor", sheepdogs.getDogcolor());
+		map.put("dogage", sheepdogs.getDogage()==null?"3":sheepdogs.getDogage());
+		if(sheepdogs.getNeckletid() == null || sheepdogs.getNeckletid().equals("-1")) {
+			map.put("neckletid", "");
+			map.put("necid", -1);
+		}else {
+			map.put("neckletid", sheepdogs.getNeckletid());
+			map.put("necid", neckletDao.getNeckletByNeckletid(sheepdogs.getNeckletid()).getId());		
+		}
+		if(sheepdogs.getApparatusid() == null || sheepdogs.getApparatusid().equals("-1")) {
+			map.put("feederid", "");
+			map.put("fid", -1);
+		}else {
+			map.put("feederid", sheepdogs.getApparatusid());
+
+			map.put("fid", feederDao.getFeederByFeederid(sheepdogs.getApparatusid()).getId());		
+		}
+		
+		map.put("adminname", sheepdogs.getManagername());
+		map.put("adminphone", managersDao.getManagerByName(sheepdogs.getUsername()).getManagertel());
+		return map;
+	}
+	@Override
+	public Map<String, Object> getDogOwnerInfo(int dogId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int dogOwnerId = sheepdogsDao.getSheepdogbyDogId(dogId).getDogownerid();
+		Dogowners dogowners = dogownersDao.getOwnerById(dogOwnerId);
+		if(dogowners !=null) {
+			map.put("ownerid", dogowners.getOwnerid());
+			map.put("ownername", dogowners.getOwnername());
+			map.put("owneridentity", dogowners.getOwneridentity());
+			map.put("ownersex", dogowners.getOwnersex());
+			map.put("ownerage", dogowners.getOwnerage());
+			map.put("ownerjob", dogowners.getOwnerjob());
+			map.put("homeaddress", dogowners.getOwneraddress());
+			map.put("telphone", dogowners.getOwnertelphone());
+	 
+			
+		}
+		return map;
+	}
+	@Override
+	public Map<String, Object> getDogNeckletInfo(int dogId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String dogNeckletId = sheepdogsDao.getSheepdogbyDogId(dogId).getNeckletid();
+		if(dogNeckletId == null|| dogNeckletId.equals("-1")) {
+			 map.put("neckletid", "----");
+			 map.put("powerleft", "----");
+			 map.put("medtotal", 0);
+			 map.put("medleft", -1);
+			 map.put("endmedtime", "");
+			 map.put("areacycle", "----");
+			 map.put("exhibitcycle", "----");
+			 map.put("firstmedtime", "----");
+			 map.put("lastmedtime", "----");
+			 map.put("lastremindmedtime", "----");
+       
+		}else {
+			String powerleft = lastneckletrealtimeDao.getLastneckletrealtime(dogNeckletId).getNeckletpower();
+			Feedback neckletinfo2 = feedbackDao.getFeedback(dogNeckletId);
+			Lastexhibitrealtime med = lastexhibitrealtimeDao.getLastexhibitrealtime(dogNeckletId);
+
+			int medleft = med.getTableremain();
+			
+			if(neckletinfo2 != null) {
+				 map.put("neckletid", dogNeckletId);
+				 map.put("powerleft", powerleft);
+				 map.put("medtotal", neckletinfo2.getMedtotal());
+				 map.put("medleft", medleft);
+				 map.put("endmedtime", neckletinfo2.getEndmedtime());
+				 map.put("areacycle",Double.parseDouble(neckletinfo2.getFeedcycle())/1440);
+				 map.put("exhibitcycle",Double.parseDouble(neckletinfo2.getExhibitcycle())/1440);
+				 map.put("firstmedtime", neckletinfo2.getFirstmedtime());
+				 map.put("lastmedtime", med.getRealtime());
+				 map.put("lastremindmedtime", med.getRealtime());
+			}
+		}
+		return map;
+	}
+	@Override
+	public Map<String, Object> getDogFeederInfo(int dogId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String dogFeederId = sheepdogsDao.getSheepdogbyDogId(dogId).getApparatusid();
+		if(dogFeederId == null|| dogFeederId.equals("-1") ){
+			 map.put("feederid", "----");
+			 map.put("powerleft", "----");
+			 map.put("medtotal", 0);
+			 map.put("medleft", -1);
+			 map.put("endmedtime", "");
+			 map.put("areacycle", "----");
+			 map.put("exhibitcycle", "----");
+			 map.put("firstmedtime", "----");
+			 map.put("lastmedtime", "----");
+			 map.put("lastremindmedtime", "----");
+       
+		}else {
+			String powerleft = lastapparatusrealtimeDao.getLastapparatusrealtime(dogFeederId).getApparatuspower();
+			Feederback feederinfo2 = feederbackDao.getFeederback(dogFeederId);
+			Lastappexhibitrealtime med = lastappexhibitrealtimeDao.getLastappexhibitrealtime(dogFeederId);
+			int medleft = med.getTableremain();
+			
+			if(feederinfo2 != null) {
+				 map.put("feederid", dogFeederId);
+				 map.put("powerleft", Double.parseDouble(powerleft)/10);
+				 map.put("medtotal", feederinfo2.getMedtotal());
+				 map.put("medleft", medleft);
+				 map.put("endmedtime", feederinfo2.getEndmedtime());
+				 
+				 map.put("areacycle",Double.parseDouble(feederinfo2.getFeedercycle())/1440);
+				 map.put("exhibitcycle",Double.parseDouble(feederinfo2.getExhibitcycle())/1440);
+				 map.put("firstmedtime", feederinfo2.getFirstmedtime());
+				 map.put("lastmedtime", med.getRealtime());
+				 map.put("lastremindmedtime", med.getRealtime());
+			}
+		}
+		return map;
 	}	
 
 }

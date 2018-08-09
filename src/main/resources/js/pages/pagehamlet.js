@@ -5,7 +5,7 @@ $.ajax({
     data: JSON.stringify({'province': provincename,'city':cityname,'county':countyname,'village':villagename,'hamlet':hamletname}),
     contentType: "application/json",
     success: function (data) {
-        if (data == "failed") {
+        if (data == "") {
             window.location.href = "../login.jsp";
             return;
         } else {
@@ -46,7 +46,7 @@ $.ajax({
                 	   // data: JSON.stringify({"page":page}),
                 	   // contentType: "application/json",
                 	    success: function (data) {
-                	        if (data == "failed") {
+                	        if (data == "") {
                 	            window.location.href = "../login.jsp";
                 	            return;
                 	        } else {
@@ -177,17 +177,17 @@ $(function () {
     });
 })
 
-function nameOnClick(id, privilegelevel) {
+/*function nameOnClick(id, privilegelevel) {
     switch (privilegelevel) {
         case 6:
             //alert(id);
             //setCookie("page_farmusername_6", id, "s6000");
             window.location.href = "/Index/UserProfileFarm?clickuser=" + id;
     }
-}
+}*/
 
 function GetDogPage(id) {
-    window.location.href = "/Index/PageDog6?dogid="+id;
+    window.location.href = "../pageManageCommon/pagedog?dogid="+id;
 }
 
 function ChangeTimeFormat(logintime) {
@@ -514,11 +514,11 @@ function gopage(e){
 	   // data: JSON.stringify({"page":page}),
 	   // contentType: "application/json",
 	    success: function (data) {
-	    	console.log(data);
-	        if (data == "failed") {
+	   
+	    	if (data == "") {
 	            window.location.href = "../login.jsp";
 	            return;
-	        } else {
+        	} else {
 	            data = eval("(" + data + ")");
 
 	            $("#tbody_userprofilefarm").empty();

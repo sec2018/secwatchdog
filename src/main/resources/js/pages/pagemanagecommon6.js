@@ -94,7 +94,7 @@ $(function(){
         	   // data: JSON.stringify({"page":page}),
         	   // contentType: "application/json",
         	    success: function (data) {
-        	        if (data == "failed") {
+        	        if (data == "") {
         	            window.location.href = "../login.jsp";
         	            return;
         	        } else {
@@ -160,7 +160,7 @@ function objToArray(array) {
  
 
 
-function nameOnClick(id, privilegelevel) {
+/*function nameOnClick(id, privilegelevel) {
     switch (privilegelevel) {
         case 6:
             //alert(id);
@@ -170,11 +170,11 @@ function nameOnClick(id, privilegelevel) {
         default:
             window.location.href = "/Index/UserProfile?viewuser=" + id;
     }
-}
+}*/
 
 function GetDogPage(id) {
     //setCookie("user_profile_dogid", id, "s6000");
-    window.location.href = "/Index/PageDog6?dogid="+id;
+    window.location.href = "../pageManageCommon/pagedog?dogid="+id;
 }
 
 function getCookie(name) {
@@ -250,6 +250,10 @@ $(function () {
             data:  JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+    	        }
                 alert(data);
                 window.location.reload();
             }
@@ -284,6 +288,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 if (data == "success") {
                     alert("绑定成功！");
                     $("#dogDiv").modal('hide');
@@ -323,6 +331,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 if (data == "success") {
                     alert("绑定成功！");
                     $("#dogDiv").modal('hide');
@@ -361,6 +373,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -384,6 +400,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -407,6 +427,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -484,6 +508,10 @@ function goPage(startItem, psize){
         data: JSON.stringify({'startItem': startItem, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
+        	if (data == "") {
+	            window.location.href = "../login.jsp";
+	            return;
+        	}
             data = eval("(" + data + ")");
             data.data2 = objToArray(data.data2);
             var html = "";

@@ -1,17 +1,17 @@
 ﻿var deviceId = "";
 $(function(){
-	  if (data.data6[0].privilegelevel == 1 || data.data6[0].privilegelevel == 2 || data.data6[0].privilegelevel == 3 || data.data6[0].privilegelevel == 4 || data.data6[0].privilegelevel == 5 || username != dogmanager) {
+	  if (data.data6.privilegelevel == 1 || data.data6.privilegelevel == 2 || data.data6.privilegelevel == 3 || data.data6.privilegelevel == 4 || data.data6.privilegelevel == 5) {
           $("#a_dogmodify").css("display", "none");
           $("#a_neckletmodify").css("display", "none");
           $("#a_ownermodify").css("display", "none");
           $("#a_feedermodify").css("display", "none");
-          switch (data.data6[0].privilegelevel) {
+          switch (data.data6.privilegelevel) {
               case 1:
                   $("#li_countrysee").click(function () {
-                      window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                	  window.location.href = "../user/index.do";
                   });
                   $("#a_managepage").click(function () {
-                      window.location.href = "/PageManageCommon/Manage";
+                	  window.location.href = "../pageManageCommon/index.do?districtcode=0";
                   });
                   //$("#goback").click(function () {
                   //    window.location.href = history.go(-1);
@@ -20,10 +20,10 @@ $(function(){
                   break;
               case 2:
                   $("#li_countrysee").click(function () {
-                      window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                	  window.location.href = "../user/index.do";
                   });
                   $("#a_managepage").click(function () {
-                      window.location.href = "/PageManageCommon/Manage";
+                	  window.location.href = "../pageManageCommon/index.do?districtcode=0";
                   });
                   //$("#goback").click(function () {
                   //    window.location.href = history.go(-1);
@@ -32,10 +32,10 @@ $(function(){
                   break;
               case 3:
                   $("#li_countrysee").click(function () {
-                      window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                       window.location.href = "../user/index.do";
                   });
                   $("#a_managepage").click(function () {
-                      window.location.href = "/PageManageCommon/Manage";
+                	  window.location.href = "../pageManageCommon/index.do?districtcode=0";
                   });
                   //$("#goback").click(function () {
                   //    window.location.href = history.go(-1);
@@ -44,10 +44,10 @@ $(function(){
                   break;
               case 4:
                   $("#li_countrysee").click(function () {
-                      window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                	  window.location.href = "../user/index.do";
                   });
                   $("#a_managepage").click(function () {
-                      window.location.href = "/PageManageCommon/Manage";
+                	  window.location.href = "../pageManageCommon/index.do?districtcode=0";
                   });
                   //$("#goback").click(function () {
                   //    window.location.href = history.go(-1);
@@ -56,10 +56,10 @@ $(function(){
                   break;
               case 5:
                   $("#li_countrysee").click(function () {
-                      window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                	  window.location.href = "../user/index.do";
                   });
                   $("#a_managepage").click(function () {
-                      window.location.href = "/PageManageCommon/Manage";
+                	  window.location.href = "../pageManageCommon/index.do?districtcode=0";
                   });
                   //$("#goback").click(function () {
                   //    window.location.href = history.go(-1);
@@ -71,11 +71,13 @@ $(function(){
       } else {
           //$("#li_countrysee").css("display", "none");
           $("#li_countrysee").click(function () {
-              window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+              window.location.href = "../user/index.do";
           });
           $("#a_managepage").click(function () {
-              window.location.href = "/PageManageCommon/Manage";
+        	  window.location.href = "../pageManageCommon/hamletManager.do";
           });
+          
+         
           //$("#goback").click(function () {
           //    window.location.href = history.go(-1);
           //    return false;
@@ -83,66 +85,69 @@ $(function(){
       }
 
       var modalselect_dogbelonghamlet = document.getElementById("modalselect_dogbelonghamlet");
-      for (var i = 0; i < data.data4.length; i++) {
+  //    for (var i = 0; i < data.data4.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
-          modalselect_dogbelonghamlet.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
-      }
+          modalselect_dogbelonghamlet.options.add(new Option(data.data6.districtname, data.data6.districtcode));
+  //    }
       var modalselect_dogownername = document.getElementById("modalselect_dogownername");
+      data.data5 = objToArray(data.data5)
       for (var i = 0; i < data.data5.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
           modalselect_dogownername.options.add(new Option(data.data5[i].ownername, data.data5[i].ownerid));
       }
       var modalselect_dogneckletid = document.getElementById("modalselect_dogneckletid");
-      if (data.data1[0].neckletid != "") {
-          modalselect_dogneckletid.options.add(new Option(data.data1[0].neckletid, data.data1[0].necid));
+      if (data.data1.neckletid != "") {
+          modalselect_dogneckletid.options.add(new Option(data.data1.neckletid, data.data1.necid));
       }
+      data.data7 = objToArray(data.data7)
       for (var i = 0; i < data.data7.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
           modalselect_dogneckletid.options.add(new Option(data.data7[i].neckletid, data.data7[i].necid));
       }
 
       var modalselect_feederid = document.getElementById("modalselect_dogfeederid");
-      if (data.data1[0].feederid != "") {
+      if (data.data1.feederid != "") {
           //$("modalselect_dogfeederid").find("option").remove();
-          modalselect_feederid.options.add(new Option(data.data1[0].feederid, data.data1[0].fid));
+          modalselect_feederid.options.add(new Option(data.data1.feederid, data.data1.fid));
       }
+      data.data8 = objToArray(data.data8)
       for (var i = 0; i < data.data8.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
           modalselect_feederid.options.add(new Option(data.data8[i].feederid, data.data8[i].fid));
       }
 
       //牧犬信息
-      $("#input_dogname").val(data.data1[0].dogname);
-      $("#input_dogsex").val(data.data1[0].dogsex);
-      $("#input_dogbelonghamlet").val(data.data1[0].belonghamlet);
-      $("#input_dogownername").val(data.data1[0].ownername);
-      $("#input_dogweight").val(data.data1[0].dogweight);
-      $("#input_dogcolor").val(data.data1[0].dogcolor);
-      $("#input_dogage").val(data.data1[0].dogage);
-      $("#input_adminname").val(data.data1[0].adminname);
-      $("#input_adminphone").append("<a href=\"tel:" + data.data1[0].adminphone + "\">" + data.data1[0].adminphone + "</a>");
-      if (data.data1[0].feederid != "" && data.data1[0].feederid != "----") {
-          deviceId = data.data1[0].feederid;
+      $("#input_dogname").val(data.data1.dogname);
+      $("#input_dogsex").val(data.data1.dogsex);
+      $("#input_dogbelonghamlet").val(data.data1.belonghamlet);
+      $("#input_dogownername").val(data.data1.ownername);
+      $("#input_dogweight").val(data.data1.dogweight);
+      $("#input_dogcolor").val(data.data1.dogcolor);
+      $("#input_dogage").val(data.data1.dogage);
+      $("#input_adminname").val(data.data1.adminname);
+      $("#input_adminphone").append("<a href=\"tel:" + data.data1.adminphone + "\">" + data.data1.adminphone + "</a>");
+      if (data.data1.feederid != "" && data.data1.feederid != "----") {
+          deviceId = data.data1.feederid;
           $("#a_neckletmodify").css("display", "none");
           $("#label_id").text("喂饲器编号");
           $("#input_dogneckletid").val("----");
-          $("#input_dogfeederid").val(data.data1[0].feederid);
-          $("#input_neckletid").val(data.data9[0].feederid);
-          $("#input_power").val((data.data9[0].powerleft)*100+"%");
-          $("#input_medtotal").val(data.data9[0].medtotal);
-          $("#input_medleft").val(data.data9[0].medleft);
-          $("#input_endmedtime").val(ChangeTimeFormat(data.data9[0].endmedtime));
-          $("#input_areacycle").val(data.data9[0].areacycle);
-          $("#input_exhibitcycle").val(data.data9[0].exhibitcycle);
-          $("#input_firstmedtime").val(ChangeTimeFormat(data.data9[0].firstmedtime));
-          $("#input_lastmedtime").val(ChangeTimeFormat(data.data9[0].lastmedtime));
-          $("#input_lastremindmedtime").val(ChangeTimeFormat(data.data9[0].lastremindmedtime));
+          $("#input_dogfeederid").val(data.data1.feederid);
+          $("#input_neckletid").val(data.data9.feederid);
+          $("#input_power").val((data.data9.powerleft)*100+"%");
+          $("#input_medtotal").val(data.data9.medtotal);
+          $("#input_medleft").val(data.data9.medleft);
+          $("#input_endmedtime").val(ChangeTimeFormat(data.data9.endmedtime));
+          $("#input_areacycle").val(data.data9.areacycle);
+          $("#input_exhibitcycle").val(data.data9.exhibitcycle);
+          $("#input_firstmedtime").val(ChangeTimeFormat(data.data9.firstmedtime));
+          $("#input_lastmedtime").val(ChangeTimeFormat(data.data9.lastmedtime));
+          $("#input_lastremindmedtime").val(ChangeTimeFormat(data.data9.lastremindmedtime));
       } else {
           deviceId = "";
           $("#a_feedermodify").css("display", "none");
           $("#a_seevideo").css("display", "none");
           $("#label_id").text("项圈编号");
-          $("#input_dogneckletid").val(data.data1[0].neckletid);
+          $("#input_dogneckletid").val(data.data1.neckletid);
           $("#input_dogfeederid").val("----");
           //项圈信息
 
@@ -151,16 +156,16 @@ $(function(){
           //var datenow = new Date();//获取系统当前时间
           var timestampnow = Date.parse(new Date()) / 1000;
           //上次投药时间  20180323155000
-          var lastmedtime_1 = data.data2[0].lastmedtime;
-          var firstmedtime_1 = data.data2[0].firstmedtime;
-          var medcycle = data.data2[0].exhibitcycle *1440 * 60;
+          var lastmedtime_1 = data.data2.lastmedtime;
+          var firstmedtime_1 = data.data2.firstmedtime;
+          var medcycle = data.data2.exhibitcycle *1440 * 60;
           var lastmedtime_2 = lastmedtime_1.substring(0, 4) + "/" + lastmedtime_1.substring(4, 6) + "/" + lastmedtime_1.substring(6, 8) + " " + lastmedtime_1.substring(8, 10) + ":" + lastmedtime_1.substring(10, 12) + ":" + lastmedtime_1.substring(12, 14);
           var firstmedtime_2 = firstmedtime_1.substring(0, 4) + "/" + firstmedtime_1.substring(4, 6) + "/" + firstmedtime_1.substring(6, 8) + " " + firstmedtime_1.substring(8, 10) + ":" + firstmedtime_1.substring(10, 12) + ":" + firstmedtime_1.substring(12, 14);
           var lastmedtimestamp = new Date(lastmedtime_2).getTime()/1000;
           var firstmedtimestamp = new Date(firstmedtime_2).getTime() / 1000;
 
           var lastmedtimeres = ChangeTimeFormat(lastmedtime_1);
-          var medleft = data.data2[0].medleft;
+          var medleft = data.data2.medleft;
           if (firstmedtimestamp < timestampnow) {
               var forgetmedtimes = Math.floor((timestampnow - lastmedtimestamp) / medcycle);
               var lastmedtimeres_ = lastmedtimestamp + forgetmedtimes * medcycle;
@@ -194,79 +199,79 @@ $(function(){
               }
           }
 
-          $("#input_neckletid").val(data.data2[0].neckletid);
-          $("#input_power").val(((data.data2[0].powerleft)/6).toFixed(2)*100+"%");
-          $("#input_medtotal").val(data.data2[0].medtotal);
+          $("#input_neckletid").val(data.data2.neckletid);
+          $("#input_power").val(((data.data2.powerleft)/6).toFixed(2)*100+"%");
+          $("#input_medtotal").val(data.data2.medtotal);
           $("#input_medleft").val(medleft);
-          $("#input_endmedtime").val(ChangeTimeFormat(data.data2[0].endmedtime));
-          $("#input_areacycle").val(data.data2[0].areacycle);
-          $("#input_exhibitcycle").val(data.data2[0].exhibitcycle);
-          $("#input_firstmedtime").val(ChangeTimeFormat(data.data2[0].firstmedtime));
-          //$("#input_lastmedtime").val(ChangeTimeFormat(data.data2[0].lastmedtime));
-          //$("#input_lastremindmedtime").val(ChangeTimeFormat(data.data2[0].lastremindmedtime));
+          $("#input_endmedtime").val(ChangeTimeFormat(data.data2.endmedtime));
+          $("#input_areacycle").val(data.data2.areacycle);
+          $("#input_exhibitcycle").val(data.data2.exhibitcycle);
+          $("#input_firstmedtime").val(ChangeTimeFormat(data.data2.firstmedtime));
+          //$("#input_lastmedtime").val(ChangeTimeFormat(data.data2.lastmedtime));
+          //$("#input_lastremindmedtime").val(ChangeTimeFormat(data.data2.lastremindmedtime));
           $("#input_lastmedtime").val(lastmedtimeres);
           $("#input_lastremindmedtime").val(lastmedtimeres);
       }
 
       //修改牧犬信息
-      $("#modalinput_dogid").val(data.data1[0].dogid);
-      $("#modalinput_dogname").val(data.data1[0].dogname);
+      $("#modalinput_dogid").val(data.data1.dogid);
+      $("#modalinput_dogname").val(data.data1.dogname);
 
-      $("#modalselect_dogsex").find("option:contains(" + data.data1[0].dogsex + ")").attr("selected", true);
-      $("#modalselect_dogbelonghamlet").find("option:contains(" + data.data1[0].belonghamlet + ")").attr("selected", true);
-      $("#modalselect_dogownername").find("option:contains(" + data.data1[0].ownername + ")").attr("selected", true);
+      $("#modalselect_dogsex").find("option:contains(" + data.data1.dogsex + ")").attr("selected", true);
+      $("#modalselect_dogbelonghamlet").find("option:contains(" + data.data1.belonghamlet + ")").attr("selected", true);
+      $("#modalselect_dogownername").find("option:contains(" + data.data1.ownername + ")").attr("selected", true);
 
-      $("#modalinput_dogweight").val(data.data1[0].dogweight);
-      $("#modalinput_dogcolor").val(data.data1[0].dogcolor);
-      $("#modalinput_dogage").val(data.data1[0].dogage);
-      //$("#modalinput_dogneckletid").val(data.data1[0].neckletid);
-      if (data.data1[0].neckletid != "") {
-          $("#modalselect_dogneckletid").find("option:contains(" + data.data1[0].neckletid + ")").attr("selected", true);
+      $("#modalinput_dogweight").val(data.data1.dogweight);
+      $("#modalinput_dogcolor").val(data.data1.dogcolor);
+      $("#modalinput_dogage").val(data.data1.dogage);
+      //$("#modalinput_dogneckletid").val(data.data1.neckletid);
+      if (data.data1.neckletid != "") {
+          $("#modalselect_dogneckletid").find("option:contains(" + data.data1.neckletid + ")").attr("selected", true);
       }
-      if (data.data1[0].feederid != "") {
-          $("#modalselect_dogfeederid").find("option:contains(" + data.data1[0].feederid + ")").attr("selected", true);
+      if (data.data1.feederid != "") {
+          $("#modalselect_dogfeederid").find("option:contains(" + data.data1.feederid + ")").attr("selected", true);
       }
 
       //修改项圈信息
-      $("#modalinput_neckletid").val(data.data2[0].neckletid);
-      $("#modalinput_power").val(((data.data2[0].powerleft)/6).toFixed(2));
-      $("#modalinput_medtotal").val(data.data2[0].medtotal);
-      $("#modalinput_medleft").val(data.data2[0].medleft);
-      $("#modalinput_areacycle").val(data.data2[0].areacycle);
-      $("#modalinput_exhibitcycle").val(data.data2[0].exhibitcycle);
-      $("#modalinput_firstmedtime").val(ChangeTimeFormat(data.data2[0].firstmedtime));
+      $("#modalinput_neckletid").val(data.data2.neckletid);
+      $("#modalinput_power").val(((data.data2.powerleft)/6).toFixed(2));
+      $("#modalinput_medtotal").val(data.data2.medtotal);
+      $("#modalinput_medleft").val(data.data2.medleft);
+      $("#modalinput_areacycle").val(data.data2.areacycle);
+      $("#modalinput_exhibitcycle").val(data.data2.exhibitcycle);
+      $("#modalinput_firstmedtime").val(ChangeTimeFormat(data.data2.firstmedtime));
 
 
       //修改喂食器信息
-      $("#modalinput_feederid").val(data.data9[0].feederid);
-      $("#modalinput_feederpower").val(data.data9[0].powerleft);
-      $("#modalinput_feedermedtotal").val(data.data9[0].medtotal);
-      $("#modalinput_feedermedleft").val(data.data9[0].medleft);
-      $("#modalinput_feederareacycle").val(data.data9[0].areacycle);
-      $("#modalinput_feederexhibitcycle").val(data.data9[0].exhibitcycle);
-      $("#modalinput_feederfirstmedtime").val(ChangeTimeFormat(data.data9[0].firstmedtime));
+      $("#modalinput_feederid").val(data.data9.feederid);
+      $("#modalinput_feederpower").val(data.data9.powerleft);
+      $("#modalinput_feedermedtotal").val(data.data9.medtotal);
+      $("#modalinput_feedermedleft").val(data.data9.medleft);
+      $("#modalinput_feederareacycle").val(data.data9.areacycle);
+      $("#modalinput_feederexhibitcycle").val(data.data9.exhibitcycle);
+      $("#modalinput_feederfirstmedtime").val(ChangeTimeFormat(data.data9.firstmedtime));
 
       //主人信息
-      $("#input_ownername").val(data.data3[0].ownername);
-      $("#input_owneridentity").val(data.data3[0].owneridentity);
-      $("#input_ownersex").val(data.data3[0].ownersex);
-      $("#input_ownerage").val(data.data3[0].ownerage);
-      $("#input_ownerjob").val(data.data3[0].ownerjob);
-      $("#input_homeaddress").val(data.data3[0].homeaddress);
-      //$("#input_telphone").val(data.data3[0].telphone);
-      $("#input_telphone").append("<a href=\"tel:" + data.data3[0].telphone + "\">" + data.data3[0].telphone + "</a>");
+      $("#input_ownername").val(data.data3.ownername);
+      $("#input_owneridentity").val(data.data3.owneridentity);
+      $("#input_ownersex").val(data.data3.ownersex);
+      $("#input_ownerage").val(data.data3.ownerage);
+      $("#input_ownerjob").val(data.data3.ownerjob);
+      $("#input_homeaddress").val(data.data3.homeaddress);
+      //$("#input_telphone").val(data.data3.telphone);
+      $("#input_telphone").append("<a href=\"tel:" + data.data3.telphone + "\">" + data.data3.telphone + "</a>");
 
       //修改主人信息
-      $("#modalinput_ownerid").val(data.data3[0].ownerid);
-      $("#modalinput_ownername").val(data.data3[0].ownername);
-      $("#modalinput_owneridentity").val(data.data3[0].owneridentity);
+      $("#modalinput_ownerid").val(data.data3.ownerid);
+      $("#modalinput_ownername").val(data.data3.ownername);
+      $("#modalinput_owneridentity").val(data.data3.owneridentity);
 
-      $("#modalselect_ownersex").find("option:contains(" + data.data3[0].ownersex + ")").attr("selected", true);
+      $("#modalselect_ownersex").find("option:contains(" + data.data3.ownersex + ")").attr("selected", true);
 
-      $("#modalinput_ownerage").val(data.data3[0].ownerage);
-      $("#modalinput_ownerjob").val(data.data3[0].ownerjob);
-      $("#modalinput_homeaddress").val(data.data3[0].homeaddress);
-      $("#modalinput_telphone").val(data.data3[0].telphone);
+      $("#modalinput_ownerage").val(data.data3.ownerage);
+      $("#modalinput_ownerjob").val(data.data3.ownerjob);
+      $("#modalinput_homeaddress").val(data.data3.homeaddress);
+      $("#modalinput_telphone").val(data.data3.telphone);
 
 
       var data8 = [];
@@ -410,7 +415,13 @@ function timestamp(url) {
     }
     return url;
 }
-
+function objToArray(array) {
+    var arr = []
+    for (var i in array) {
+        arr.push(array[i]); 
+    }
+    return arr;
+}
 $(function () {
     $("#modal_neckletmodify").click(function () {
         var clicktype = "neckletmodify";
@@ -448,6 +459,10 @@ $(function () {
             type: "POST",
             data: senddata,
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -491,6 +506,10 @@ $(function () {
             type: "POST",
             data: senddata,
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -522,6 +541,10 @@ $(function () {
             type: "POST",
             data: senddata,
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -565,6 +588,10 @@ $(function () {
             type: "POST",
             data: senddata,
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }

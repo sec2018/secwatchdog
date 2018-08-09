@@ -8,6 +8,11 @@ public interface ManageService {
 	public Map<String, Object> getVillageManagersList(String districtcode);
 	public Map<String, Object> getNecksList(String username);
 	public Map<String, Object> getFeedersList(String username);
+	public Map<String, Object> getDogNeckletInfo(int dogId);
+	public Map<String, Object> getDogFeederInfo(int dogId);
+	public Map<String, Object> getDogInfo(int dogId);
+	public Map<String, Object> getDogOwnerInfo(int dogId);
+
 
 	public Map<String, Object> getManagerInfo(String managerName);
 	public Map<String, Object>  getSearchByAdminInfo(String userName, String managerName,int startItem,int pageSize);

@@ -10,7 +10,7 @@ import sec.secwatchdog.model.Lastexhibitrealtime;
 @Mapper
 public interface FeedbackDao {
 
-    @Select("select firstmedtime,medtotal,exhibitcycle from feedback where neckletid=#{neckletid}")
+    @Select("select * from feedback where neckletid=#{neckletid}")
     public Feedback getFeedback(String neckletid);
     @Insert("insert into feedback(neckletid,feedcycle, exhibitcycle,updatetime, medtotal, firstmedtime,endmedtime) values "
 			+ "(#{neckletid},#{feedcycle}, #{exhibitcycle},#{updatetime}, #{medtotal}, #{firstmedtime},#{endmedtime})")

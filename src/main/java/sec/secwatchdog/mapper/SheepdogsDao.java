@@ -19,6 +19,8 @@ import sec.secwatchdog.util.OrderProvider;
 public interface SheepdogsDao {
 	@Select("select * from sheepdogs")
 	public List<Sheepdogs> getIndexInfor();
+	@Select("select * from sheepdogs where dogid=#{dogId}")
+	public Sheepdogs getSheepdogbyDogId(int dogId);
 	@Select("select dogid from sheepdogs order by dogid desc limit 1")
 	public Integer getLastId();
 	@Select("select * from sheepdogs where districtcode like concat(#{districtCode},'%') ")//and ((neckletid ='-1' and apparatusid !='-1') or (apparatusid ='-1' and neckletid !='-1'))

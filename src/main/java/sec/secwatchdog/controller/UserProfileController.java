@@ -101,7 +101,7 @@ public class UserProfileController {
 	HttpSession session=request.getSession();
 	//session失效，退出登录页面
 	if(session.getAttribute("currentUser")==null){;
-		return "redirect:/login.jsp";
+		return null;
 	}
 	JSONObject jsStr = null;
 	String username = json.getString("username"); 
@@ -136,7 +136,7 @@ public class UserProfileController {
     public String UserProfileApi(@RequestBody JSONObject json, HttpServletRequest request ) {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){
-			return "redirect:/login.jsp";
+			return null;
 		}
 		String clicktype = json.getString("clicktype");	 
 		Managers user= (Managers) session.getAttribute("currentUser");
