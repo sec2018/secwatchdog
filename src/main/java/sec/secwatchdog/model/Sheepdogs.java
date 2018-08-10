@@ -8,7 +8,7 @@ import javax.persistence.Id;
 public class Sheepdogs {
 	@Id
     @GeneratedValue
-    public Integer dogid;
+    public long dogid;
 
     public String dogname;
 
@@ -22,7 +22,7 @@ public class Sheepdogs {
 
     public String managername;
 
-    public Integer dogownerid;
+    public long dogownerid;
 
     public String dogweight;
 
@@ -42,11 +42,11 @@ public class Sheepdogs {
 
     public String districtcode;
 
-    public Integer getDogid() {
+    public long getDogid() {
 		return dogid;
 	}
 
-	public void setDogid(Integer dogid) {
+	public void setDogid(long dogid) {
 		this.dogid = dogid;
 	}
 
@@ -90,11 +90,11 @@ public class Sheepdogs {
 		this.managername = managername;
 	}
 
-	public Integer getDogownerid() {
+	public long getDogownerid() {
 		return dogownerid;
 	}
 
-	public void setDogownerid(Integer dogownerid) {
+	public void setDogownerid(long dogownerid) {
 		this.dogownerid = dogownerid;
 	}
 

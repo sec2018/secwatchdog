@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 
 import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Necklet;
@@ -55,6 +56,19 @@ public interface SheepdogsDao {
 	@Insert("insert into sheepdogs(dogname,neckletid,apparatusid,belonghamlet,username,managername,dogownerid,dogweight,dogcolor,dogage, doginfo,dogstatus,dogretirtime, logintime,dogsex,districtcode) values "
 			+ "(#{dogname}, #{neckletid}, #{apparatusid},#{belonghamlet}, #{username}, #{managername}, #{dogownerid}, #{dogweight},#{dogcolor},#{dogage}, #{doginfo},#{dogstatus},#{dogretirtime}, #{logintime},#{dogsex},#{districtcode})")
 	public void addSheepDog(Sheepdogs sheepdogs);
+	
+	@Update("update sheepdogs set dogname=#{dogname},"
+			+ "neckletid=#{neckletid},"
+			+ "apparatusid=#{apparatusid},"
+			+ "belonghamlet=#{belonghamlet},"
+			+ "dogownerid=#{dogownerid},"
+			+ "dogweight=#{dogweight},"
+			+ "dogcolor=#{dogcolor},"
+			+ "dogage=#{dogage},"
+			+ "dogsex=#{dogsex},"
+			+ "districtcode=#{districtcode} "
+			+ "where dogid=#{dogid}")
+	public void updateSheepDog(Sheepdogs sheepdogs);
 	
 }
 

@@ -87,7 +87,7 @@ $(function(){
       var modalselect_dogbelonghamlet = document.getElementById("modalselect_dogbelonghamlet");
   //    for (var i = 0; i < data.data4.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
-          modalselect_dogbelonghamlet.options.add(new Option(data.data6.districtname, data.data6.districtcode));
+          modalselect_dogbelonghamlet.options.add(new Option(data.data6.hamlet, data.data6.districtcode));
   //    }
       var modalselect_dogownername = document.getElementById("modalselect_dogownername");
       data.data5 = objToArray(data.data5)
@@ -96,9 +96,9 @@ $(function(){
           modalselect_dogownername.options.add(new Option(data.data5[i].ownername, data.data5[i].ownerid));
       }
       var modalselect_dogneckletid = document.getElementById("modalselect_dogneckletid");
-      if (data.data1.neckletid != "") {
+  /*    if (data.data1.neckletid != "") {
           modalselect_dogneckletid.options.add(new Option(data.data1.neckletid, data.data1.necid));
-      }
+      }*/
       data.data7 = objToArray(data.data7)
       for (var i = 0; i < data.data7.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
@@ -106,10 +106,10 @@ $(function(){
       }
 
       var modalselect_feederid = document.getElementById("modalselect_dogfeederid");
-      if (data.data1.feederid != "") {
+/*      if (data.data1.feederid != "") {
           //$("modalselect_dogfeederid").find("option").remove();
           modalselect_feederid.options.add(new Option(data.data1.feederid, data.data1.fid));
-      }
+      }*/
       data.data8 = objToArray(data.data8)
       for (var i = 0; i < data.data8.length; i++) {
           //遍历后台传回的结果，一项项往select中添加option
@@ -154,7 +154,7 @@ $(function(){
 
           //先修正信息
           //var datenow = new Date();//获取系统当前时间
-          var timestampnow = Date.parse(new Date()) / 1000;
+       /*   var timestampnow = Date.parse(new Date()) / 1000;
           //上次投药时间  20180323155000
           var lastmedtime_1 = data.data2.lastmedtime;
           var firstmedtime_1 = data.data2.firstmedtime;
@@ -197,20 +197,21 @@ $(function(){
               } else {
                   medleft = medleft - forgetmedtimes;
               }
-          }
+          }*/
 
           $("#input_neckletid").val(data.data2.neckletid);
           $("#input_power").val(((data.data2.powerleft)/6).toFixed(2)*100+"%");
           $("#input_medtotal").val(data.data2.medtotal);
-          $("#input_medleft").val(medleft);
+         // $("#input_medleft").val(medleft);
+          $("#input_medleft").val(data.data2.medleft);
           $("#input_endmedtime").val(ChangeTimeFormat(data.data2.endmedtime));
           $("#input_areacycle").val(data.data2.areacycle);
           $("#input_exhibitcycle").val(data.data2.exhibitcycle);
           $("#input_firstmedtime").val(ChangeTimeFormat(data.data2.firstmedtime));
-          //$("#input_lastmedtime").val(ChangeTimeFormat(data.data2.lastmedtime));
-          //$("#input_lastremindmedtime").val(ChangeTimeFormat(data.data2.lastremindmedtime));
-          $("#input_lastmedtime").val(lastmedtimeres);
-          $("#input_lastremindmedtime").val(lastmedtimeres);
+          $("#input_lastmedtime").val(ChangeTimeFormat(data.data2.lastmedtime));
+          $("#input_lastremindmedtime").val(ChangeTimeFormat(data.data2.lastremindmedtime));
+          //$("#input_lastmedtime").val(lastmedtimeres);
+          //$("#input_lastremindmedtime").val(lastmedtimeres);
       }
 
       //修改牧犬信息
@@ -455,9 +456,10 @@ $(function () {
             return;
         }
         $.ajax({
-            url: "/api/pagedogapi",
+        	url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
             	if (data == "") {
     	            window.location.href = "../login.jsp";
@@ -486,7 +488,7 @@ $(function () {
         senddata.medtotal = medtotal;
         senddata.medleft = medleft;
         senddata.areacycle = areacycle;
-        sneddata.exhibitcycle = exhibitcycle;
+        senddata.exhibitcycle = exhibitcycle;
         senddata.firstmedtime = firstmedtime;
         if (isNaN(areacycle) || isNaN(areacycle)) {
             alert("反馈周期和投药周期为数字！单位（天）");
@@ -502,9 +504,10 @@ $(function () {
             return;
         }
         $.ajax({
-            url: "/api/pagedogapi",
+        	url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
             	if (data == "") {
     	            window.location.href = "../login.jsp";
@@ -537,9 +540,10 @@ $(function () {
         senddata.homeaddress = homeaddress;
         senddata.telphone = telphone;
         $.ajax({
-            url: "/api/pagedogapi",
+        	url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
             	if (data == "") {
     	            window.location.href = "../login.jsp";
@@ -567,7 +571,7 @@ $(function () {
         var dogfeederid = $("#modalselect_dogfeederid").find("option:selected").text();
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
+        senddata.username = data.data6.username;
         senddata.dogid = dogid;
         senddata.dogname = dogname;
         senddata.dogsex = dogsex;
@@ -584,9 +588,10 @@ $(function () {
             return;
         }
         $.ajax({
-            url: "/api/pagedogapi",
+            url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
             	if (data == "") {
     	            window.location.href = "../login.jsp";

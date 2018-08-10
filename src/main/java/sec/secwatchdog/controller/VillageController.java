@@ -49,12 +49,17 @@ public class VillageController {
 		data.put("data1",manager);//data1保存用户信息
 
 		url.append("page_village");//转到页面index/page_village.jsp
-		Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//获得该乡的总体数据信息
-		data.put("data2",villageIndexInfo);
-		Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//获得该乡下各村的数据信息
-		data.put("data3", villageMap);
-		Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//获得该乡的区域编码
-		data.put("data4", data4);
+		try {
+			Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//获得该乡的总体数据信息
+			data.put("data2",villageIndexInfo);
+			Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//获得该乡下各村的数据信息
+			data.put("data3", villageMap);
+			Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//获得该乡的区域编码
+			data.put("data4", data4);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 

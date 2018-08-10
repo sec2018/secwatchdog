@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 @Entity
-public class Districts implements Serializable{
+public class Districts{
     public int districtlevel;
 
     public String districtcode;

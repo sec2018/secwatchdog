@@ -49,8 +49,13 @@ public class UserProfileController {
 	StringBuilder url = new StringBuilder("index/user_profile");//转到页面index/user_profile.jsp
 	JSONObject jsStr = null;
 	Map<String,Object> data = new HashMap<String,Object>();
-	//获取被点击的管理员信息
-	data  = userProfileService.getUserProfile(username);
+	try {
+		//获取被点击的管理员信息
+		data  = userProfileService.getUserProfile(username);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	jsStr = JSONObject.fromObject(data);
 	model.addAttribute("model",jsStr.toString());	 
 	return url.toString();
@@ -74,17 +79,22 @@ public class UserProfileController {
 	StringBuilder url = new StringBuilder("index/user_profile_farm");//转到页面index/user_profile.jsp
 	JSONObject jsStr = null;
 	Map<String,Object> data = new HashMap<String,Object>();
-	//获取被点击的管理员信息
-	Map<String,Object> data1  = manageService.getManagerInfo(username);
-	data.put("data1", data1);
-	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
-	data.put("data2", dogList.get("data"));
-	data.put("total", dogList.get("dogTotal"));
-	data.put("data3", manager);
-	Map<String,Object> data4 = hamletService.GetLevel6AdminDogNum(username);
-	data.put("data4", data4);
-	/*Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
-	data.put("data4", data4);*/
+	try {
+		//获取被点击的管理员信息
+		Map<String,Object> data1  = manageService.getManagerInfo(username);
+		data.put("data1", data1);
+		Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+		data.put("data2", dogList.get("data"));
+		data.put("total", dogList.get("dogTotal"));
+		data.put("data3", manager);
+		Map<String,Object> data4 = hamletService.GetLevel6AdminDogNum(username);
+		data.put("data4", data4);
+		/*Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
+		data.put("data4", data4);*/
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	jsStr = JSONObject.fromObject(data);
 	model.addAttribute("model",jsStr.toString());	 
 	return url.toString();
@@ -114,13 +124,18 @@ public class UserProfileController {
 
 	Map<String,Object> data = new HashMap<String,Object>();
 	
-	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
-	data.put("data2", dogList.get("data"));
-	data.put("total", dogList.get("dogTotal"));
+	try {
+		Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+		data.put("data2", dogList.get("data"));
+		data.put("total", dogList.get("dogTotal"));
 //	data.put("data3", manager);
 /*
-	Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
-	data.put("data4", data4);*/
+		Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
+		data.put("data4", data4);*/
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	jsStr = JSONObject.fromObject(data); 
 	System.out.println(jsStr);
 	return jsStr.toString();

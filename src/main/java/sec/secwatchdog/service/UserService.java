@@ -7,17 +7,17 @@ import sec.secwatchdog.model.Managers;
 
 public interface UserService {
 
-	public Managers login(Managers manager);
+	public Managers login(Managers manager) throws Exception;
 	
-	public Map<String, Integer> GetIndexLogoInfo(Managers resultUser);
+	public Map<String, Integer> GetIndexLogoInfo(Managers resultUser) throws Exception;
 
-	public Map<String, Object> GetCountryMap();
+	public Map<String, Object> GetCountryMap() throws Exception;
 
-	public Map<String, Object> GetXinJiangArmyCountryMap();
+	public Map<String, Object> GetXinJiangArmyCountryMap() throws Exception;
 	
-	public Managers checklogin(String username);
+	public Managers checklogin(String username) throws Exception;
 	
-	Managers findUserByName(String name);
+	Managers findUserByName(String name) throws Exception;
 
   /*  List<Role> findLoginUserRoles(Managers manager);
 

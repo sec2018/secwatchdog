@@ -63,29 +63,42 @@ public class PageManageCommonController {
 				managername = user.getUsername();
 			}
 
-			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//当前管理员的下一级管理员信息
-			data.put("data2",nextLevelManagersInfo.get("data"));
-			Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
-			data.put("data3", manager);
-			data.put("total", nextLevelManagersInfo.get("totalNum"));
-			data.put("data5", true);//表示从全国地图、村级地图进入或者通过上一级管理员页面进入管理员页面
-			data.put("districtlevel",(Integer.parseInt(manager.get("privilegelevel").toString())-2)+"");
+			try {
+				Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//当前管理员的下一级管理员信息
+				data.put("data2",nextLevelManagersInfo.get("data"));
+				Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
+				data.put("data3", manager);
+				data.put("total", nextLevelManagersInfo.get("totalNum"));
+				data.put("data5", true);//表示从全国地图、村级地图进入或者通过上一级管理员页面进入管理员页面
+				data.put("districtlevel",(Integer.parseInt(manager.get("privilegelevel").toString())-2)+"");
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 
 		}
 		//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
 		else {
-			data.put("data4", true);
-			managername = user.getUsername();
-			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, districtcode, startItem, pageSize);//当前管理员的下一级管理员信息
-			data.put("data2",nextLevelManagersInfo.get("data"));
-			Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
-			data.put("data3", manager);
-			data.put("total", nextLevelManagersInfo.get("totalNum"));
-			data.put("data5", false);//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
-			Map<String, Object> districtinfo = (Map<String, Object>) nextLevelManagersInfo.get("districtInfo");
-			data.put("districtInfo", districtinfo);//地区编码
-			data.put("districtlevel",districtinfo.get("districtlevel"));
+			try {
+				data.put("data4", true);
+				managername = user.getUsername();
+				Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, districtcode, startItem, pageSize);//当前管理员的下一级管理员信息
+				data.put("data2",nextLevelManagersInfo.get("data"));
+				Map<String, Object> manager = manageService.getManagerInfo(managername);//当前管理员信息
+				data.put("data3", manager);
+				data.put("total", nextLevelManagersInfo.get("totalNum"));
+				data.put("data5", false);//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面
+				Map<String, Object> districtinfo = (Map<String, Object>) nextLevelManagersInfo.get("districtInfo");
+				data.put("districtInfo", districtinfo);//地区编码
+				data.put("districtlevel",districtinfo.get("districtlevel"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		
@@ -115,15 +128,20 @@ public class PageManageCommonController {
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",user);//data1保存登录用户信息
-		Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
-		data.put("data2", dogList.get("data"));
-		data.put("total", dogList.get("dogTotal"));
-		Map<String, Object> data4 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
-		data.put("data4", data4);
-		Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
-		data.put("data7", data7);
-		Map<String, Object> data9 = manageService.getFeedersList(user.getUsername());
-		data.put("data9", data9);
+		try {
+			Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
+			data.put("data2", dogList.get("data"));
+			data.put("total", dogList.get("dogTotal"));
+			Map<String, Object> data4 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+			data.put("data4", data4);
+			Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
+			data.put("data7", data7);
+			Map<String, Object> data9 = manageService.getFeedersList(user.getUsername());
+			data.put("data9", data9);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 
@@ -147,18 +165,23 @@ public class PageManageCommonController {
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
 		//从全国地图、村级地图进入或者通过上一级管理员页面进入管理员页面后，进行下一页操作
-		if(districtcode.equals("0")) {
-			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//下一页管理员信息
-			data.put("data2",nextLevelManagersInfo.get("data"));
-			data.put("total", nextLevelManagersInfo.get("totalNum"));
-		}
-		//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面后，进行下一页操作
-		else {
-			managername = user.getUsername();
-			Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, districtcode, startItem, pageSize);//下一页管理员信息
-			data.put("data2",nextLevelManagersInfo.get("data"));
-			data.put("total", nextLevelManagersInfo.get("totalNum"));
-		
+		try {
+			if(districtcode.equals("0")) {
+				Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, startItem, pageSize);//下一页管理员信息
+				data.put("data2",nextLevelManagersInfo.get("data"));
+				data.put("total", nextLevelManagersInfo.get("totalNum"));
+			}
+			//通过包括省级和省级以下，乡级和乡级以上地图页面进入管理页面后，进行下一页操作
+			else {
+				managername = user.getUsername();
+				Map<String,Object> nextLevelManagersInfo = manageService.getNextLevelAdminInfo(managername, districtcode, startItem, pageSize);//下一页管理员信息
+				data.put("data2",nextLevelManagersInfo.get("data"));
+				data.put("total", nextLevelManagersInfo.get("totalNum"));
+			
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
  
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
@@ -178,14 +201,19 @@ public class PageManageCommonController {
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
 		
-		int startItem = json.getInt("startItem");
-		int pageSize = json.getInt("pageSize");
-	     Managers user= (Managers) session.getAttribute("currentUser");
+		try {
+			int startItem = json.getInt("startItem");
+			int pageSize = json.getInt("pageSize");
+			Managers user= (Managers) session.getAttribute("currentUser");
 
-		data.put("data1",user);//data1保存登录用户信息
-		Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
-		data.put("data2", dogList.get("data"));
-		data.put("total", dogList.get("dogTotal"));
+			data.put("data1",user);//data1保存登录用户信息
+			Map<String, Object> dogList = userProfileService.getFarmDogList(user.getUsername(), startItem,  pageSize);
+			data.put("data2", dogList.get("data"));
+			data.put("total", dogList.get("dogTotal"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		  
@@ -209,29 +237,34 @@ public class PageManageCommonController {
         Map<String, Object>  data = new HashMap<String, Object>();
         Map<String, Object>  data1 = null;
       
-        if (!username.isEmpty())
-        {
-            if (clicktype.equals("onlynextonlinename"))
-            {
-              
-                if (districtcode.equals("0"))
-                {
-                    //管理页面跳转或全国、村地图页面进入
-                    data1 = manageService.getSearchByAdminInfo(username, managername,startItem,pageSize);
-                }
-                else
-                {
-                    //其他地图页面跳转到管理员页面
-                    data1 =  manageService.getSearchByAdminInfo(districtlevel, managername, districtcode,startItem,pageSize);
-               }
-            }
-            else
-            {
-                
-            }
-        }
-        data.put("data1", data1.get("data"));
-        data.put("searchTotal", data1.get("totalNum"));
+        try {
+			if (!username.isEmpty())
+			{
+			    if (clicktype.equals("onlynextonlinename"))
+			    {
+			      
+			        if (districtcode.equals("0"))
+			        {
+			            //管理页面跳转或全国、村地图页面进入
+			            data1 = manageService.getSearchByAdminInfo(username, managername,startItem,pageSize);
+			        }
+			        else
+			        {
+			            //其他地图页面跳转到管理员页面
+			            data1 =  manageService.getSearchByAdminInfo(districtlevel, managername, districtcode,startItem,pageSize);
+			       }
+			    }
+			    else
+			    {
+			        
+			    }
+			}
+			data.put("data1", data1.get("data"));
+			data.put("searchTotal", data1.get("totalNum"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         JSONObject jsStr = JSONObject.fromObject(data);
 		return jsStr.toString();
 	}
@@ -248,21 +281,26 @@ public class PageManageCommonController {
 		StringBuilder url = new StringBuilder("index/page_dog");//转到页面index/page_dog.jsp
 		JSONObject jsStr = null;
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data6",user);//data6保存登录用户信息
-		Map<String,Object> data1 = manageService.getDogInfo(dogId);
-		data.put("data1", data1);
-		Map<String,Object> data2 = manageService.getDogNeckletInfo(dogId);
-		data.put("data2", data2);
-		Map<String,Object> data9 = manageService.getDogFeederInfo(dogId);
-		data.put("data9", data9);
-		Map<String,Object> data3 = manageService.getDogOwnerInfo(dogId);
-		data.put("data3", data3);
-		Map<String,Object> data5 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
-		data.put("data5", data5);
-		Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
-		data.put("data7", data7);
-		Map<String, Object> data8 = manageService.getFeedersList(user.getUsername());
-		data.put("data8", data8);
+		try {
+			data.put("data6",user);//data6保存登录用户信息
+			Map<String,Object> data1 = manageService.getDogInfo(dogId);
+			data.put("data1", data1);
+			Map<String,Object> data2 = manageService.getDogNeckletInfo(dogId);
+			data.put("data2", data2);
+			Map<String,Object> data9 = manageService.getDogFeederInfo(dogId);
+			data.put("data9", data9);
+			Map<String,Object> data3 = manageService.getDogOwnerInfo(dogId);
+			data.put("data3", data3);
+			Map<String,Object> data5 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+			data.put("data5", data5);
+			Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
+			data.put("data7", data7);
+			Map<String, Object> data8 = manageService.getFeedersList(user.getUsername());
+			data.put("data8", data8);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
 		
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
@@ -385,6 +423,76 @@ public class PageManageCommonController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				result = "添加牧犬失败!";
+			}
+         }else if(clicktype.equals("neckletmodify")) {
+   
+             String neckletid = json.getString("neckletid");
+             String power = json.getString("power");
+             String medtotal = json.getString("medtotal");
+             String medleft = json.getString("medleft");
+             String areacycle = json.getString("areacycle");
+             String exhibitcycle = json.getString("exhibitcycle");
+             String firstmedtime = json.getString("firstmedtime");
+         
+             try {
+				 result = manageService.modifyNecklet(neckletid, power, medtotal, medleft, areacycle, exhibitcycle, firstmedtime);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "修好项圈信息失败!";
+			}
+         }else if(clicktype.equals("feedermodify")) {
+   
+        	 String feederid = json.getString("feederid");
+             String power = json.getString("power");
+             String medtotal = json.getString("medtotal");
+             String medleft = json.getString("medleft");
+             String areacycle = json.getString("areacycle");
+             String exhibitcycle = json.getString("exhibitcycle");
+             String firstmedtime = json.getString("firstmedtime");
+             try {
+				 result = manageService.modifyFeeder(feederid, power, medtotal, medleft, areacycle, exhibitcycle, firstmedtime);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				result = "修改喂食器信息失败!";
+			}
+         }else if(clicktype.equals("ownermodify")) {
+   
+             String ownerid = json.getString("ownerid");
+             String ownername = json.getString("ownername");
+             String owneridentity = json.getString("owneridentity");
+             String ownersex = json.getString("ownersex");
+             String ownerage = json.getString("ownerage");
+             String ownerjob = json.getString("ownerjob");
+             String homeaddress = json.getString("homeaddress");
+             String telphone = json.getString("telphone");
+  
+             try {
+				 result = manageService.modifyOwner(ownerid, ownername, owneridentity, ownersex, ownerage, ownerjob, homeaddress, telphone);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				result = "修改主人信息失败!";
+			}
+         }else if(clicktype.equals("dogmodify")) {
+   
+             String username = json.getString("username");
+             String dogid = json.getString("dogid");
+             String dogname = json.getString("dogname");
+             String dogsex = json.getString("dogsex");
+             String dogbelonghamlet = json.getString("dogbelonghamlet");
+             String districtcode = json.getString("districtcode");
+             String dogownerid = json.getString("dogownerid");
+             String dogweight = json.getString("dogweight");
+             String dogcolor = json.getString("dogcolor");
+             String dogage = json.getString("dogage");
+             String dogneckletid = json.getString("dogneckletid");
+             String dogfeederid = json.getString("dogfeederid");
+            try {
+				 result = manageService.modifyDog(username, dogid, dogname, dogsex, dogbelonghamlet, districtcode, dogownerid, dogweight, dogcolor, dogage, dogneckletid, dogfeederid);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				result = "修改牧犬信息失败!";
 			}
          }
 

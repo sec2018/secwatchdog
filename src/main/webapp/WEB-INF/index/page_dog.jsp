@@ -429,7 +429,7 @@
                             <div class="col-md-8">
                                 <!--<input type="text" readonly="readonly" class="form-control" id="modalinput_dogneckletid" />-->
                                 <select id="modalselect_dogneckletid">
-                                    <option></option>
+                                     <option></option> 
                                 </select>
                             </div>
                         </div>
@@ -438,7 +438,7 @@
                             <div class="col-md-8">
                                 <!--<input type="text" readonly="readonly" class="form-control" id="modalinput_dogneckletid" />-->
                                 <select id="modalselect_dogfeederid">
-                                    <option></option>
+                                     <option></option>
                                 </select>
                             </div>
                         </div>

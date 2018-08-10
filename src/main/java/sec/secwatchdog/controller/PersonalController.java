@@ -38,9 +38,14 @@ public class PersonalController {
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",manager);//data1保存用户信息
 		
-		//待激活用户
-		Map<String,Object> unActiveUsers = personalService.getUnActiveUsers(manager.getUsername());
-		data.put("data2",unActiveUsers);
+		try {
+			//待激活用户
+			Map<String,Object> unActiveUsers = personalService.getUnActiveUsers(manager.getUsername());
+			data.put("data2",unActiveUsers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	 
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 

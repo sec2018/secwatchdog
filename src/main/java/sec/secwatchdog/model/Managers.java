@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Managers implements Serializable{
+	//private static final long serialVersionUID = 3136099177030226745L;
     @Id
     @GeneratedValue
     public int managerid;

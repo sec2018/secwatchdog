@@ -15,6 +15,8 @@ public interface NeckletDao {
 	public List<Necklet> getNeckletsList(String username);
 	@Select("select * from necklet where neckletid = #{neckletid}")
 	public Necklet getNeckletByNeckletid(String neckletid);
+	@Select("select * from necklet where dogid = #{dogid}")
+	public Necklet getNeckletByDogid(String dogid);
 	@Insert("insert into necklet(neckletid, dogid, logintime, retiretime, medtotal, category, username) values "
 			+ "(#{neckletid}, #{dogid}, #{logintime}, #{retiretime}, #{medtotal}, #{category}, #{username})")
 	public void addNecklet(Necklet necklet);

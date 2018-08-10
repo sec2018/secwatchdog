@@ -20,4 +20,7 @@ public interface LastappexhibitrealtimeDao {
     
     @Update("update lastappexhibitrealtime set districtcode = #{districtcode} where id = #{id}")
    	public void updateLastappexhibitrealtime(Lastappexhibitrealtime lastappexhibitrealtime);
+    
+    @Update("update lastappexhibitrealtime set tableremain = #{tableremain}, apparatuspower = #{apparatuspower} where apparatusid = #{apparatusid}")
+    public void updateLastappexhibitrealtime2(Lastappexhibitrealtime lastappexhibitrealtime);
 }

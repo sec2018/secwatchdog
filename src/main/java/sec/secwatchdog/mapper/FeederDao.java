@@ -18,6 +18,8 @@ public interface FeederDao {
 	
 	@Select("select * from feeder where apparatusid = #{apparatusid}")
 	public Feeder getFeederByFeederid(String apparatusid);
+	@Select("select * from feeder where dogid = #{dogid}")
+	public Feeder getFeederByDogrid(String dogid);
 	@Insert("insert into feeder(apparatusid,apparatushealthy,apparatus, dogid, logintime, retiretime, medtotal, category, username,districtcode) values "
 			+ "(#{apparatusid}, #{apparatushealthy}, #{apparatus}, #{dogid}, #{logintime}, #{retiretime}, #{medtotal}, #{category}, #{username}, #{districtcode})")
 	public void addFeeder(Feeder feeder);

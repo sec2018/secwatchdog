@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+
+import javax.xml.crypto.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,7 @@ import sec.secwatchdog.mapper.NeckletDao;
 import sec.secwatchdog.mapper.NeckletrealtimeDao;
 import sec.secwatchdog.mapper.SheepdogsDao;
 import sec.secwatchdog.model.Apparatusrealtime;
+import sec.secwatchdog.model.Appexhibitrealtime;
 import sec.secwatchdog.model.Districts;
 import sec.secwatchdog.model.Dogowners;
 import sec.secwatchdog.model.Feedback;
@@ -1506,7 +1510,7 @@ public class ManagerServiceImpl implements ManageService {
 	@Override
 	public Map<String, Object> getDogOwnerInfo(int dogId) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		int dogOwnerId = sheepdogsDao.getSheepdogbyDogId(dogId).getDogownerid();
+		long dogOwnerId = sheepdogsDao.getSheepdogbyDogId(dogId).getDogownerid();
 		Dogowners dogowners = dogownersDao.getOwnerById(dogOwnerId);
 		if(dogowners !=null) {
 			map.put("ownerid", dogowners.getOwnerid());
@@ -1597,6 +1601,168 @@ public class ManagerServiceImpl implements ManageService {
 			}
 		}
 		return map;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String modifyNecklet(String neckletid, String power, String medtotal, String medleft, String areacycle,
+			String exhibitcycle, String firstmedtime) throws Exception {
+		String result = "项圈信息修改失败";
+		Feedback feedback = feedbackDao.getFeedback(neckletid);
+		Lastexhibitrealtime lastexhibitrealtime = lastexhibitrealtimeDao.getLastexhibitrealtime(neckletid);
+		feedback.setMedtotal(Integer.valueOf(medtotal));
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		feedback.setUpdatetime(nowtime);
+		feedback.setFeedcycle(String.valueOf(Math.round(Double.valueOf(areacycle)*1440)));
+		feedback.setExhibitcycle(String.valueOf((int)Math.round(Double.valueOf(exhibitcycle)*1440)));
+		feedback.setFirstmedtime(ChangeTimeFormat.changeTimeFormat(firstmedtime));
+		
+		Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(1970, 0, 01, 8,0);//月份0表示一月
+        Date startTime = calendar.getTime();
+        long firsttimestamp = (df.parse(firstmedtime).getTime() - startTime.getTime())/1000;    
+        calendar.add(Calendar.SECOND, (int)firsttimestamp + Integer.parseInt(medtotal) * (int)(Math.round(Double.valueOf(exhibitcycle)*1440*60)));
+        feedback.setEndmedtime(ChangeTimeFormat.changeTimeFormat(df.format(calendar.getTime()).toString()));		
+        feedbackDao.updateFeedback(feedback);
+        
+        lastexhibitrealtime.setTableremain(Integer.valueOf(medleft));
+        lastexhibitrealtime.setRealtime(feedback.getUpdatetime());
+        lastexhibitrealtime.setNextexhibittime(feedback.getFirstmedtime());
+        lastexhibitrealtime.setNeckletid(neckletid);
+        lastexhibitrealtimeDao.updateLastexhibitrealtime2(lastexhibitrealtime);
+        
+        result = "项圈信息修改成功";
+        return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String modifyFeeder(String feederid, String power, String medtotal, String medleft, String areacycle,
+			String exhibitcycle, String firstmedtime) throws Exception {
+		String result = "喂食器信息修改失败";
+		Feederback feederback = feederbackDao.getFeederback(feederid);
+		Lastappexhibitrealtime lastappexhibitrealtime = lastappexhibitrealtimeDao.getLastappexhibitrealtime(feederid);
+		feederback.setMedtotal(Integer.valueOf(medtotal));
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowtime = ChangeTimeFormat.changeTimeFormat(df.format(new Date()).toString());
+		feederback.setUpdatetime(nowtime);
+		feederback.setFeedercycle(String.valueOf(Math.round(Double.valueOf(areacycle)*1440)));
+		feederback.setExhibitcycle(String.valueOf((int)Math.round(Double.valueOf(exhibitcycle)*1440)));
+		feederback.setFirstmedtime(ChangeTimeFormat.changeTimeFormat(firstmedtime));
+		
+		Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(1970, 0, 01, 8,0);//月份0表示一月
+        Date startTime = calendar.getTime();
+        long firsttimestamp = (df.parse(firstmedtime).getTime() - startTime.getTime())/1000;    
+        calendar.add(Calendar.SECOND, (int)firsttimestamp + Integer.parseInt(medtotal) * (int)(Math.round(Double.valueOf(exhibitcycle)*1440*60)));
+        feederback.setEndmedtime(ChangeTimeFormat.changeTimeFormat(df.format(calendar.getTime()).toString()));	
+        feederbackDao.updateFeederback(feederback);
+        
+        lastappexhibitrealtime.setTableremain(Integer.valueOf(medleft));
+        lastappexhibitrealtime.setApparatuspower(power);
+        lastappexhibitrealtime.setApparatusid(feederid);
+        lastappexhibitrealtimeDao.updateLastappexhibitrealtime2(lastappexhibitrealtime);
+        result = "喂食器信息修改成功";
+        return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String modifyOwner(String ownerid, String ownername, String owneridentity, String ownersex, String ownerage,
+			String ownerjob, String homeaddress, String telphone) throws Exception {
+		String result = "主人信息修改失败";
+		Dogowners dogowners = dogownersDao.getOwnerById(Long.valueOf(ownerid));
+		dogowners.setOwnerid(Long.valueOf(ownerid));
+		dogowners.setOwnername(ownername);
+		dogowners.setOwneridentity(owneridentity);
+		dogowners.setOwnersex(ownersex);
+		dogowners.setOwnerage(Integer.valueOf(ownerage));
+		dogowners.setOwnerjob(ownerjob);
+		dogowners.setOwneraddress(homeaddress);
+		dogowners.setOwnertelphone(telphone);
+		dogownersDao.updateOwner(dogowners);
+		
+		result = "主人信息修改成功";
+		return result;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+	public String modifyDog(String username, String dogid, String dogname, String dogsex, String dogbelonghamlet,
+			String districtcode, String dogownerid, String dogweight, String dogcolor, String dogage,
+			String dogneckletid, String dogfeederid)  throws Exception {
+		String result = "牧犬信息修改失败";
+		Sheepdogs sheepdogs = sheepdogsDao.getSheepdogbyDogId(Integer.valueOf(dogid));
+		//sheepdogs.setDogid(Integer.valueOf(dogid));
+		sheepdogs.setDogname(dogname);
+		sheepdogs.setDogsex(dogsex);
+		sheepdogs.setBelonghamlet(dogbelonghamlet);
+		sheepdogs.setDogownerid(Integer.valueOf(dogownerid));
+        sheepdogs.setDogweight(dogweight);
+        sheepdogs.setDogcolor(dogcolor);
+        sheepdogs.setDogage(dogage);
+        sheepdogs.setNeckletid(dogneckletid==""?"-1":dogneckletid);
+        sheepdogs.setDistrictcode(districtcode);
+        sheepdogs.setApparatusid(dogfeederid == "" ? "-1" : dogfeederid);
+        sheepdogsDao.updateSheepDog(sheepdogs);
+        
+        if(dogneckletid != "") {
+        	//旧项圈去掉dogid
+        	Necklet originnecklet = neckletDao.getNeckletByDogid(dogid);
+        	if(originnecklet != null && originnecklet.getNeckletid() != dogneckletid) {
+        		originnecklet.setDogid(-1);
+        		neckletDao.updateNecklet(originnecklet);
+
+        	//新项圈添加dogid
+        	Necklet thisnecklet = neckletDao.getNeckletByNeckletid(dogneckletid);
+        	thisnecklet.setDogid(Integer.valueOf(dogid));
+        	neckletDao.updateNecklet(thisnecklet);
+        	
+        	Lastexhibitrealtime lastexhibitrealtime = lastexhibitrealtimeDao.getLastexhibitrealtime(dogneckletid);
+        	lastexhibitrealtime.setDistrictcode(Long.valueOf(sheepdogs.getDistrictcode()));
+        	lastexhibitrealtimeDao.updateLastexhibitrealtime(lastexhibitrealtime);
+        	
+        	Lastneckletrealtime lastneckletrealtime = lastneckletrealtimeDao.getLastneckletrealtime(dogneckletid);
+        	lastneckletrealtime.setDistrictcode(Long.valueOf(sheepdogs.getDistrictcode()));
+        	lastneckletrealtimeDao.updateLastneckletrealtime(lastneckletrealtime);
+        	}
+        }
+        
+        if(dogfeederid != "" ) {
+        	//旧喂食器去掉dogid
+        	Feeder originfeeder = feederDao.getFeederByDogrid(dogid);
+        
+        	if(originfeeder != null && originfeeder.getApparatusid() != dogfeederid) {
+        		originfeeder.setDogid(-1);
+        		feederDao.updateFeeder(originfeeder);
+
+        	//新喂食器添加dogid
+        	Feeder thisnecklet = feederDao.getFeederByFeederid(dogfeederid);
+        	thisnecklet.setDogid(Integer.valueOf(dogid));
+        	feederDao.updateFeeder(thisnecklet);
+        	
+        	Lastappexhibitrealtime lastappexhibitrealtime  = lastappexhibitrealtimeDao.getLastappexhibitrealtime(dogfeederid);
+        	lastappexhibitrealtime.setDistrictcode(Long.valueOf(sheepdogs.getDistrictcode()));
+        	lastappexhibitrealtimeDao.updateLastappexhibitrealtime(lastappexhibitrealtime);
+        	
+        	Lastapparatusrealtime lastneckletrealtime = lastapparatusrealtimeDao.getLastapparatusrealtime(dogfeederid);
+        	lastneckletrealtime.setDistrictcode(Long.valueOf(sheepdogs.getDistrictcode()));
+        	lastapparatusrealtimeDao.updateLastapparatusrealtime(lastneckletrealtime);
+        	}
+        }
+        if(dogfeederid == "" && dogneckletid == "") {
+        	Necklet originnecklet = neckletDao.getNeckletByDogid(dogid);
+    		originnecklet.setDogid(-1);
+    		neckletDao.updateNecklet(originnecklet);
+        
+        	Feeder originfeeder = feederDao.getFeederByFeederid(dogid);
+    		originfeeder.setDogid(-1);
+    		feederDao.updateFeeder(originfeeder);
+        	
+        }
+		
+		result = "牧犬信息修改成功";
+		
+		return result;
 	}	
 
 }

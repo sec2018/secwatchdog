@@ -142,10 +142,10 @@ $(function(){
         GetDogPage(this.id);
     });
 
-    $(".dogname").click(function () {
+/*    $(".dogname").click(function () {
         //setCookie("user_profile_dogid", this.id, "s6000");
         window.location.href = "/Index/PageDog6?dogid=" + this.id;
-    });
+    });*/
 
 }
 
@@ -522,8 +522,8 @@ function goPage(startItem, psize){
                 firstrealtime = ChangeTimeFormat(data.data2[i].firstmedtime).split(" ")[0];;
                 lastrealtime = ChangeTimeFormat(data.data2[i].lastmed).split(" ")[0];;
                 nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];;
-                html += "<tr><td>" + data.data2[i].neckletid + "</td><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].dogname + "</a></td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-
+                //html += "<tr><td>" + data.data2[i].neckletid + "</td><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].dogname + "</a></td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+               html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
             }
             $("#tbody_userprofilefarm").html(html);
             num = data.total;
@@ -532,11 +532,15 @@ function goPage(startItem, psize){
             for (var i = 1; i <= totalPage; i++) {
                 tempOption += '<option value=' + i + '>' + i + '</option>'
             }
+            $(".neckletid").click(function () {
+                GetDogPage(this.id);
+            });
             $("#jumpWhere").html(tempOption);
             document.getElementById("jumpWhere").options[startItem-1].selected = true;
         }
     });
 } 
+
 
 $(function () {
     $("#pagereflash").click(function () {

@@ -21,4 +21,6 @@ public interface LastexhibitrealtimeDao {
     
     @Update("update lastexhibitrealtime set districtcode = #{districtcode} where id = #{id}")
 	public void updateLastexhibitrealtime(Lastexhibitrealtime lastexhibitrealtime);
+    @Update("update lastexhibitrealtime set tableremain = #{tableremain}, realtime = #{realtime}, nextexhibittime=#{nextexhibittime} where neckletid = #{neckletid}")
+    public void updateLastexhibitrealtime2(Lastexhibitrealtime lastexhibitrealtime);
 }
