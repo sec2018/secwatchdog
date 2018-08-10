@@ -1,10 +1,13 @@
 package sec.secwatchdog.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Feeder {
-
+	@Id
+    @GeneratedValue
 	public long id;
 
 	public String apparatusid;

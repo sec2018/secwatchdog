@@ -28,12 +28,12 @@ $(function(){
         $("#li_countrysee").click(function () {
             window.location.href = "../village/village.do?village=" + data.data3.village + "&county=" + data.data3.county + "&city=" + data.data3.city + "&province=" + data.data3.province;
               });
-    } else {
+    } /*else {
         $("#span_leftscan").html("地区总览");
         $("#li_countrysee").click(function () {
          //   window.location.href = "../user/index.do";
         });
-    }
+    }*/
 
 
            
@@ -173,6 +173,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType:"application/Json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -252,6 +256,10 @@ function goPage(pno, psize){
         data: JSON.stringify({'username': data.data1.username,'startItem': pno, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
+        	if (data == "") {
+	            window.location.href = "../login.jsp";
+	            return;
+        	}
             data = eval("(" + data + ")");
             data.data2 = objToArray(data.data2);
             var html = "";

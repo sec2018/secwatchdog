@@ -50,12 +50,17 @@ public class CountyController {
 		data.put("data1",manager);//data1用户信息
 
 		url.append("page_county");//转到页面index/page_county.jsp
-		Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//该县的总体数据信息
-		data.put("data2",countyIndexInfo);
-		Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//该县下各个流行乡的数据信息
-		data.put("data3", countyMap);
-		Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//获得该县的区域编码
-		data.put("data4", data4);
+		try {
+			Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//该县的总体数据信息
+			data.put("data2",countyIndexInfo);
+			Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//该县下各个流行乡的数据信息
+			data.put("data3", countyMap);
+			Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//获得该县的区域编码
+			data.put("data4", data4);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 

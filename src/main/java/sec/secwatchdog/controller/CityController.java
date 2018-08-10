@@ -44,23 +44,28 @@ public class CityController {
 			
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",manager);//data1保存用户信息
-		if(province.equals("建设兵团")) {//查看建设兵团的详情下某师
-			url.append("page_division");//转到页面index/page_division.jsp
-			Map<String,Integer> divisionIndexInfo = cityService.GetDivisionIndexLogo(province,city);//获得师德总体数据信息
-			data.put("data2",divisionIndexInfo);
-			Map<String,Object> armyCityMap = cityService.GetArmyCityMap(province,city);//获得该师下各个流行团的详细数据信息
-			data.put("data3", armyCityMap);
-			Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得师的区域编码
-			data.put("data4", data4);
-		}else {
-			url.append("page_city");//转到页面index/page_city.jsp
+		try {
+			if(province.equals("建设兵团")) {//查看建设兵团的详情下某师
+				url.append("page_division");//转到页面index/page_division.jsp
+				Map<String,Integer> divisionIndexInfo = cityService.GetDivisionIndexLogo(province,city);//获得师德总体数据信息
+				data.put("data2",divisionIndexInfo);
+				Map<String,Object> armyCityMap = cityService.GetArmyCityMap(province,city);//获得该师下各个流行团的详细数据信息
+				data.put("data3", armyCityMap);
+				Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得师的区域编码
+				data.put("data4", data4);
+			}else {
+				url.append("page_city");//转到页面index/page_city.jsp
 
-			Map<String,Integer> cityIndexInfo = cityService.GetIndexLogoInfo(province, city);//获得该市的总体数据信息
-			data.put("data2",cityIndexInfo);
-			Map<String,Object> cityMap = cityService.GetCityMap(province,city);//获得该市下各个流行县的详细数据信息
-			data.put("data3", cityMap);
-			Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得该市的区域编码
-			data.put("data4", data4);
+				Map<String,Integer> cityIndexInfo = cityService.GetIndexLogoInfo(province, city);//获得该市的总体数据信息
+				data.put("data2",cityIndexInfo);
+				Map<String,Object> cityMap = cityService.GetCityMap(province,city);//获得该市下各个流行县的详细数据信息
+				data.put("data3", cityMap);
+				Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得该市的区域编码
+				data.put("data4", data4);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 

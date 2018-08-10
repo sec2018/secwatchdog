@@ -75,12 +75,7 @@ $(function(){
         nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];
         html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
     }
-/*    for (var i = 0; i < data.data10.length; i++) {
-        firstrealtime = ChangeTimeFormat(data.data10[i].firstmedtime).split(" ")[0];
-        lastrealtime = ChangeTimeFormat(data.data10[i].lastmed).split(" ")[0];
-        nextrealtime = ChangeTimeFormat(data.data10[i].nextmed).split(" ")[0];
-        html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data10[i].dogid + "\">" + data.data10[i].feederid + "</a></td><td>" + data.data10[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data10[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-    }*/
+ 
     $("#tbody_userprofilefarm").append(html);
 
 
@@ -99,16 +94,16 @@ $(function(){
         	   // data: JSON.stringify({"page":page}),
         	   // contentType: "application/json",
         	    success: function (data) {
-        	        if (data == "failed") {
+        	        if (data == "") {
         	            window.location.href = "../login.jsp";
         	            return;
         	        } else {
-        	           // data = eval("(" + data + ")");
+        	            data = eval("(" + data + ")");
 
         	            $("#tbody_userprofilefarm").empty();
         	            //document.getElementById("barcon").innerHTML = pagecode;
 
-        	            $(".pagination").empty();
+        	            $(".barcon").empty();
         	            
         	            var html = "";
         	            var firstrealtime = "";
@@ -117,75 +112,12 @@ $(function(){
 
         	            data = objToArray(data);
         	            for (var i = 0; i < data.length; i++) {
-                            if (data[i].neckletid.indexOf(neckletid) >= 0) {
-
-                                //修正信息
-                                //var datenow = new Date();//获取系统当前时间
-                                var timestampnow = Date.parse(new Date()) / 1000;
-                                //上次投药时间  20180323155000
-                                var lastmedtime_1 = data[i].lastmed;
-                                var firstmedtime_1 = data[i].firstmedtime;
-                                var nextmedtime_1 = data[i].nextmed;
-
-                                var medcycle = data[i].exhibitcycle * 1440 * 60;
-                                var lastmedtime_2 = lastmedtime_1.substring(0, 4) + "/" + lastmedtime_1.substring(4, 6) + "/" + lastmedtime_1.substring(6, 8) + " " + lastmedtime_1.substring(8, 10) + ":" + lastmedtime_1.substring(10, 12) + ":" + lastmedtime_1.substring(12, 14);
-                                var firstmedtime_2 = firstmedtime_1.substring(0, 4) + "/" + firstmedtime_1.substring(4, 6) + "/" + firstmedtime_1.substring(6, 8) + " " + firstmedtime_1.substring(8, 10) + ":" + firstmedtime_1.substring(10, 12) + ":" + firstmedtime_1.substring(12, 14);
-                                //var nextmedtime_2 = nextmedtime_1.substring(0, 4) + "/" + nextmedtime_1.substring(4, 6) + "/" + nextmedtime_1.substring(6, 8) + " " + nextmedtime_1.substring(8, 10) + ":" + nextmedtime_1.substring(10, 12) + ":" + nextmedtime_1.substring(12, 14);
-
-                                var lastmedtimestamp = new Date(lastmedtime_2).getTime() / 1000;
-                                var firstmedtimestamp = new Date(firstmedtime_2).getTime() / 1000;
-
-                                var lastmedtimeres = ChangeTimeFormat(lastmedtime_1).split(" ")[0];
-                                var firstrealtime = ChangeTimeFormat(firstmedtime_1).split(" ")[0];
-                                var nextmedtimeres = firstrealtime;
-
-                                if (firstmedtimestamp < timestampnow) {
-                                    var forgetmedtimes = Math.floor((timestampnow - lastmedtimestamp) / medcycle);
-                                    var lastmedtimeres_ = lastmedtimestamp + forgetmedtimes * medcycle;
-                                    var nextmedtimeres_ = lastmedtimeres_ + medcycle;
-                                    var d = new Date(lastmedtimeres_ * 1000);
-                                    var n = new Date(lastmedtimeres_ * 1000);
-                                    var year = d.getFullYear();
-                                    var month = d.getMonth() + 1;
-                                    var day = d.getDate();
-                                    var hour = d.getHours();
-                                    var min = d.getMinutes();
-                                    var sec = d.getSeconds();
-                                    if ((month + '').length < 2) {
-                                        month = "0" + month;
-                                    }
-                                    if ((day + '').length < 2) {
-                                        day = "0" + day;
-                                    }
-                                    lastmedtimeres = year + "-" + month + "-" + day;
-
-                                    var year2 = n.getFullYear();
-                                    var month2 = n.getMonth() + 1;
-                                    var day2 = n.getDate();
-                                    var hour2 = n.getHours();
-                                    var min2 = n.getMinutes();
-                                    var sec2 = n.getSeconds();
-                                    if ((month2 + '').length < 2) {
-                                        month2 = "0" + month2;
-                                    }
-                                    if ((day2 + '').length < 2) {
-                                        day2 = "0" + day2;
-                                    }
-                                    nextmedtimeres = year2 + "-" + month2 + "-" + day2;
-
-                                    firstrealtime = ChangeTimeFormat(data[i].firstmedtime).split(" ")[0];
-                                }
-                                //lastrealtime = ChangeTimeFormat(data.data2[i].lastmed).split(" ")[0];
-                                //nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];
-                                lastrealtime = lastmedtimeres;
-                                nextrealtime = nextmedtimeres;
-
-                                //searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-                                searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data[i].dogid + "\">" + data[i].neckletid + "</a></td><td>" + data[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-                            }
-                        }
-
-        	        
+        	                firstrealtime = ChangeTimeFormat(data[0].firstmedtime).split(" ")[0];
+        	                lastrealtime = ChangeTimeFormat(data[0].lastmed).split(" ")[0];
+        	                nextrealtime = ChangeTimeFormat(data[0].nextmed).split(" ")[0];
+        	                searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data[0].dogid + "\">" + data[0].neckletid + "</a></td><td>" + data[0].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data[0].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+        	            }
+        	            
         	            $("#tbody_userprofilefarm").append(searchhtml);
 
 
@@ -210,10 +142,10 @@ $(function(){
         GetDogPage(this.id);
     });
 
-    $(".dogname").click(function () {
+/*    $(".dogname").click(function () {
         //setCookie("user_profile_dogid", this.id, "s6000");
         window.location.href = "/Index/PageDog6?dogid=" + this.id;
-    });
+    });*/
 
 }
 
@@ -228,7 +160,7 @@ function objToArray(array) {
  
 
 
-function nameOnClick(id, privilegelevel) {
+/*function nameOnClick(id, privilegelevel) {
     switch (privilegelevel) {
         case 6:
             //alert(id);
@@ -238,11 +170,11 @@ function nameOnClick(id, privilegelevel) {
         default:
             window.location.href = "/Index/UserProfile?viewuser=" + id;
     }
-}
+}*/
 
 function GetDogPage(id) {
     //setCookie("user_profile_dogid", id, "s6000");
-    window.location.href = "/Index/PageDog6?dogid="+id;
+    window.location.href = "../pageManageCommon/pagedog?dogid="+id;
 }
 
 function getCookie(name) {
@@ -303,19 +235,25 @@ $(function () {
         var dogage = $("#modalinput_dogage").val();
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
+        senddata.username = data.data1.username;
         senddata.dogname = dogname;
         senddata.dogsex = dogsex;
         senddata.dogbelonghamlet = dogbelonghamlet;
+        senddata.ownerhamletcode = data.data1.districtcode;
         senddata.dogownerid = dogownerid;
         senddata.dogweight = dogweight;
         senddata.dogcolor = dogcolor;
         senddata.dogage = dogage;
         $.ajax({
-            url: "/api/pagedogapi",
+            url:  "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data:  JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+    	        }
                 alert(data);
                 window.location.reload();
             }
@@ -334,20 +272,26 @@ $(function () {
         var dogneckletid = $("#modalselect_dogneckletid").find("option:selected").text();
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
+        senddata.username = data.data1.username;
         senddata.dogname = dogname;
         senddata.dogsex = dogsex;
         senddata.dogbelonghamlet = dogbelonghamlet;
+        senddata.ownerhamletcode = data.data1.districtcode;
         senddata.dogownerid = dogownerid;
         senddata.dogweight = dogweight;
         senddata.dogcolor = dogcolor;
         senddata.dogage = dogage;
         senddata.dogneckletid = dogneckletid;
         $.ajax({
-            url: "/api/pagedogapi",
+            url:  "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 if (data == "success") {
                     alert("绑定成功！");
                     $("#dogDiv").modal('hide');
@@ -371,20 +315,26 @@ $(function () {
         var dogfeederid = $("#modalselect_dogfeederid").find("option:selected").text();
         var senddata = {};
         senddata.clicktype = clicktype;
-        senddata.username = username;
+        senddata.username = data.data1.username;
         senddata.dogname = dogname;
         senddata.dogsex = dogsex;
         senddata.dogbelonghamlet = dogbelonghamlet;
+        senddata.ownerhamletcode = data.data1.districtcode;
         senddata.dogownerid = dogownerid;
         senddata.dogweight = dogweight;
         senddata.dogcolor = dogcolor;
         senddata.dogage = dogage;
         senddata.dogfeederid = dogfeederid;
         $.ajax({
-            url: "/api/pagedogapi",
+            url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 if (data == "success") {
                     alert("绑定成功！");
                     $("#dogDiv").modal('hide');
@@ -412,15 +362,21 @@ $(function () {
         senddata.owneridentity = owneridentity;
         senddata.ownersex = ownersex;
         senddata.ownerhamlet = ownerhamlet;
+        senddata.ownerhamletcode = data.data1.districtcode;
         senddata.ownerage = ownerage;
         senddata.ownerjob = ownerjob;
         senddata.homeaddress = homeaddress;
         senddata.telphone = telphone;
         $.ajax({
-            url: "/api/pagedogapi",
+            url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -437,12 +393,17 @@ $(function () {
         senddata.neckletid = neckletid;
         senddata.medtotal = medtotal;
         senddata.category = category;
-        senddata.username = manageusername;
+        senddata.username = data.data1.username;
         $.ajax({
-            url: "/api/pagedogapi",
+            url:  "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -459,12 +420,17 @@ $(function () {
         senddata.feederid = feederid;
         senddata.medtotal = medtotal;
         senddata.category = category;
-        senddata.username = manageusername;
+        senddata.username = data.data1.username;
         $.ajax({
-            url: "/api/pagedogapi",
+            url: "../pageManageCommon/pagedogapi.do",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -542,6 +508,10 @@ function goPage(startItem, psize){
         data: JSON.stringify({'startItem': startItem, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
+        	if (data == "") {
+	            window.location.href = "../login.jsp";
+	            return;
+        	}
             data = eval("(" + data + ")");
             data.data2 = objToArray(data.data2);
             var html = "";
@@ -552,8 +522,8 @@ function goPage(startItem, psize){
                 firstrealtime = ChangeTimeFormat(data.data2[i].firstmedtime).split(" ")[0];;
                 lastrealtime = ChangeTimeFormat(data.data2[i].lastmed).split(" ")[0];;
                 nextrealtime = ChangeTimeFormat(data.data2[i].nextmed).split(" ")[0];;
-                html += "<tr><td>" + data.data2[i].neckletid + "</td><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].dogname + "</a></td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
-
+                //html += "<tr><td>" + data.data2[i].neckletid + "</td><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].dogname + "</a></td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+               html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data2[i].dogid + "\">" + data.data2[i].neckletid + "</a></td><td>" + data.data2[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data2[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
             }
             $("#tbody_userprofilefarm").html(html);
             num = data.total;
@@ -562,11 +532,15 @@ function goPage(startItem, psize){
             for (var i = 1; i <= totalPage; i++) {
                 tempOption += '<option value=' + i + '>' + i + '</option>'
             }
+            $(".neckletid").click(function () {
+                GetDogPage(this.id);
+            });
             $("#jumpWhere").html(tempOption);
             document.getElementById("jumpWhere").options[startItem-1].selected = true;
         }
     });
 } 
+
 
 $(function () {
     $("#pagereflash").click(function () {

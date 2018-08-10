@@ -202,6 +202,10 @@ $(function () {
                 data:  JSON.stringify(senddata),
                 contentType: "application/json",
                 success: function (data) {
+                	if (data == "") {
+        	            window.location.href = "../login.jsp";
+        	            return;
+                	}
                     alert(data);
                     if (data == "添加成功") {
                         window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data1.username;

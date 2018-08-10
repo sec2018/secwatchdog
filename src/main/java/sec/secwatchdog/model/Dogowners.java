@@ -6,7 +6,8 @@ import javax.persistence.Id;
 
 @Entity
 public class Dogowners {
-
+	@Id
+	@GeneratedValue
 	public long ownerid;
 
 	public String ownername;
@@ -19,7 +20,7 @@ public class Dogowners {
 
 	public String ownerretiretime;
 
-	public String owneridentit;
+	public String owneridentity;
 
 	public String ownersex;
 
@@ -77,12 +78,12 @@ public class Dogowners {
 		this.ownerretiretime = ownerretiretime;
 	}
 
-	public String getOwneridentit() {
-		return owneridentit;
+	public String getOwneridentity() {
+		return owneridentity;
 	}
 
-	public void setOwneridentit(String owneridentit) {
-		this.owneridentit = owneridentit;
+	public void setOwneridentity(String owneridentity) {
+		this.owneridentity = owneridentity;
 	}
 
 	public String getOwnersex() {

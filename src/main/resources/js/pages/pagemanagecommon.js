@@ -138,7 +138,6 @@ $(function(){
             if(data.data4 == false){
             	$("#div_newuserpage").css("display", "none");
             }
-
            
         }
   );
@@ -299,6 +298,10 @@ function goPage(pno, psize){
         data: JSON.stringify({'districtcode': districtcode,'managername': data.data3.username,'startItem': pno, 'pageSize': psize}),                    
         contentType: "application/json",
         success: function (data) {
+        	if (data == "") {
+	            window.location.href = "../login.jsp";
+	            return;
+        	}
             data = eval("(" + data + ")");
             data.data2 = objToArray(data.data2);
             var searchhtml = "";
@@ -396,7 +399,10 @@ function goSearchPage(pno, psize){
   	        data: JSON.stringify({'clicktype': "onlynextonlinename",'managername':managername,'username':data.data3.username,'districtcode':districtcode,'districtlevel':districtlevel,'startItem': pno, 'pageSize': psize}),                    
   	        contentType: "application/json",
   	        success: function (data) {
-
+  	        	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
 	  	            data = eval("(" + data + ")");
 	  	            data.data1 = objToArray(data.data1);
 	  	            for (var i = 0; i < data.data1.length; i++) {

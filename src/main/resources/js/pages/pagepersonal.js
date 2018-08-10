@@ -143,9 +143,16 @@
                 $("#a_areasee").click(function () {
                 	window.location.href = "../user/index.do";
                 });
-                $("#a_managepage").click(function () {
-                    window.location.href = "../pageManageCommon/index.do?districtcode=0";
-                });
+                if(data.data1.privilegelevel == 6){
+                	 $("#a_managepage").click(function () {
+                         window.location.href = "../pageManageCommon/hamletManager.do";
+                     });
+                }else{
+                	 $("#a_managepage").click(function () {
+                         window.location.href = "../pageManageCommon/index.do?districtcode=0";
+                     });
+                }
+               
 
                 var html = "";
                 var logintime = "";
@@ -156,8 +163,7 @@
                 }
                 $("#tbody_pagemanagecommon").append(html);
             }
-            
-            
+                
             
         }
  )
@@ -257,6 +263,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
             }
         })
@@ -284,6 +294,10 @@ $(function () {
             data: JSON.stringify(activedata),
             contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }

@@ -47,22 +47,27 @@ public class ProvinceController {
 			
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",manager);//data1保存用户信息
-		if(province.equals("建设兵团")) {//查看建设兵团的详情
-			url.append("page_corps");//转到页面index/page_corps.jsp
-			Map<String,Integer> armyIndexInfo = provinceService.GetArmyIndexLogo(province);//获得建设兵团的总体数据信息
-			data.put("data2",armyIndexInfo);
-			Map<String,Object> armyProvinceMap = provinceService.GetArmyProvinceMap(province);//获得该建设兵团下各个流行师的详细数据
-			data.put("data3", armyProvinceMap);
-			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该建设兵团的区域编码
-			data.put("data4", data4);
-		}else {//如果非建设兵团，即省
-			url.append("page_province");//转到页面index/page_province.jsp
-			Map<String,Integer> provinceIndexInfo = provinceService.GetIndexLogoInfo(province);//获得该省的总体数据信息
-			data.put("data2",provinceIndexInfo);
-			Map<String,Object> ProvinceMap = provinceService.GetProvinceMap(province);//获得该省下各个流行市的详细数据
-			data.put("data3", ProvinceMap);
-			Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该省的区域编码
-			data.put("data4", data4);
+		try {
+			if(province.equals("建设兵团")) {//查看建设兵团的详情
+				url.append("page_corps");//转到页面index/page_corps.jsp
+				Map<String,Integer> armyIndexInfo = provinceService.GetArmyIndexLogo(province);//获得建设兵团的总体数据信息
+				data.put("data2",armyIndexInfo);
+				Map<String,Object> armyProvinceMap = provinceService.GetArmyProvinceMap(province);//获得该建设兵团下各个流行师的详细数据
+				data.put("data3", armyProvinceMap);
+				Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该建设兵团的区域编码
+				data.put("data4", data4);
+			}else {//如果非建设兵团，即省
+				url.append("page_province");//转到页面index/page_province.jsp
+				Map<String,Integer> provinceIndexInfo = provinceService.GetIndexLogoInfo(province);//获得该省的总体数据信息
+				data.put("data2",provinceIndexInfo);
+				Map<String,Object> ProvinceMap = provinceService.GetProvinceMap(province);//获得该省下各个流行市的详细数据
+				data.put("data3", ProvinceMap);
+				Map<String,Object> data4 = provinceService.GetDistrictcode(province);//获得该省的区域编码
+				data.put("data4", data4);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 

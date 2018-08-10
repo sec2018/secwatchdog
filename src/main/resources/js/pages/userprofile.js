@@ -223,6 +223,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType:"application/Json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }
@@ -245,6 +249,10 @@ $(function () {
             data: JSON.stringify(senddata),
             contentType:"application/Json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }

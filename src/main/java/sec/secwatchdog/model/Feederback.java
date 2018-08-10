@@ -1,7 +1,12 @@
 package sec.secwatchdog.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class Feederback {
-	public int id;
+	@Id
+    @GeneratedValue
+	public long id;
 
     public String apparatusid;
 
@@ -15,11 +20,11 @@ public class Feederback {
 
     public String firstmedtime;
 
-    public int getId() {
+    public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

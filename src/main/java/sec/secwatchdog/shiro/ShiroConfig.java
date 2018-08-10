@@ -153,8 +153,8 @@ public class ShiroConfig {
         factoryBean.setSecurityManager(getSecurityManager());
         factoryBean.setLoginUrl("/login.jsp");
         filterChainDefinitionMap.put("/resources/**", "anon");
-        filterChainDefinitionMap.put("/index/login", "anon");
-        //filterChainDefinitionMap.put("/**", "user");
+        filterChainDefinitionMap.put("/user/login.do", "anon");
+        filterChainDefinitionMap.put("/**", "user");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;
     }

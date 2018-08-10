@@ -3,8 +3,10 @@ package sec.secwatchdog.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import sec.secwatchdog.model.Managers;
 
@@ -15,6 +17,9 @@ public interface ManagersDao {
 	
 	@Select("select * from managers where userName=#{ManagerName}")
 	public Managers checkLogin(String ManagerName);
+	
+	@Select("select * from managers where userName=#{username}")
+	public Managers getManagerByUsername(String username);
 	
 	@Select("select privilegelevel from managers ")
 	public List<Integer> getManagerLevel();
@@ -42,17 +47,7 @@ public interface ManagersDao {
 	
 	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where privilegelevel=#{privilegelevel}")
 	public List<Managers> getManagersByPrivilegelevel(int privilegelevel);
-
-//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where province = #{param1} and privilegelevel=#{param2}")
-//	public List<Managers> getManagersByProvinceNameAndPrivilegelevel(String provinceName, int privilegelevel);
-//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where city = #{param1} and privilegelevel=#{param2}")
-//	public List<Managers> getManagersByCityNameAndPrivilegelevel(String cityName, int privilegelevel);
-//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where county = #{param1} and privilegelevel=#{param2}")
-//	public List<Managers> getManagersByCountyNameAndPrivilegelevel(String countyName, int privilegelevel);
-//	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where village = #{param1} and privilegelevel=#{param2}")
-//	public List<Managers> getManagersByVillageNameAndPrivilegelevel(String villageName, int privilegelevel);
-//	
-	
+		
 	@Select("select username,managername,logintime,province,city,county, village, hamlet, workplace,managertel,officecall from managers where districtcode like concat(#{param1},'%') and privilegelevel=#{param2}")
 	public List<Managers> getManagersByDistrictcodeAndPrivilegelevel(String districtcode, int privilegelevel);
 	
@@ -67,16 +62,16 @@ public interface ManagersDao {
 	@Select("select * from managers where username= #{param1} or username=#{param2}")
 	public List<Managers> getUserAndActiveUser(String usrname,String activeUsername);
 	
-	@Select("update managers set managerstatus = 1  where username= #{activeUsername}")
+	@Update("update managers set managerstatus = 1  where username= #{activeUsername}")
 	public void activeManager(String activeUsername);
-	@Select("update managers set managerstatus = 0  where username= #{activeUsername}")
+	@Update("update managers set managerstatus = 0  where username= #{activeUsername}")
 	public void freezeManager(String activeUsername);
 	
-	@Select("update managers set managername = #{param2}, workplace =#{param3} ,manageridentity =#{param4} ,officecall = #{param5},managertel =#{param6} ,address = #{param7}, email = #{param8},password = #{param9} where username= #{param1}")
+	@Update("update managers set managername = #{param2}, workplace =#{param3} ,manageridentity =#{param4} ,officecall = #{param5},managertel =#{param6} ,address = #{param7}, email = #{param8},password = #{param9} where username= #{param1}")
 	public void updateManager(String username, String managername, String managerjob,
 			String manageridentity, String officecall, String managertel, String manageraddress, String email,
 			String password);
-	@Select("insert into managers(username, managername, logintime, managertel, managerphone, password, privilegelevel,"
+	@Insert("insert into managers(username, managername, logintime, managertel, managerphone, password, privilegelevel,"
 			+ "privilegedetail, managerstatus, managerretirtime, province, city, county, officecall, address, upusername,"
 			+ "village, hamlet, workplace, chargehamlet, manageridentity, email, districtcode) values (#{username}, #{managername}, #{logintime},#{managertel} , #{managerphone}, #{password}, #{privilegelevel},"
 			+ "#{privilegedetail}, #{managerstatus}, #{managerretirtime}, #{province}, #{city}, #{county}, #{officecall}, #{address}, #{upusername},"
@@ -85,6 +80,6 @@ public interface ManagersDao {
 	
 	@Select("select username, privilegelevel from managers where username= #{param1} or username=#{param2}")
 	public List<Managers> getUserAndRebackUser(String usrname,String rebackUsername);
-	@Select("update managers set password=#{param2} where username= #{param1}")
+	@Update("update managers set password=#{param2} where username= #{param1}")
 	public void rebackManager(String rebackUsername, String password);
 }

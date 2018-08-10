@@ -51,7 +51,13 @@ public class ShiroRealm extends AuthorizingRealm {
         } else if (StringUtils.isEmpty(token.getPassword())) {
             throw new IncorrectCredentialsException("password is null!");
         }
-        Managers manager = userService.findUserByName(token.getUsername());
+        Managers manager = new Managers();
+		try {
+			manager = userService.findUserByName(token.getUsername());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         if (manager == null) { // 用户不存在
             throw new UnknownAccountException("The user does not exist");
         }
