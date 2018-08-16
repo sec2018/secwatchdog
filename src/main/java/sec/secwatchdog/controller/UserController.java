@@ -55,9 +55,9 @@ public class UserController {
             UsernamePasswordToken token = new UsernamePasswordToken(manager.getUsername(), aes.encryptData(manager.getPassword()));  
             Subject currentUser = SecurityUtils.getSubject();        
                 //使用shiro来验证  
-            token.setRememberMe(true);  
+            //token.setRememberMe(true);  
             currentUser.login(token);//验证角色和权限
-           
+            
           //验证是否登录成功
             if(currentUser.isAuthenticated()){
 		        System.out.println("用户[" + manager.getUsername() + "]登录认证通过（这里可进行一些认证通过后的系统参数初始化操作）");
