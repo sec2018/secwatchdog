@@ -21,6 +21,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -42,6 +44,8 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 	@Resource
 	private UserService userService;
@@ -60,8 +64,8 @@ public class UserController {
             
           //验证是否登录成功
             if(currentUser.isAuthenticated()){
-		        System.out.println("用户[" + manager.getUsername() + "]登录认证通过（这里可进行一些认证通过后的系统参数初始化操作）");
-			/*	if(currentUser.hasRole("admin")){
+            	logger.info("用户[" + manager.getUsername() + "]登录认证通过(这里可进行一些认证通过后的系统参数初始化操作)");
+		       /*	if(currentUser.hasRole("admin")){
 		             System.out.println("有角色admin");
 		        }*/
 				Managers resultUser=userService.login(manager);
@@ -79,21 +83,20 @@ public class UserController {
                 return "";
             }
         }catch(UnknownAccountException uae){
-            System.out.println("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，未知账户");
+        	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，未知账户");
             request.setAttribute("message_login", "未知账户");
         }catch(IncorrectCredentialsException ice){
-            System.out.println("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
+        	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
             request.setAttribute("message_login", "密码不正确");
         }catch(LockedAccountException lae){
-            System.out.println("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，账户已锁定");
+        	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
             request.setAttribute("message_login", "账户已锁定");
         }catch(ExcessiveAttemptsException eae){
-            System.out.println("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误次数过多");
+        	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
             request.setAttribute("message_login", "用户名或密码错误次数过多");
         }catch(AuthenticationException ae){
             //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
-            System.out.println("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，堆栈轨迹如下");
-            ae.printStackTrace();
+        	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
             request.setAttribute("message_login", "用户名或密码不正确");
         }catch(Exception ex){
             throw new BusinessException(LuoErrorCode.LOGIN_VERIFY_FAILURE);
