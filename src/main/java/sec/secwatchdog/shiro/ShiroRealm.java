@@ -1,7 +1,10 @@
 package sec.secwatchdog.shiro;
 
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,7 @@ import sec.secwatchdog.service.UserService;
  * Created by WangZJ on 2018/7/22.
  */
 public class ShiroRealm extends AuthorizingRealm {
-
-/*    public ShiroRealm(CacheManager cacheManager, CredentialsMatcher matcher) {
-        super(cacheManager, matcher);
-    }*/
-
+ 
     @Autowired
     private UserService userService;
 
@@ -27,9 +26,9 @@ public class ShiroRealm extends AuthorizingRealm {
     }
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection paramPrincipalCollection) {
-        /*SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        //User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
-        Managers manager = (Managers) paramPrincipalCollection.getPrimaryPrincipal();
+    /*    SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        
+        String username = (String) paramPrincipalCollection.getPrimaryPrincipal();
         if (manager != null) {
             // 当前用户角色编码集合
             List<Role> roles = userService.findLoginUserRoles(manager);
@@ -37,10 +36,10 @@ public class ShiroRealm extends AuthorizingRealm {
             for (Role role : roles) {
                 roleIds.add(String.valueOf(role.getRname()));
             }
-            authorizationInfo.addRoles(roleIds);
+            authorizationInfo.setRoles(roleIds);
         }
         return authorizationInfo;*/
-    	return null;
+        return null;
     }
 
     @Override

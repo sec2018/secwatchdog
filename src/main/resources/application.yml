@@ -6,7 +6,16 @@ server:
         min-spare-threads: 30
     port: 8080
     context-path: /secwatchdog
-    
+ 
+#logging:
+#    level: 
+#        #ROOT: DEBUG
+#        sec.secwatchdog: ERROR       
+#    file: ./logs/application.log
+#    # Logging pattern for file
+#    pattern:
+#        console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+#        file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 # mysql   
 spring:
     profiles:
@@ -18,6 +27,7 @@ spring:
       view:
         prefix: /WEB-INF/
         suffix: .jsp
+        
 #	redis:
 #	    open: true  # 是否开启redis缓存  true开启   false关闭
 #	    database: 0
