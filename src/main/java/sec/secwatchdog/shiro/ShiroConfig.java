@@ -1,6 +1,5 @@
 package sec.secwatchdog.shiro;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -61,6 +60,7 @@ public class ShiroConfig {
 
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(){
+    	System.out.println("-----------------" + "ShiroFilterFactoryBean" + "--------------");
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(getSecurityManager());
         factoryBean.setLoginUrl("/login.jsp");
@@ -72,6 +72,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/login.do", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+   
         return factoryBean;
     }
+    
+  
 }

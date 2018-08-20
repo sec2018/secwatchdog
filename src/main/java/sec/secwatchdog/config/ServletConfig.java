@@ -1,22 +1,24 @@
 package sec.secwatchdog.config;
 
 
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.DispatcherServlet;
 
 
-/**
- * Servlet 配置
- * @author ThinkGem
- * @version 2017年11月30日
- */
 @Configuration
 public class ServletConfig {
-/*	 @Bean
-	  public ServletRegistrationBean servletRegistrationBean(){
-	    ServletRegistrationBean registration = new ServletRegistrationBean();
-	    registration.setEnabled(true);
-	    registration.addUrlMappings("/*");
-	    
+	 @Bean
+	  public ServletRegistrationBean servletRegistrationBean(DispatcherServlet dispatcherServlet){
+		 System.out.println("-----------"+"ServletConfig"+"------------");
+	    ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+	    //registration.setServlet(dispatcherServlet());
+	    //registration.setEnabled(true);
+	   
+	    registration.addUrlMappings("*.do");
+	    registration.setName("myServlet");
 	    return registration;
-	  }*/
+	  }
+
 }
