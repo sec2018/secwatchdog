@@ -291,7 +291,10 @@ public class PageManageCommonController {
 			data.put("data9", data9);
 			Map<String,Object> data3 = manageService.getDogOwnerInfo(dogId);
 			data.put("data3", data3);
-			Map<String,Object> data5 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+			Map<String,Object> data5 = null;
+			if(user.getPrivilegelevel()==6) {
+				data5 = manageService.getVillageManagersList(String.valueOf(user.getDistrictcode()));
+			}
 			data.put("data5", data5);
 			Map<String, Object> data7 = manageService.getNecksList(user.getUsername());
 			data.put("data7", data7);
