@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-
 import sec.secwatchdog.model.Districts;
 
- 
 @Mapper
 public interface DistrictsDao {
 	@Select("select * from districts")

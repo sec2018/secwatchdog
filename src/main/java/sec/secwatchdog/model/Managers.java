@@ -250,4 +250,17 @@ public class Managers implements Serializable{
 	public void setDistrictcode(long districtcode) {
 		this.districtcode = districtcode;
 	}
+
+	@Override
+	public String toString() {
+		return "Managers [managerid=" + managerid + ", username=" + username + ", managername=" + managername
+				+ ", logintime=" + logintime + ", managertel=" + managertel + ", managerphone=" + managerphone
+				+ ", password=" + password + ", privilegelevel=" + privilegelevel + ", privilegedetail="
+				+ privilegedetail + ", managerstatus=" + managerstatus + ", managerretirtime=" + managerretirtime
+				+ ", province=" + province + ", city=" + city + ", county=" + county + ", officecall=" + officecall
+				+ ", address=" + address + ", upusername=" + upusername + ", village=" + village + ", hamlet=" + hamlet
+				+ ", workplace=" + workplace + ", chargehamlet=" + chargehamlet + ", manageridentity=" + manageridentity
+				+ ", email=" + email + ", districtcode=" + districtcode + "]";
+	}
+	
 }
