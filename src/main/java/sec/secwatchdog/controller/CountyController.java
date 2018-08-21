@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import sec.secwatchdog.service.UserService;
 @Controller
 @RequestMapping("/county")
 public class CountyController {
+ 
 	@Resource
 	private UserService userService;
 	
@@ -33,9 +36,10 @@ public class CountyController {
   * @param request
   * @param model
   * @return
+ * @throws Exception 
   */
 	@RequestMapping("/county")
-	public String GoToCountyPage(@RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
+	public String GoToCountyPage(@RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) throws Exception {
 		HttpSession session=request.getSession();
 		//session过期
 		if(session.getAttribute("currentUser")==null){;
@@ -50,17 +54,14 @@ public class CountyController {
 		data.put("data1",manager);//data1用户信息
 
 		url.append("page_county");//转到页面index/page_county.jsp
-		try {
-			Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//该县的总体数据信息
-			data.put("data2",countyIndexInfo);
-			Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//该县下各个流行乡的数据信息
-			data.put("data3", countyMap);
-			Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//获得该县的区域编码
-			data.put("data4", data4);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	 
+		Map<String,Integer> countyIndexInfo = countyService.GetIndexLogoInfo(province, city,county);//该县的总体数据信息
+		data.put("data2",countyIndexInfo);
+		Map<String,Object> countyMap = countyService.GetCountyMap(province,city,county);//该县下各个流行乡的数据信息
+		data.put("data3", countyMap);
+		Map<String,Object> data4 = countyService.GetDistrictcode(province,city,county);//获得该县的区域编码
+		data.put("data4", data4);
+	 
 		
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 

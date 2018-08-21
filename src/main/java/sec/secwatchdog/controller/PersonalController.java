@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,10 +23,11 @@ import sec.secwatchdog.service.PersonalService;
 @Controller
 @RequestMapping("/personal")
 public class PersonalController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private PersonalService personalService;
 	@RequestMapping("/pagePersonal")
-	public String GoToPersonalPage(HttpServletRequest request,ModelMap model) {
+	public String GoToPersonalPage(HttpServletRequest request,ModelMap model) throws Exception {
 		HttpSession session=request.getSession();
 		//session失效，退出登录页面
 		if(session.getAttribute("currentUser")==null){;
@@ -38,15 +41,10 @@ public class PersonalController {
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",manager);//data1保存用户信息
 		
-		try {
-			//待激活用户
-			Map<String,Object> unActiveUsers = personalService.getUnActiveUsers(manager.getUsername());
-			data.put("data2",unActiveUsers);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	 
+		//待激活用户
+		Map<String,Object> unActiveUsers = personalService.getUnActiveUsers(manager.getUsername());
+		data.put("data2",unActiveUsers);
+ 
 		jsStr = JSONObject.fromObject(data);//数据转为json格式
 		model.addAttribute("model",jsStr.toString());	 
 		return url.toString();
@@ -77,6 +75,7 @@ public class PersonalController {
                 try {
 					temp = personalService.activeAdmin(username, namearr[i]);
 				} catch (Exception e) {
+					logger.error("【系统错误】",e);
 					result += namearr[i] + "激活失败!";
 				}
                 if (temp.equals("11"))
@@ -108,6 +107,7 @@ public class PersonalController {
 			try {
 				result = personalService.modifyUser(username, managername, managerjob, manageridentity, officecall, managertel, manageraddress, email, password);
 			} catch (Exception e) {
+				logger.error("【系统错误】",e);
 				result = "修改失败！";
 			}       
 			

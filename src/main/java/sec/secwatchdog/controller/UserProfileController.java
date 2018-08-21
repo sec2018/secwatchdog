@@ -31,15 +31,17 @@ public class UserProfileController {
 	private ManageService manageService;
 	@Autowired
 	private HamletService hamletService;
-	/***
+	/**
+	 * @throws Exception *
 	 * 
 	 * @param username 当前点击的管理员用户名
 	 * @param request
 	 * @param model
 	 * @return
+	 * @throws   
 	 */
     @RequestMapping("userProfilePage")
-	public String GoToUserProfilePage(@RequestParam(value="viewuser") String username, HttpServletRequest request,ModelMap model ) {
+	public String GoToUserProfilePage(@RequestParam(value="viewuser") String username, HttpServletRequest request,ModelMap model ) throws Exception    {
 	HttpSession session=request.getSession();
 	//session失效，退出登录页面
 	if(session.getAttribute("currentUser")==null){;
@@ -49,13 +51,10 @@ public class UserProfileController {
 	StringBuilder url = new StringBuilder("index/user_profile");//转到页面index/user_profile.jsp
 	JSONObject jsStr = null;
 	Map<String,Object> data = new HashMap<String,Object>();
-	try {
+	
 		//获取被点击的管理员信息
-		data  = userProfileService.getUserProfile(username);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+    data  = userProfileService.getUserProfile(username);
+
 	jsStr = JSONObject.fromObject(data);
 	model.addAttribute("model",jsStr.toString());	 
 	return url.toString();
@@ -65,9 +64,10 @@ public class UserProfileController {
      * @param request
      * @param model
      * @return
+     * @throws Exception 
      */
     @RequestMapping("userProfileFarmPage")
-	public String GoToUserProfileFarmPage(@RequestParam(value="viewuser") String username, HttpServletRequest request,ModelMap model ) {
+	public String GoToUserProfileFarmPage(@RequestParam(value="viewuser") String username, HttpServletRequest request,ModelMap model ) throws Exception {
 	HttpSession session=request.getSession();
 	//session失效，退出登录页面
 	if(session.getAttribute("currentUser")==null){;
@@ -79,22 +79,19 @@ public class UserProfileController {
 	StringBuilder url = new StringBuilder("index/user_profile_farm");//转到页面index/user_profile.jsp
 	JSONObject jsStr = null;
 	Map<String,Object> data = new HashMap<String,Object>();
-	try {
-		//获取被点击的管理员信息
-		Map<String,Object> data1  = manageService.getManagerInfo(username);
-		data.put("data1", data1);
-		Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
-		data.put("data2", dogList.get("data"));
-		data.put("total", dogList.get("dogTotal"));
-		data.put("data3", manager);
-		Map<String,Object> data4 = hamletService.GetLevel6AdminDogNum(username);
-		data.put("data4", data4);
-		/*Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
-		data.put("data4", data4);*/
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	
+	//获取被点击的管理员信息
+	Map<String,Object> data1  = manageService.getManagerInfo(username);
+	data.put("data1", data1);
+	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+	data.put("data2", dogList.get("data"));
+	data.put("total", dogList.get("dogTotal"));
+	data.put("data3", manager);
+	Map<String,Object> data4 = hamletService.GetLevel6AdminDogNum(username);
+	data.put("data4", data4);
+	/*Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
+	data.put("data4", data4);*/
+	
 	jsStr = JSONObject.fromObject(data);
 	model.addAttribute("model",jsStr.toString());	 
 	return url.toString();
@@ -104,10 +101,11 @@ public class UserProfileController {
   * @param json
   * @param request
   * @return
+ * @throws Exception 
   */
     @RequestMapping("userProfileFarmPageApi")
     @ResponseBody
-	public String GoToUserProfileFarmPageApi(@RequestBody JSONObject json, HttpServletRequest request) {
+	public String GoToUserProfileFarmPageApi(@RequestBody JSONObject json, HttpServletRequest request) throws Exception {
 	HttpSession session=request.getSession();
 	//session失效，退出登录页面
 	if(session.getAttribute("currentUser")==null){;
@@ -124,18 +122,15 @@ public class UserProfileController {
 
 	Map<String,Object> data = new HashMap<String,Object>();
 	
-	try {
-		Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
-		data.put("data2", dogList.get("data"));
-		data.put("total", dogList.get("dogTotal"));
+
+	Map<String, Object> dogList = userProfileService.getFarmDogList(username, startItem,  pageSize);
+	data.put("data2", dogList.get("data"));
+	data.put("total", dogList.get("dogTotal"));
 //	data.put("data3", manager);
 /*
 		Map<String, Object> data4 = userProfileService.getFarmFeederDogList(username);
 		data.put("data4", data4);*/
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+
 	jsStr = JSONObject.fromObject(data); 
 	System.out.println(jsStr);
 	return jsStr.toString();

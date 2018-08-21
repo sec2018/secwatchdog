@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +26,8 @@ import sec.secwatchdog.util.AESUtil;
 @Controller
 @RequestMapping("/shiro")
 public class ShiroController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@RequestMapping("/index")
     public ModelAndView getIndex(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("index");
@@ -80,6 +84,7 @@ public class ShiroController {
                 currentUser.login(token);//��֤��ɫ��Ȩ��  
             } 
         }catch(Exception ex){
+			logger.error("【系统错误】",ex);
             throw new BusinessException(LuoErrorCode.LOGIN_VERIFY_FAILURE);
         }
         result.put("success", true);

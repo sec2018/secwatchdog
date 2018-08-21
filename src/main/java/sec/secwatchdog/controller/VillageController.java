@@ -32,9 +32,10 @@ public class VillageController {
   * @param request
   * @param model
   * @return
+ * @throws Exception 
   */
 	@RequestMapping("/village")
-	public String GoToCountyPage(@RequestParam(value="village") String village, @RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
+	public String GoToCountyPage(@RequestParam(value="village") String village, @RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) throws Exception {
 		HttpSession session=request.getSession();
 		//session过期
 		if(session.getAttribute("currentUser")==null){;
@@ -49,17 +50,13 @@ public class VillageController {
 		data.put("data1",manager);//data1保存用户信息
 
 		url.append("page_village");//转到页面index/page_village.jsp
-		try {
-			Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//获得该乡的总体数据信息
-			data.put("data2",villageIndexInfo);
-			Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//获得该乡下各村的数据信息
-			data.put("data3", villageMap);
-			Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//获得该乡的区域编码
-			data.put("data4", data4);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Map<String,Integer> villageIndexInfo = villageService.GetIndexLogoInfo(province, city,county,village);//获得该乡的总体数据信息
+		data.put("data2",villageIndexInfo);
+		Map<String,Object> villageMap = villageService.GetVillageMap(province,city,county,village);//获得该乡下各村的数据信息
+		data.put("data3", villageMap);
+		Map<String,Object> data4 = villageService.GetDistrictcode(province,city,county,village);//获得该乡的区域编码
+		data.put("data4", data4);
+	
 		
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 
