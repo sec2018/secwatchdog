@@ -46,7 +46,6 @@ import net.sf.json.JSONObject;
 public class UserController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
 	@Resource
 	private UserService userService;
 
@@ -105,7 +104,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/index")
-	public String index(HttpServletRequest request,ModelMap model,RedirectAttributes redirectAttributes) throws UnsupportedEncodingException{
+	public String index(HttpServletRequest request,ModelMap model,RedirectAttributes redirectAttributes) throws Exception{
 
 		HttpSession session=request.getSession();
 		if(session.getAttribute("currentUser")==null){;
@@ -116,77 +115,78 @@ public class UserController {
 		StringBuilder url = new StringBuilder("index/");
 		JSONObject jsStr = null;
 
-		switch(resultUser.getPrivilegelevel()) {
-			case 1:
-				StopWatch stopWatch = new StopWatch();
-				stopWatch.start();
-				
-				url.append("index");
-				Map<String,Object> data = new HashMap<String,Object>();
-				data.put("data1",resultUser);
-				Map<String,Integer> LogoInfo = new HashMap<String,Integer>();
-				Map<String,Object> countrymap = new HashMap<String,Object>();
-				Map<String,Object> xinjiangarmycountrymap = new HashMap<String,Object>();
-				ExecutorService e = Executors.newCachedThreadPool();
-				Future<Object> LogoInfotemp = CommonThreadPool.submit(()->{
-					System.out.println("1开始。。。");
-					Map<String,Integer> temp = userService.GetIndexLogoInfo(resultUser);
-					System.out.println("1结束。。。");
-					return temp;
-				});
-				Future<Object> countrymaptemp = CommonThreadPool.submit(()->{
-					System.out.println("2开始。。。");
-					Map<String,Object> temp = userService.GetCountryMap();
-					System.out.println("2结束。。。");
-					return temp;
-				});
-				Future<Object> xinjiangarmycountrymaptemp = CommonThreadPool.submit(()->{
-					System.out.println("3开始。。。");
-					Map<String,Object> temp  = userService.GetXinJiangArmyCountryMap();
-					System.out.println("3结束。。。");
-					return temp;
-				});
-				try {
-					LogoInfo = (Map<String, Integer>) LogoInfotemp.get();
-					countrymap = (Map<String, Object>) countrymaptemp.get();
-					xinjiangarmycountrymap = (Map<String, Object>) xinjiangarmycountrymaptemp.get();
-				}catch(InterruptedException | ExecutionException ex) {
-					ex.printStackTrace();
-				}
-				data.put("data2",LogoInfo);
-				data.put("data3",countrymap);
-				data.put("data4",xinjiangarmycountrymap);
-				jsStr = JSONObject.fromObject(data);
-				model.addAttribute("model",jsStr.toString());
+			switch(resultUser.getPrivilegelevel()) {
+				case 1:
+					StopWatch stopWatch = new StopWatch();
+					stopWatch.start();
+					
+					url.append("index");
+					Map<String,Object> data = new HashMap<String,Object>();
+					data.put("data1",resultUser);
+					Map<String,Integer> LogoInfo = new HashMap<String,Integer>();
+					Map<String,Object> countrymap = new HashMap<String,Object>();
+					Map<String,Object> xinjiangarmycountrymap = new HashMap<String,Object>();
+					ExecutorService e = Executors.newCachedThreadPool();
+					Future<Object> LogoInfotemp = CommonThreadPool.submit(()->{
+						System.out.println("1开始。。。");
+						Map<String,Integer> temp = userService.GetIndexLogoInfo(resultUser);
+						System.out.println("1结束。。。");
+						return temp;
+					});
+					Future<Object> countrymaptemp = CommonThreadPool.submit(()->{
+						System.out.println("2开始。。。");
+						Map<String,Object> temp = userService.GetCountryMap();
+						System.out.println("2结束。。。");
+						return temp;
+					});
+					Future<Object> xinjiangarmycountrymaptemp = CommonThreadPool.submit(()->{
+						System.out.println("3开始。。。");
+						Map<String,Object> temp  = userService.GetXinJiangArmyCountryMap();
+						System.out.println("3结束。。。");
+						return temp;
+					});
+					try {
+						LogoInfo = (Map<String, Integer>) LogoInfotemp.get();
+						countrymap = (Map<String, Object>) countrymaptemp.get();
+						xinjiangarmycountrymap = (Map<String, Object>) xinjiangarmycountrymaptemp.get();
+					}catch(InterruptedException | ExecutionException ex) {
+						ex.printStackTrace();
+					}
+					data.put("data2",LogoInfo);
+					data.put("data3",countrymap);
+					data.put("data4",xinjiangarmycountrymap);
+					jsStr = JSONObject.fromObject(data);
+					model.addAttribute("model",jsStr.toString());
 
-				stopWatch.stop();
-				System.out.println(stopWatch.getTotalTimeMillis());
-				break;
-			case 2:
-				redirectAttributes.addAttribute("province", resultUser.getProvince());
-				return "redirect:/province/province.do";
+					stopWatch.stop();
+					System.out.println(stopWatch.getTotalTimeMillis());
+					break;
+				case 2:
+					redirectAttributes.addAttribute("province", resultUser.getProvince());
+					return "redirect:/province/province.do";
 
-			case 3:
-				redirectAttributes.addAttribute("city", resultUser.getCity());
-				redirectAttributes.addAttribute("province", resultUser.getProvince());
-				return "redirect:/city/city.do";
+				case 3:
+					redirectAttributes.addAttribute("city", resultUser.getCity());
+					redirectAttributes.addAttribute("province", resultUser.getProvince());
+					return "redirect:/city/city.do";
 
-			case 4:
-				redirectAttributes.addAttribute("county", resultUser.getCounty());
-				redirectAttributes.addAttribute("city", resultUser.getCity());
-				redirectAttributes.addAttribute("province", resultUser.getProvince());
-				return "redirect:/county/county.do";
+				case 4:
+					redirectAttributes.addAttribute("county", resultUser.getCounty());
+					redirectAttributes.addAttribute("city", resultUser.getCity());
+					redirectAttributes.addAttribute("province", resultUser.getProvince());
+					return "redirect:/county/county.do";
 
-			case 5:
-				redirectAttributes.addAttribute("village", resultUser.getVillage());
-				redirectAttributes.addAttribute("county", resultUser.getCounty());
-				redirectAttributes.addAttribute("city", resultUser.getCity());
-				redirectAttributes.addAttribute("province", resultUser.getProvince());
-				return "redirect:/village/village.do";
-			case 6:
-				url.append("page_hamlet");
-				break;
-		}
+				case 5:
+					redirectAttributes.addAttribute("village", resultUser.getVillage());
+					redirectAttributes.addAttribute("county", resultUser.getCounty());
+					redirectAttributes.addAttribute("city", resultUser.getCity());
+					redirectAttributes.addAttribute("province", resultUser.getProvince());
+					return "redirect:/village/village.do";
+				case 6:
+					url.append("page_hamlet");
+					break;
+			}
+	 
 		return url.toString();
 	}
 

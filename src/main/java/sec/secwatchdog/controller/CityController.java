@@ -6,6 +6,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ import sec.secwatchdog.service.UserService;
 @Controller
 @RequestMapping("/city")
 public class CityController {
- 
+
 	@Resource
 	private CityService cityService;
 /***
@@ -31,7 +33,7 @@ public class CityController {
  * @return
  */
 	@RequestMapping("/city")
-	public String GoToCityPage(@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) {
+	public String GoToCityPage(@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model)  throws Exception{
 		HttpSession session=request.getSession();
 		//session失效，退出登录页面
 		if(session.getAttribute("currentUser")==null){;
@@ -44,7 +46,7 @@ public class CityController {
 			
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data1",manager);//data1保存用户信息
-		try {
+		
 			if(province.equals("建设兵团")) {//查看建设兵团的详情下某师
 				url.append("page_division");//转到页面index/page_division.jsp
 				Map<String,Integer> divisionIndexInfo = cityService.GetDivisionIndexLogo(province,city);//获得师德总体数据信息
@@ -63,10 +65,7 @@ public class CityController {
 				Map<String,Object> data4 = cityService.GetDistrictcode(province,city);//获得该市的区域编码
 				data.put("data4", data4);
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		jsStr = JSONObject.fromObject(data);
 		model.addAttribute("model",jsStr.toString());	 
 		return url.toString();
