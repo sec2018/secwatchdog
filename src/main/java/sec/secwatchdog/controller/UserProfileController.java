@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import sec.secwatchdog.service.UserProfileService;
 @Controller
 @RequestMapping("/userProfile")
 public class UserProfileController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserProfileService userProfileService;
 
@@ -160,6 +163,7 @@ public class UserProfileController {
 				result = userProfileService.rebackPwd(username, rebackusername);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				logger.error("【系统错误】",e);
 				result = "重置失败!";
 			}
 			if (result.equals("11")) {
@@ -178,6 +182,7 @@ public class UserProfileController {
              try {
  				result = userProfileService.activeUser(username, activeusername);
  			} catch (Exception e) {
+				logger.error("【系统错误】",e);
  				result = "激活失败!";
  			}
  			if (result.equals("11")) {
@@ -198,6 +203,7 @@ public class UserProfileController {
  		   	result = userProfileService.freezeUser(username, freezeusername);
  			} catch (Exception e) {
  				// TODO Auto-generated catch block
+				logger.error("【系统错误】",e);
  				result = "冻结失败!";
  			}
  			if (result.equals("11")) {

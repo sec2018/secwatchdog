@@ -23,6 +23,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sec.secwatchdog.model.Managers;
+import sec.secwatchdog.redis.service.RedisService;
 import sec.secwatchdog.service.UserService;
 import sec.secwatchdog.shiro.BusinessException;
 import sec.secwatchdog.shiro.LuoErrorCode;
@@ -40,6 +42,7 @@ import sec.secwatchdog.util.AESUtil;
 import sec.secwatchdog.util.CommonThreadPool;
 
 import net.sf.json.JSONObject;
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/user")
@@ -48,7 +51,10 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
-
+	@Autowired
+    private RedisService redisService;
+	private Gson gson = new Gson();
+	
 	@RequestMapping(value="/login", produces="text/html;charset=UTF-8",method=RequestMethod.POST)
 	@ResponseBody
 	public String login(Managers manager,HttpServletRequest request){
@@ -103,6 +109,7 @@ public class UserController {
         return "";
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request,ModelMap model,RedirectAttributes redirectAttributes) throws Exception{
 
@@ -128,21 +135,36 @@ public class UserController {
 					Map<String,Object> xinjiangarmycountrymap = new HashMap<String,Object>();
 					ExecutorService e = Executors.newCachedThreadPool();
 					Future<Object> LogoInfotemp = CommonThreadPool.submit(()->{
-						System.out.println("1开始。。。");
-						Map<String,Integer> temp = userService.GetIndexLogoInfo(resultUser);
-						System.out.println("1结束。。。");
+						//System.out.println("1开始。。。");
+						Map<String,Integer> temp = new HashMap<String, Integer>();
+						temp = gson.fromJson(redisService.get(resultUser.getUsername() + "_UserController_IndexLogoInfo"),temp.getClass());
+						if(temp == null) {
+							temp = userService.GetIndexLogoInfo(resultUser);
+							redisService.set(resultUser.getUsername() + "_UserController_IndexLogoInfo", gson.toJson(temp));
+						}
+						//System.out.println("1结束。。。");
 						return temp;
 					});
 					Future<Object> countrymaptemp = CommonThreadPool.submit(()->{
-						System.out.println("2开始。。。");
-						Map<String,Object> temp = userService.GetCountryMap();
-						System.out.println("2结束。。。");
+						//System.out.println("2开始。。。");
+						Map<String,Object> temp = new HashMap<String, Object>();
+						temp = gson.fromJson(redisService.get(resultUser.getUsername() + "_UserController_CountryMap"),temp.getClass());
+						if(temp == null) {
+							temp = userService.GetCountryMap();
+							redisService.set(resultUser.getUsername() + "_UserController_CountryMap", gson.toJson(temp));
+						}			 
+						//System.out.println("2结束。。。");
 						return temp;
 					});
 					Future<Object> xinjiangarmycountrymaptemp = CommonThreadPool.submit(()->{
-						System.out.println("3开始。。。");
-						Map<String,Object> temp  = userService.GetXinJiangArmyCountryMap();
-						System.out.println("3结束。。。");
+						//System.out.println("3开始。。。");
+						Map<String,Object> temp = new HashMap<String, Object>();
+						temp = gson.fromJson(redisService.get(resultUser.getUsername() + "_UserController_XinJiangArmyCountryMap"),temp.getClass());
+						if(temp == null) {
+							temp = userService.GetXinJiangArmyCountryMap();
+							redisService.set(resultUser.getUsername() + "_UserController_XinJiangArmyCountryMap", gson.toJson(temp));
+						}	
+						//System.out.println("3结束。。。");
 						return temp;
 					});
 					try {
@@ -159,7 +181,7 @@ public class UserController {
 					model.addAttribute("model",jsStr.toString());
 
 					stopWatch.stop();
-					System.out.println(stopWatch.getTotalTimeMillis());
+					//System.out.println(stopWatch.getTotalTimeMillis());
 					break;
 				case 2:
 					redirectAttributes.addAttribute("province", resultUser.getProvince());
