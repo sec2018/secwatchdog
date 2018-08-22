@@ -2,6 +2,7 @@ package secwatchdog;
 
  
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 
 import sec.secwatchdog.SecWatchDogApplication;
 import sec.secwatchdog.redis.service.RedisService;
@@ -21,7 +21,7 @@ import sec.secwatchdog.redis.service.RedisService;
 @SpringBootTest(classes = SecWatchDogApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringbootApplicationTests {
 
-    private JSONObject json = new JSONObject();
+    private Gson json = new Gson();
 
     @Autowired
     private RedisService redisService;
@@ -54,7 +54,7 @@ public class SpringbootApplicationTests {
     @Test
     public void setObject() {
         Person person = new Person("person", "male");
-        redisService.set("redis_obj_test", json.toJSONString(person));
+        redisService.set("redis_obj_test", json.toJson(person));
     }
 
     /**
@@ -63,8 +63,8 @@ public class SpringbootApplicationTests {
     @Test
     public void getObject() {
         String result = redisService.get("redis_obj_test");
-        Person person = json.parseObject(result, Person.class);
-        System.out.println(json.toJSONString(person));
+        Person person = json.fromJson(result, Person.class);
+        System.out.println(json.toJson(person));
     }
 
     /**
@@ -79,7 +79,7 @@ public class SpringbootApplicationTests {
         list.add(person1);
         list.add(person2);
         list.add(person3);
-        redisService.set("redis_list_test", json.toJSONString(list));
+        redisService.set("redis_list_test", json.toJson(list));
     }
     
     @Test
@@ -89,14 +89,15 @@ public class SpringbootApplicationTests {
         map.put("num",10);
         map.put("person",person);
         
-        redisService.set("redis_map_test", json.toJSONString(map));
+        redisService.set("redis_map_test", json.toJson(map));
          
     }
     @Test
     public void getMap() {
+    	 Map<String, Object> map = new HashMap<String, Object>();
     	String mapString =  redisService.get("redis_map_test");
-    	Map<String, Object> map = json.parseObject(mapString);
-  
+    	map = json.fromJson(mapString, map.getClass());
+
     	System.out.println(map);
     	System.out.println(map.get("num"));
     	System.out.println(map.get("person"));
@@ -107,8 +108,10 @@ public class SpringbootApplicationTests {
      */
     @Test
     public void getList() {
-        String result = redisService.get("redis_list_test");
-        List<String> list = json.parseArray(result, String.class);
+    	List<String> list = new ArrayList<>();
+        String resulttemp = redisService.get("redis_list_test");
+        list = json.fromJson(resulttemp, List.class);
+       // List<String> list = Arrays.asList(result);
         System.out.println(list);
     }
 
