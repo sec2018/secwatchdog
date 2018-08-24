@@ -93,7 +93,6 @@ function objToArray(array) {
     for (var i in array) {
         arr.push(array[i]); 
     }
-    console.log(arr);
     return arr;
 }
 

@@ -36,8 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.redis.service.RedisService;
 import sec.secwatchdog.service.UserService;
-import sec.secwatchdog.shiro.BusinessException;
-import sec.secwatchdog.shiro.LuoErrorCode;
+
 import sec.secwatchdog.util.AESUtil;
 import sec.secwatchdog.util.CommonThreadPool;
 
@@ -104,7 +103,7 @@ public class UserController {
         	logger.warn("对用户[" + manager.getUsername() + "]进行登录验证...验证未通过，错误的凭证");
             request.setAttribute("message_login", "用户名或密码不正确");
         }catch(Exception ex){
-            throw new BusinessException(LuoErrorCode.LOGIN_VERIFY_FAILURE);
+        	logger.error("【shio其他错误】",ex);
         }
         return "";
 	}
