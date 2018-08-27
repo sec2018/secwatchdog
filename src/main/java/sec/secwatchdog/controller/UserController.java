@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import sec.secwatchdog.config.DuplicateSubmitToken;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.redis.service.RedisService;
 import sec.secwatchdog.service.UserService;
@@ -56,6 +57,7 @@ public class UserController {
 	
 	@RequestMapping(value="/login", produces="text/html;charset=UTF-8",method=RequestMethod.POST)
 	@ResponseBody
+	@DuplicateSubmitToken (save = true)
 	public String login(Managers manager,HttpServletRequest request){
 		
        AESUtil aes = new AESUtil();
