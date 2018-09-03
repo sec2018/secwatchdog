@@ -153,12 +153,16 @@ function GetCountyEcharts(data) {
 	var provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;
 
+    
+    var centerx = data.data3[0].lng;
+    var centery = data.data3[0].lat;
 
     district, map = new AMap.Map("statsChart", {
         resizeEnable: true,
-        //center: [116.40, 39.91],//地图中心点
-        zoom: 10 //地图显示的缩放级别
+        center: [centerx, centery],//地图中心点
+        //zoom: 10 //地图显示的缩放级别
     });
+    map.setFitView();
 
     AMapUI.loadUI(['control/BasicControl'], function (BasicControl) {
 
@@ -224,7 +228,7 @@ function GetCountyEcharts(data) {
             district.setLevel('district');
             //行政区查询
             district.search(countyEchartsAreaName, function (status, result) {
-                var bounds = result.districtList.boundaries;
+                var bounds = result.districtList[0].boundaries;
                 var polygons = [];
                 if (bounds) {
                     for (var i = 0, l = bounds.length; i < l; i++) {
@@ -239,7 +243,7 @@ function GetCountyEcharts(data) {
                         });
                         polygons.push(polygon);
                     }
-                   // map.setFitView();//地图自适应
+                    map.setFitView();//地图自适应
                 }
             });
         });

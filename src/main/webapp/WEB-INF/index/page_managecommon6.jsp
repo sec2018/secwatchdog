@@ -138,25 +138,25 @@
                             返回上一级
                         </a>
                     </div>*@ -->
-                    <div class="col-xs-4 col-md-1 col-md-offset-3 padding5">
+                    <div class="col-xs-4 col-md-2 col-md-offset-1 padding5">
                         <a id="a_dogadd" data-toggle="modal" href="#dogDiv" class="btn-flat success pull-right text-center" style="width:100%; padding:7px 0;">
                             <span>&#43;</span>
                             添加牧犬
                         </a>
                     </div>
-                    <div class="col-xs-4 col-md-1 padding5">
+                    <div class="col-xs-4 col-md-2 padding5">
                         <a id="a_neckletadd" data-toggle="modal" href="#neckletDiv" class="btn-flat success pull-right text-center" style="width:100%; padding:7px 0;">
                             <span>&#43;</span>
                             添加项圈
                         </a>
                     </div>
-                    <div class="col-xs-4 col-md-1 padding5">
+                    <div class="col-xs-4 col-md-2 padding5">
                         <a id="a_feederadd" data-toggle="modal" href="#feederDiv" class="btn-flat success pull-right text-center" style="width:100%; padding:7px 0;">
                             <span>&#43;</span>
                             添加喂饲器
                         </a>
                     </div>
-                    <div class="col-xs-4 col-md-1 padding5">
+                    <div class="col-xs-4 col-md-2 padding5">
                         <a id="a_owneradd" data-toggle="modal" href="#ownerDiv" class="btn-flat success pull-right text-center" style="width:100%; padding:7px 0;">
                             <span>&#43;</span>
                             添加主人
