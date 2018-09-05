@@ -57,7 +57,7 @@
                 break;
             case "市级":
                 $.ajax({
-                    url: "/api/loginapi/1",
+                    url: "user/register/1",
                     type: "GET",
                     success: function (data) {
                         datares = eval("(" + data + ")");
@@ -70,7 +70,7 @@
                 break;
             case "县级":
                 $.ajax({
-                    url: "/api/loginapi/2",
+                    url: "user/register/2",
                     type: "GET",
                     success: function (data) {
                         datares = eval("(" + data + ")");
@@ -83,7 +83,7 @@
                 break;
             case "乡级":
                 $.ajax({
-                    url: "/api/loginapi/3",
+                    url: "user/register/3",
                     type: "GET",
                     success: function (data) {
                         datares = eval("(" + data + ")");
@@ -96,7 +96,7 @@
                 break;
             case "村级":
                 $.ajax({
-                    url: "/api/loginapi/4",
+                    url: "user/register/4",
                     type: "GET",
                     success: function (data) {
                         datares = eval("(" + data + ")");
@@ -252,12 +252,12 @@
             return;
         } else {
             $.ajax({
-                url: "/api/loginapi",
+                url: "user/adduser.do",
                 type: "POST",
                 data: senddata,
                 success: function (data) {
                     alert(data);
-                    if (data == "添加成功") {
+                    if (data == "添加用户成功！") {
                         window.location.reload();
                     }
                 }

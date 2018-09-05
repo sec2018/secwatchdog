@@ -69,4 +69,16 @@ public interface DistrictsDao {
 	
 	@Select("select districtlevel,districtcode,districtname,epidemic from districts where districtcode REGEXP concat(#{villageCode0to9}, '.{3}') and districtcode !=concat(#{villageCode0to9}, '000') ")
 	public List<Districts> getHamlets(String villageCode0to9);
+	
+	@Select("select districtcode,districtname from districts where districtlevel = 1")
+	public List<Districts> getAllCities();
+	
+	@Select("select districtcode,districtname from districts where districtlevel = 2")
+	public List<Districts> getAllCounties();
+	
+	@Select("select districtcode,districtname from districts where districtlevel = 3")
+	public List<Districts> getAllVillages();
+	
+	@Select("select districtcode,districtname from districts where districtlevel = 4")
+	public List<Districts> getAllHamlets();
 }

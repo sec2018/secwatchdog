@@ -22,5 +22,13 @@ public interface UserService {
   /*  List<Role> findLoginUserRoles(Managers manager);
 
     String getUserPassword(Integer uid);*/
+	
+	public List<Map<String,String>> GetAllCities() throws Exception;
+	
+	public List<Map<String,String>> GetAllCounties() throws Exception;
+	
+	public List<Map<String,String>> GetAllVillages() throws Exception;
+	
+	public List<Map<String,String>> GetAllHamlets() throws Exception;
 }
 

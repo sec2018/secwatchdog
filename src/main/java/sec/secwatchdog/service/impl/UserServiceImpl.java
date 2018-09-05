@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import sec.secwatchdog.mapper.AppexhibitrealtimeDao;
 import sec.secwatchdog.mapper.DistrictsDao;
 import sec.secwatchdog.mapper.ExhibitrealtimeDao;
@@ -263,5 +265,83 @@ public class UserServiceImpl implements UserService{
 	        return userDao.findUserByName(name);
 	    }
 
- 
+//	@Override
+//	public Map<String, Object> GetAllCities(){
+//		// TODO Auto-generated method stub
+//		Map<String,Object> map = new HashMap<String,Object>();
+//		List<Districts> list = districtsDao.getAllCities();
+//		Map<String,String> maptemp = null;
+//		for (Districts districts : list) {
+//			maptemp = new HashMap<String,String>();
+//			maptemp.put("districtcode", districts.districtcode);
+//			maptemp.put("districtname", districts.districtname);
+//			map.put(key, value)
+//		}
+//		return map;
+//	}
+	   
+	    @Override
+		public List<Map<String,String>> GetAllCities(){
+			// TODO Auto-generated method stub
+	    	List<Map<String,String>> citylist = new ArrayList<Map<String,String>>();
+			List<Districts> list = districtsDao.getAllCities();
+			Map<String,String> maptemp = null;
+			JSONObject object = null;
+			for (Districts districts : list) {
+				maptemp = new HashMap<String,String>();
+				maptemp.put("districtcode", districts.districtcode);
+				maptemp.put("districtname", districts.districtname);
+				citylist.add(maptemp);
+			}
+			return citylist;
+		}
+
+		@Override
+		public List<Map<String, String>> GetAllCounties() throws Exception {
+			// TODO Auto-generated method stub
+			List<Map<String,String>> countylist = new ArrayList<Map<String,String>>();
+			List<Districts> list = districtsDao.getAllCounties();
+			Map<String,String> maptemp = null;
+			JSONObject object = null;
+			for (Districts districts : list) {
+				maptemp = new HashMap<String,String>();
+				maptemp.put("districtcode", districts.districtcode);
+				maptemp.put("districtname", districts.districtname);
+				countylist.add(maptemp);
+			}
+			return countylist;
+		}
+
+		@Override
+		public List<Map<String, String>> GetAllVillages() throws Exception {
+			// TODO Auto-generated method stub
+			List<Map<String,String>> villagelist = new ArrayList<Map<String,String>>();
+			List<Districts> list = districtsDao.getAllVillages();
+			Map<String,String> maptemp = null;
+			JSONObject object = null;
+			for (Districts districts : list) {
+				maptemp = new HashMap<String,String>();
+				maptemp.put("districtcode", districts.districtcode);
+				maptemp.put("districtname", districts.districtname);
+				villagelist.add(maptemp);
+			}
+			return villagelist;
+		}
+
+		@Override
+		public List<Map<String, String>> GetAllHamlets() throws Exception {
+			// TODO Auto-generated method stub
+			List<Map<String,String>> hamletlist = new ArrayList<Map<String,String>>();
+			List<Districts> list = districtsDao.getAllHamlets();
+			Map<String,String> maptemp = null;
+			JSONObject object = null;
+			for (Districts districts : list) {
+				maptemp = new HashMap<String,String>();
+				maptemp.put("districtcode", districts.districtcode);
+				maptemp.put("districtname", districts.districtname);
+				hamletlist.add(maptemp);
+			}
+			return hamletlist;
+		}
+
 }

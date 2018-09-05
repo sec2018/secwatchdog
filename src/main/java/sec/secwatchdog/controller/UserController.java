@@ -1,7 +1,7 @@
 package sec.secwatchdog.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -28,14 +28,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sec.secwatchdog.config.DuplicateSubmitToken;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.redis.service.RedisService;
+import sec.secwatchdog.service.NewUserService;
 import sec.secwatchdog.service.UserService;
 
 import sec.secwatchdog.util.AESUtil;
@@ -51,6 +54,8 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+	@Autowired
+	private NewUserService newUserService;
 	@Autowired
     private RedisService redisService;
 	private Gson gson = new Gson();
@@ -227,5 +232,105 @@ public class UserController {
 			return "redirect:/login.jsp";
 		}
 		return "main";
+	}
+	
+	@RequestMapping(value="/register/{id}", produces="text/html;charset=UTF-8",method=RequestMethod.GET)
+	@ResponseBody
+	public String register(@PathVariable(value="id")Integer id) {
+		Map<String,Object> data = new HashMap<String,Object>();
+		String json = "";
+		switch(id) {
+			case 1:
+				json = redisService.get("_registerAllcities");
+				if(json == null) {
+					try {
+						List<Map<String, String>> map = null;
+						map = userService.GetAllCities();
+						data.put("data1",map); 
+						json = JSONObject.fromObject(data).toString();
+						redisService.set("_registerAllcities", json);
+						break;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				break;
+			case 2:
+				json = redisService.get("_registerAllcounties");
+				if(json == null) {
+					try {
+						List<Map<String, String>> map1 = userService.GetAllCities();
+						data.put("data1",map1); 
+						List<Map<String, String>> map2 = userService.GetAllCounties();
+						data.put("data2",map2); 
+						json = JSONObject.fromObject(data).toString();
+						redisService.set("_registerAllcounties", json);
+						break;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				break;
+			case 3:
+				json = redisService.get("_registerAllvillages");
+				if(json == null) {
+					try {
+						List<Map<String, String>> map1 = userService.GetAllCities();
+						data.put("data1",map1); 
+						List<Map<String, String>> map2 = userService.GetAllCounties();
+						data.put("data2",map2); 
+						List<Map<String, String>> map3 = userService.GetAllVillages();
+						data.put("data3",map3); 
+						json = JSONObject.fromObject(data).toString();
+						redisService.set("_registerAllvillages", json);
+						break;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				break;
+			case 4:
+				json = redisService.get("_registerAllhamlets");
+				if(json == null) {
+					try {
+						List<Map<String, String>> map1 = userService.GetAllCities();
+						data.put("data1",map1); 
+						List<Map<String, String>> map2 = userService.GetAllCounties();
+						data.put("data2",map2); 
+						List<Map<String, String>> map3 = userService.GetAllVillages();
+						data.put("data3",map3); 
+						List<Map<String, String>> map4 = userService.GetAllHamlets();
+						data.put("data4",map4); 
+						json = JSONObject.fromObject(data).toString();
+						redisService.set("_registerAllhamlets", json);
+						break;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}	
+				break;
+		}
+		return json;
+	}
+	
+	@RequestMapping(value="/adduser", produces="text/html;charset=UTF-8",method=RequestMethod.POST)
+	@ResponseBody
+	public String addUser(@RequestParam(value="privilegelevel")Integer privilegelevel,@RequestParam(value="username")String username,
+			@RequestParam(value="managername")String managername,@RequestParam(value="address")String address,
+			@RequestParam(value="identity")String identity,@RequestParam(value="area")String area,
+			@RequestParam(value="officecall")String officecall,@RequestParam(value="tel")String tel,
+			@RequestParam(value="password")String password,@RequestParam(value="addtype")String addtype) {
+		String json = "";
+		try {
+			json = newUserService.addUser(addtype, privilegelevel, username, managername, address, identity, area, officecall, tel, password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 }
