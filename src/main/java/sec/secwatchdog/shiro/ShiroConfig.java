@@ -70,7 +70,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/test/1", "anon");
         filterChainDefinitionMap.put("/test/2", "anon");
-
+        
+        filterChainDefinitionMap.put("/guest/**", "anon");
+        filterChainDefinitionMap.put("/guest.jsp", "anon");
+        
         filterChainDefinitionMap.put("/user/adduser.do", "anon");
         filterChainDefinitionMap.put("/user/register/**", "anon");
         filterChainDefinitionMap.put("/user/login.do", "anon");

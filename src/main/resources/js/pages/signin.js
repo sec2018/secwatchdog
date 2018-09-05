@@ -41,7 +41,7 @@
     });
 
     $("#btn_visitor").click(function () {
-        window.location.href = timestamp("/Login/Guest");
+        window.location.href = timestamp("guest.jsp");
     });
 
     var datares = {};

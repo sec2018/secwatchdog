@@ -139,7 +139,7 @@ public class UserController {
 					Map<String,Integer> LogoInfo = new HashMap<String,Integer>();
 					Map<String,Object> countrymap = new HashMap<String,Object>();
 					Map<String,Object> xinjiangarmycountrymap = new HashMap<String,Object>();
-					ExecutorService e = Executors.newCachedThreadPool();
+//					ExecutorService e = Executors.newCachedThreadPool();
 					Future<Object> LogoInfotemp = CommonThreadPool.submit(()->{
 						//System.out.println("1开始。。。");
 						Map<String,Integer> temp = new HashMap<String, Integer>();
