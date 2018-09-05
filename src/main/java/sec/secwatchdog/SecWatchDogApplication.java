@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //for war
-/*@EnableCaching
+@EnableCaching
 @SpringBootApplication
 @EnableTransactionManagement
 public class SecWatchDogApplication extends SpringBootServletInitializer{
@@ -19,15 +19,15 @@ public class SecWatchDogApplication extends SpringBootServletInitializer{
     public static void main( String[] args ){
     	SpringApplication.run(SecWatchDogApplication.class, args);
     }
-}*/
+}
 
 //for jar
-@EnableCaching
-@SpringBootApplication
-@EnableTransactionManagement
-public class SecWatchDogApplication{
-   
-    public static void main( String[] args ){
-    	SpringApplication.run(SecWatchDogApplication.class, args);
-    }
-}
+//@EnableCaching
+//@SpringBootApplication
+//@EnableTransactionManagement
+//public class SecWatchDogApplication{
+//   
+//    public static void main( String[] args ){
+//    	SpringApplication.run(SecWatchDogApplication.class, args);
+//    }
+//}
