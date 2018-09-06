@@ -24,7 +24,7 @@ $.ajax({
                 firstrealtime = ChangeTimeFormat(data.data8[i].firstmedtime).split(" ")[0];
                 lastrealtime = ChangeTimeFormat(data.data8[i].lastmed).split(" ")[0];
                 nextrealtime = ChangeTimeFormat(data.data8[i].nextmed).split(" ")[0];
-                html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data8[i].dogid + "\">" + data.data8[i].neckletid + "</a></td><td>" + data.data8[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data8[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+                html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data8[i].dogid + "\">" + data.data8[i].neckletid != data.data8[i].neckletid ? data.data8[i].feederid + "</a></td><td>" + data.data8[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data8[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
             }
 
             $("#tbody_userprofilefarm").append(html);
