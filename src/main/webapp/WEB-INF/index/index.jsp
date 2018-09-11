@@ -74,7 +74,7 @@
                 </a>
             </li>
             <li>
-                <a style="cursor:pointer">
+                <a style="cursor:pointer" id="a_analysis">
                     <i class="icon-cogs"></i>
                     <span>统计分析</span>
                 </a>

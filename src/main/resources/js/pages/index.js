@@ -31,6 +31,11 @@
 	        //window.location.href = timestamp("/pageManageCommon/index.do?districtcode=0");
 	        window.location.href ="../pageManageCommon/index.do?districtcode=0";
 	    }); 
+	    
+	    $("#a_analysis").click(function () {
+	       window.location.href ="../analysis/anaindex.do";
+	    }); 
+	    
 	    $("#a_personalpage").click(function () {
 	       window.location.href ="../personal/pagePersonal.do";
 	    }); 

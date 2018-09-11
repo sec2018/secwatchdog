@@ -30,6 +30,10 @@ spring:
 #    http:
 #        encoding:
 #           enabled: false
+
+    devtools:
+        restart:
+            enabled: true #是否支持热部署
         
     redis:
         open: true  # 是否开启redis缓存  true开启   false关闭
