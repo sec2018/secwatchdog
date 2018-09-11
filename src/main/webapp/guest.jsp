@@ -92,7 +92,7 @@
                 </a>
             </li>-->
             <li>
-                <a href="/Login/Index?clicktype=quit" style="cursor:pointer">
+                <a href="user/logout.do" style="cursor:pointer">
                     <i class="icon-off"></i>
                     <span>退出</span>
                 </a>
