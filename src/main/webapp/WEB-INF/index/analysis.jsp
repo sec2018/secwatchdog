@@ -22,7 +22,59 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+	<style>
+		.cc-content{
+			padding:20px;
+		}
+		.cc-content .box-body{
+			padding-left:10px;
+			margin:15px 0;
+		}
+		.cc-content .mt25{
+			margin-top:25px;
+		}
+		.cc-content .mb15{
+			margin-bottom:15px;
+		}
+		.cc-content .box-color{
+			position:relative;
+			text-align:center;
+			color:#fff;
+			box-shadow: 0 2px 5px 0 #4c89b2;
+			padding:10px 0 20px 0;
+			background:#74b9e6;
+			border-radius:4px;
+		}
+		.cc-content .cff{
+			color:#fff;
+			
+		}
+		.cc-content .cff-prencent{
+			color:#fff;
+			font-weight:blod;
+			font-size:20px;
+		}
+		.cc-content .cc-progress-bar{
+			position:absolute;
+			bottom:0;
+			left:0;
+			width:80%;
+			height:6px;
+			font-size:12px;
+			text-align:center;
+			color:#fff;
+			background:#eabe77;
+			border-radius:4px;
+		}
+		.cc-content .box-color1{
+			box-shadow: 0 2px 5px 0 #518c69;
+			background:#8dd1a9;
+		}
+		.cc-content .box-color2{
+			box-shadow: 0 2px 5px 0 #6da79a;
+			background:#97d3c5;
+		}
+	</style>
     <script src="../js/jquery-latest.js"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
@@ -102,7 +154,7 @@
     <!-- end sidebar -->
     <!-- main container -->
     <div class="content">
-    	<div class="content pb0">
+    	<div class="pb0 cc-content">
 			<!-- Info boxes -->
 			<!-- /.row -->
 			<div class="row">
@@ -114,10 +166,10 @@
 						<!-- /.box-header -->
 						<div class="box-body">
 							<div class="row">
-								<div class="col-md-8">
+								<div class="col-md-12">
 									<div class="chart">
-										<div id="myChart" style="height:230px;width:99%"></div>
-										<div id="illChart" style="height:230px;width:99%"></div>
+										<div id="myChart"  style="height:230px;width:99%"></div>
+										<div id="illChart" class="mt25" style="height:230px;width:99%"></div>
 										<script src="http://echarts.baidu.com/dist/echarts.common.min.js"></script>
 										<script>
 											var data = [];
@@ -255,7 +307,7 @@
 									</div>
 									<!-- /.chart-responsive -->
 								</div>
-								<!-- /.col -->
+								<!-- /.col
 								<div class="col-md-4">
 									<p class="text-center">
 										<strong>完成目标</strong>
@@ -266,23 +318,23 @@
 										<div class="progress sm">
 											<div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
 										</div>
-									</div>
-									<!-- /.progress-group -->
+									</div>-->
+									<!-- /.progress-group 
 									<div class="progress-group">
 										<span class="progress-text">累计发病数量占比</span>
 										<span class="progress-number"><b>1140</b>/28048</span>
 										<div class="progress sm">
 											<div class="progress-bar progress-bar-red" style="width: 80%"></div>
 										</div>
-									</div>
-									<!-- /.progress-group -->
+									</div>-->
+									<!-- /.progress-group
 									<div class="progress-group">
 										<span class="progress-text">发病救治占比</span>
 										<span class="progress-number"><b>997</b>/1140</span>
 										<div class="progress sm">
 											<div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
 										</div>
-									</div>
+									</div>-->
 									<!-- /.progress-group -->
 								</div>
 								<!-- /.col -->
@@ -292,29 +344,36 @@
 						<!-- ./box-body -->
 						<div class="box-footer">
 							<div class="row">
-								<div class="col-sm-3 col-xs-6">
-									<div class="description-block border-right">
-										<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 94.21%</span>
-										<h5 class="description-header">960</h5>
+								<div class="col-sm-12 col-md-4 mb15" >
+									<div class="description-block border-right box-color box-color1">
+										<!--<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 94.21%</span> -->
+										<div class="cff" >960/1099</div>
+										<div class="cff-prencent" >94.21%</div>
 										<span class="description-text">佩戴项圈总数</span>
+										<div class="cc-progress-bar">
+										</div>
 									</div>
 									<!-- /.description-block -->
 								</div>
 								<!-- /.col -->
-								<div class="col-sm-3 col-xs-6">
-									<div class="description-block border-right">
-										<span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 4.06%</span>
-										<h5 class="description-header">1140</h5>
+								<div class="col-sm-12 col-md-4 mb15">
+									<div class="description-block border-right box-color">
+										<div class="cff" >1140/28048</div>
+										<div class="cff-prencent" >4.06%</div>
 										<span class="description-text">月累计发病率</span>
+										<div class="cc-progress-bar" style="width:4.06%;">
+										</div>
 									</div>
 									<!-- /.description-block -->
 								</div>
 								<!-- /.col -->
-								<div class="col-sm-3 col-xs-6">
-									<div class="description-block">
-										<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 95.86%</span>
-										<h5 class="description-header">997</h5>
+								<div class="col-sm-12 col-md-4 mb15">
+									<div class="description-block box-color box-color2">
+										<div class="cff" >997/1140</div>
+										<div class="cff-prencent" >95.86%</div>
 										<span class="description-text">发病救治率</span>
+										<div class="cc-progress-bar" style="width:95.86%;">
+										</div>
 									</div>
 									<!-- /.description-block -->
 								</div>
