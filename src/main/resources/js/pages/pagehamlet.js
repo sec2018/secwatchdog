@@ -14,7 +14,7 @@ $.ajax({
             var firstrealtime = "";
             var lastrealtime = "";
             var nextrealtime = "";
-
+            var deviceid = "";
            // data.data2 = objToArray(data.data2);
             data.data3 = objToArray(data.data3);
             //data.data4 = objToArray(data.data4);
@@ -24,9 +24,9 @@ $.ajax({
                 firstrealtime = ChangeTimeFormat(data.data8[i].firstmedtime).split(" ")[0];
                 lastrealtime = ChangeTimeFormat(data.data8[i].lastmed).split(" ")[0];
                 nextrealtime = ChangeTimeFormat(data.data8[i].nextmed).split(" ")[0];
-                html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data8[i].dogid + "\">" + data.data8[i].neckletid != data.data8[i].neckletid ? data.data8[i].feederid + "</a></td><td>" + data.data8[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data8[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+                deviceid = data.data8[i].neckletid!=null? data.data8[i].neckletid:data.data8[i].feederid;
+                html += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data.data8[i].dogid + "\">" + deviceid + "</a></td><td>" + data.data8[i].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data.data8[i].timemed + "</td><td>" + nextrealtime + "</td></tr>";
             }
-
             $("#tbody_userprofilefarm").append(html);
             //document.getElementById("barcon").innerHTML = pagecode;
 
@@ -37,7 +37,7 @@ $.ajax({
                 var neckletid = $("#input_managername").val();
                 var searchhtml = "";
                 if(neckletid == ""){
-                	
+                	self.location.reload();
                 }else{
                 	$.ajax({
                 	    url: "../hamlet/CombineNeckletAndFeederDog.do",
@@ -61,13 +61,15 @@ $.ajax({
                 	            var firstrealtime = "";
                 	            var lastrealtime = "";
                 	            var nextrealtime = "";
+                	            var deviceid = "";
 
                 	            data = objToArray(data);
                 	            for (var i = 0; i < data.length; i++) {
                 	                firstrealtime = ChangeTimeFormat(data[0].firstmedtime).split(" ")[0];
                 	                lastrealtime = ChangeTimeFormat(data[0].lastmed).split(" ")[0];
                 	                nextrealtime = ChangeTimeFormat(data[0].nextmed).split(" ")[0];
-                	                searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data[0].dogid + "\">" + data[0].neckletid + "</a></td><td>" + data[0].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data[0].timemed + "</td><td>" + nextrealtime + "</td></tr>";
+                	                deviceid = data[0].neckletid!=null? data[0].neckletid:data[0].feederid;
+                	                searchhtml += "<tr><td><a class=\"neckletid\" style=\"cursor:pointer;\" id=\"" + data[0].dogid + "\">" + deviceid + "</a></td><td>" + data[0].dogname + "</td><td>" + firstrealtime + "</td><td>" + lastrealtime + "</td><td>" + data[0].timemed + "</td><td>" + nextrealtime + "</td></tr>";
                 	            }
                 	        
                 	            $("#tbody_userprofilefarm").append(searchhtml);
@@ -76,7 +78,7 @@ $.ajax({
                                 $(".neckletid").click(function () {
                                     GetDogPage(this.id);
                                 });
-                                }
+                           	}
                 	    }
                 	})
                    

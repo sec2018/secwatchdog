@@ -190,16 +190,18 @@
     </div>
     <!-- end main container -->
     <!-- scripts -->
-     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.0&key=39f6a5bd38f3167dc032e09b8e6d2a12&plugin=AMap.MarkerClusterer"></script>
-    <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
-    <script src="../js/china.js"></script>
-    
     <script src="../js/jquery-latest.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    
+    <script src="../js/echarts.js"></script>
+    <script src="../js/china.js"></script>
     <script src="../js/theme.js"></script>
     <!--echarts2-->
-    <script src="../js/echarts.js"></script>
     <link rel="stylesheet" href="../css/main1119.css" />
+    
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.0&key=39f6a5bd38f3167dc032e09b8e6d2a12&plugin=AMap.MarkerClusterer"></script>
+    <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    
 
     <script src="../js/pages/pagehamlet.js" type="text/javascript"></script>
 </body>
