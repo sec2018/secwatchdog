@@ -256,20 +256,6 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    驱虫犬只比
-                                </td>
-                                <td>
-                                    单位（%）
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="td_arearatedognumtotal">
-                                    全市
-                                </td>
-                                <td id="countryratedognumtotal"></td>
-                            </tr>
-                            <tr class="success">
-                                <td>
                                     驱虫总次数
                                 </td>
                                 <td>
@@ -281,6 +267,20 @@
                                     全市总数
                                 </td>
                                 <td id="countrymednumtotal"></td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    驱虫犬只比
+                                </td>
+                                <td>
+                                    单位（%）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="td_arearatedognumtotal">
+                                    全市
+                                </td>
+                                <td id="countryratedognumtotal"></td>
                             </tr>
                         </tbody>
                     </table>

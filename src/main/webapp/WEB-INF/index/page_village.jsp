@@ -274,20 +274,6 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    驱虫犬只比
-                                </td>
-                                <td>
-                                    单位（%）
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="td_arearatedognumtotal">
-                                    全乡
-                                </td>
-                                <td id="countryratedognumtotal"></td>
-                            </tr>
-                            <tr class="success">
-                                <td>
                                     驱虫总次数
                                 </td>
                                 <td>
@@ -299,6 +285,20 @@
                                     全乡总数
                                 </td>
                                 <td id="countrymednumtotal"></td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    驱虫犬只比
+                                </td>
+                                <td>
+                                    单位（%）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="td_arearatedognumtotal">
+                                    全乡
+                                </td>
+                                <td id="countryratedognumtotal"></td>
                             </tr>
                         </tbody>
                     </table>
