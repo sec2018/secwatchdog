@@ -698,7 +698,7 @@ function GetCityEcharts(data) {
             myChart.on("click", function (param) {
                 //alert(param.name + 'S');
                 if (param.seriesName != '' && param.name == name_selected) {
-                    window.location.href = "../county/county.do?county=" + param.name + "&city=" + cityGov + "&province=" + provinceGov;
+                    window.location.href = encodeURI(encodeURI("../county/county.do?county=" + param.name + "&city=" + cityGov + "&province=" + provinceGov));
                     //alert(param.name);
                 } else {
                     name_selected = param.name;

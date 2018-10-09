@@ -291,7 +291,7 @@ function GetVillageEcharts(data) {
         var one_title = null;
         var one_icondir = null;
         if (p_neckletnums[i] > 0) {
-            one_title = "<a href=\"../hamlet/hamlet.do?hamlet=" + p_titles[i] + "&village=" + villageEchartsAreaName + "&county=" + countyEchartsAreaName + "&city=" + cityEchartsAreaName + "&province=" + provinceEchartsAreaName + "\"><font color='blue'>"
+            one_title = "<a href=\"../hamlet/hamlet.do?hamlet=" + encodeURI(encodeURI(p_titles[i])) + "&village=" + encodeURI(encodeURI(villageEchartsAreaName)) + "&county=" + encodeURI(encodeURI(countyEchartsAreaName)) + "&city=" + encodeURI(encodeURI(cityEchartsAreaName)) + "&province=" + encodeURI(encodeURI(provinceEchartsAreaName)) + "\"><font color='blue'>"
             + p_titles[i] + "</font></a>";
             one_icondir = "../img/village.png";
             p_titles[i] = one_title;

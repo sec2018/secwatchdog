@@ -1,5 +1,6 @@
 package sec.secwatchdog.controller;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -34,6 +35,8 @@ public class CityController {
  */
 	@RequestMapping("/city")
 	public String GoToCityPage(@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model)  throws Exception{
+		province = URLDecoder.decode(province,"UTF-8");
+		city = URLDecoder.decode(city,"UTF-8");
 		HttpSession session=request.getSession();
 		//session失效，退出登录页面
 		if(session.getAttribute("currentUser")==null){;

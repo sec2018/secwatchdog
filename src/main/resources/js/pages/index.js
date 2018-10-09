@@ -504,7 +504,7 @@ function GetCountryEcharts(data) {
                     //} else {
                     //    window.location.href = "/Index/Province?province=" + escape(param.name);
                     //}
-                    window.location.href = "../province/province.do?province=" + param.name;
+                    window.location.href = encodeURI(encodeURI("../province/province.do?province=" + param.name));
                     //alert(param.name);
                 } else {
                     name_selected = param.name;

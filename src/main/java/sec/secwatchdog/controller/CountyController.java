@@ -1,5 +1,6 @@
 package sec.secwatchdog.controller;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,10 @@ public class CountyController {
   */
 	@RequestMapping("/county")
 	public String GoToCountyPage(@RequestParam(value="county") String county,@RequestParam(value="city") String city,@RequestParam(value="province") String province,HttpServletRequest request,ModelMap model) throws Exception {
+		province = URLDecoder.decode(province,"UTF-8");
+		city = URLDecoder.decode(city,"UTF-8");
+		county = URLDecoder.decode(county,"UTF-8");
+		
 		HttpSession session=request.getSession();
 		//session过期
 		if(session.getAttribute("currentUser")==null){;

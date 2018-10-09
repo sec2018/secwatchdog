@@ -27,9 +27,11 @@ spring:
       view:
         prefix: /WEB-INF/
         suffix: .jsp
-#    http:
-#        encoding:
-#           enabled: false
+    http:
+      encoding:
+        force: true
+        charset: UTF-8
+        enabled: true
 
     devtools:
         restart:

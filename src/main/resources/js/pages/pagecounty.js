@@ -396,7 +396,7 @@ function GetCountyEcharts(data) {
         var one_title = null;
         var one_icondir = null;
         if (p_neckletnums[i] > 0) {
-            one_title = "<a href=\"../village/village?village=" + p_titles[i] + "&county=" + countyGov + "&city=" + cityGov + "&province=" + provinceGov + "\"><font color='red'>" + p_titles[i] + "</font></a>";
+            one_title = "<a href=\"../village/village?village=" + encodeURI(encodeURI(p_titles[i])) + "&county=" + encodeURI(encodeURI(countyGov)) + "&city=" + encodeURI(encodeURI(cityGov)) + "&province=" + encodeURI(encodeURI(provinceGov)) + "\"><font color='red'>" + p_titles[i] + "</font></a>";
             one_icondir = "../img/town.png";
             //one_icondir = "http://api.map.baidu.com/img/markers.png";
             //one_icondir = "img/town.png";

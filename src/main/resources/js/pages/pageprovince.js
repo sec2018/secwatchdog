@@ -321,7 +321,7 @@ function GetProvinceEcharts(data) {
                // alert(param.seriesName + 'S'+ (param.name == name_selected));
                 if (param.seriesName != '' && param.name == name_selected) {
                 	 
-                    window.location.href = "../city/city.do?city=" + param.name + "&province=" + provinceGov;
+                    window.location.href = encodeURI(encodeURI("../city/city.do?city=" + param.name + "&province=" + provinceGov));
                     //alert(param.name);
                 } else {
                     name_selected = param.name;

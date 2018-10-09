@@ -170,7 +170,7 @@
 									<div class="chart">
 										<div id="myChart"  style="height:230px;width:99%"></div>
 										<div id="illChart" class="mt25" style="height:230px;width:99%"></div>
-										<script src="http://echarts.baidu.com/dist/echarts.common.min.js"></script>
+										<script src="../js/echarts.common.min.js"></script>
 										<script>
 											var data = [];
 											data.data1 = [143, 152, 173, 194, 205, 236, 247,268,289,310,321, 332, 343, 344,351, 361, 378,418,429,460,491, 522, 553, 594, 635, 686, 727,788,829,960];
