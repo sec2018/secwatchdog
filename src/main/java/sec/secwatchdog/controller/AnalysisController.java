@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.WakeEntity;
+import sec.secwatchdog.util.CalculateUtil;
 import sec.secwatchdog.util.R;
 
 @Controller
@@ -38,50 +40,207 @@ public class AnalysisController {
 	
 	@RequestMapping("/anawakelv")
 	@ResponseBody
-	public R AnalysisWakeLevel(HttpServletRequest request){
+	public R AnalysisWakeLevel(HttpServletRequest request,@RequestParam(value="province",required=false)String province,
+			@RequestParam(value="city",required=false)String city,@RequestParam(value="county",required=false)String county,
+			@RequestParam(value="village",required=false)String village,@RequestParam(value="hamlet",required=false)String hamlet){
 		HttpSession session=request.getSession();
 		//session失效，退出登录页面
 		if(session.getAttribute("currentUser")==null){
 			return R.error(400, "无效的登录");
 		}
-		
 		List<WakeEntity> wakeList = new ArrayList<WakeEntity>();
-		WakeEntity wakeEntity = null;
-		for(int i=0;i<10;i++) {
-			wakeEntity = new WakeEntity();
-			if(i==0) {
-				wakeEntity.setGovname("全国");
-				wakeEntity.setNeckletnum(200);
-				wakeEntity.setNswaketimes(2400);
-				wakeEntity.setAfwaketimes(2000);
-				wakeEntity.setNwakelv((float)(Math.round((2000*100/2400))/100));
-				wakeEntity.setAppnum(100);
-				wakeEntity.setAswaketimes(1200);
-				wakeEntity.setAfwaketimes(700);
-				wakeEntity.setAwakelv((float)(Math.round((700*100/1200))/100));
-				wakeEntity.setNanum(100+200);
-				wakeEntity.setNaswaketimes(2400+1200);
-				wakeEntity.setNafwaketimes(2000+700);
-				wakeEntity.setNawakelv((float)(Math.round(((2000+700)*100/(2400+1200)))/100));
-				wakeList.add(wakeEntity);
+		if(province == null) {
+			wakeList.clear();
+			WakeEntity wakeEntity = null;
+			for(int i=0;i<10;i++) {
+				wakeEntity = new WakeEntity();
+				if(i==0) {
+					wakeEntity.setGovname("全国");
+					wakeEntity.setNeckletnum(200);
+					wakeEntity.setNswaketimes(2400);
+					wakeEntity.setAfwaketimes(2000);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((2000/(2400*1.00))));
+					wakeEntity.setAppnum(100);
+					wakeEntity.setAswaketimes(1200);
+					wakeEntity.setAfwaketimes(700);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((700/(1200*1.00))));
+					wakeEntity.setNanum(100+200);
+					wakeEntity.setNaswaketimes(2400+1200);
+					wakeEntity.setNafwaketimes(2000+700);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((2000+700)/((2400+1200)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+				else {
+					wakeEntity.setGovname("省"+i);
+					wakeEntity.setNeckletnum(20);
+					wakeEntity.setNswaketimes(240);
+					wakeEntity.setAfwaketimes(200);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((200/(240*1.00))));
+					wakeEntity.setAppnum(10);
+					wakeEntity.setAswaketimes(120);
+					wakeEntity.setAfwaketimes(70);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((70/(120*1.00))));
+					wakeEntity.setNanum(10+20);
+					wakeEntity.setNaswaketimes(240+120);
+					wakeEntity.setNafwaketimes(200+70);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((200+70)/((240+120)*1.00))));
+					wakeList.add(wakeEntity);
+				}
 			}
-			else {
-				wakeEntity.setGovname("省"+i);
-				wakeEntity.setNeckletnum(20);
-				wakeEntity.setNswaketimes(240);
-				wakeEntity.setAfwaketimes(200);
-				wakeEntity.setNwakelv((float)(Math.round((200*100/240))/100));
-				wakeEntity.setAppnum(10);
-				wakeEntity.setAswaketimes(120);
-				wakeEntity.setAfwaketimes(70);
-				wakeEntity.setAwakelv((float)(Math.round((70*100/120))/100));
-				wakeEntity.setNanum(10+20);
-				wakeEntity.setNaswaketimes(240+120);
-				wakeEntity.setNafwaketimes(200+70);
-				wakeEntity.setNawakelv((float)(Math.round(((200+70)*100/(240+120)))/100));
-				wakeList.add(wakeEntity);
+		}else if(province != null && city == null){
+			wakeList.clear();
+			WakeEntity wakeEntity = null;
+			for(int i=0;i<10;i++) {
+				wakeEntity = new WakeEntity();
+				if(i==0) {
+					wakeEntity.setGovname(province);
+					wakeEntity.setNeckletnum(200);
+					wakeEntity.setNswaketimes(2400);
+					wakeEntity.setAfwaketimes(2000);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((2000/(2400*1.00))));
+					wakeEntity.setAppnum(100);
+					wakeEntity.setAswaketimes(1200);
+					wakeEntity.setAfwaketimes(700);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((700/(1200*1.00))));
+					wakeEntity.setNanum(100+200);
+					wakeEntity.setNaswaketimes(2400+1200);
+					wakeEntity.setNafwaketimes(2000+700);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((2000+700)/((2400+1200)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+				else {
+					wakeEntity.setGovname("市"+i);
+					wakeEntity.setNeckletnum(20);
+					wakeEntity.setNswaketimes(240);
+					wakeEntity.setAfwaketimes(200);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((200/(240*1.00))));
+					wakeEntity.setAppnum(10);
+					wakeEntity.setAswaketimes(120);
+					wakeEntity.setAfwaketimes(70);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((70/(120*1.00))));
+					wakeEntity.setNanum(10+20);
+					wakeEntity.setNaswaketimes(240+120);
+					wakeEntity.setNafwaketimes(200+70);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((200+70)/((240+120)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+			}
+		}else if(province != null && city != null && county == null){
+			wakeList.clear();
+			WakeEntity wakeEntity = null;
+			for(int i=0;i<10;i++) {
+				wakeEntity = new WakeEntity();
+				if(i==0) {
+					wakeEntity.setGovname(city);
+					wakeEntity.setNeckletnum(200);
+					wakeEntity.setNswaketimes(2400);
+					wakeEntity.setAfwaketimes(2000);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((2000/(2400*1.00))));
+					wakeEntity.setAppnum(100);
+					wakeEntity.setAswaketimes(1200);
+					wakeEntity.setAfwaketimes(700);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((700/(1200*1.00))));
+					wakeEntity.setNanum(100+200);
+					wakeEntity.setNaswaketimes(2400+1200);
+					wakeEntity.setNafwaketimes(2000+700);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((2000+700)/((2400+1200)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+				else {
+					wakeEntity.setGovname("县"+i);
+					wakeEntity.setNeckletnum(20);
+					wakeEntity.setNswaketimes(240);
+					wakeEntity.setAfwaketimes(200);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((200/(240*1.00))));
+					wakeEntity.setAppnum(10);
+					wakeEntity.setAswaketimes(120);
+					wakeEntity.setAfwaketimes(70);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((70/(120*1.00))));
+					wakeEntity.setNanum(10+20);
+					wakeEntity.setNaswaketimes(240+120);
+					wakeEntity.setNafwaketimes(200+70);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((200+70)/((240+120)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+			}
+		}else if(province != null && city != null && county != null && village == null){
+			wakeList.clear();
+			WakeEntity wakeEntity = null;
+			for(int i=0;i<10;i++) {
+				wakeEntity = new WakeEntity();
+				if(i==0) {
+					wakeEntity.setGovname(county);
+					wakeEntity.setNeckletnum(200);
+					wakeEntity.setNswaketimes(2400);
+					wakeEntity.setAfwaketimes(2000);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((2000/(2400*1.00))));
+					wakeEntity.setAppnum(100);
+					wakeEntity.setAswaketimes(1200);
+					wakeEntity.setAfwaketimes(700);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((700/(1200*1.00))));
+					wakeEntity.setNanum(100+200);
+					wakeEntity.setNaswaketimes(2400+1200);
+					wakeEntity.setNafwaketimes(2000+700);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((2000+700)/((2400+1200)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+				else {
+					wakeEntity.setGovname("乡"+i);
+					wakeEntity.setNeckletnum(20);
+					wakeEntity.setNswaketimes(240);
+					wakeEntity.setAfwaketimes(200);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((200/(240*1.00))));
+					wakeEntity.setAppnum(10);
+					wakeEntity.setAswaketimes(120);
+					wakeEntity.setAfwaketimes(70);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((70/(120*1.00))));
+					wakeEntity.setNanum(10+20);
+					wakeEntity.setNaswaketimes(240+120);
+					wakeEntity.setNafwaketimes(200+70);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((200+70)/((240+120)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+			}
+		}else if(province != null && city != null && county != null && village != null){
+			wakeList.clear();
+			WakeEntity wakeEntity = null;
+			for(int i=0;i<10;i++) {
+				wakeEntity = new WakeEntity();
+				if(i==0) {
+					wakeEntity.setGovname(village);
+					wakeEntity.setNeckletnum(200);
+					wakeEntity.setNswaketimes(2400);
+					wakeEntity.setAfwaketimes(2000);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((2000/(2400*1.00))));
+					wakeEntity.setAppnum(100);
+					wakeEntity.setAswaketimes(1200);
+					wakeEntity.setAfwaketimes(700);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((700/(1200*1.00))));
+					wakeEntity.setNanum(100+200);
+					wakeEntity.setNaswaketimes(2400+1200);
+					wakeEntity.setNafwaketimes(2000+700);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((2000+700)/((2400+1200)*1.00))));
+					wakeList.add(wakeEntity);
+				}
+				else {
+					wakeEntity.setGovname("村"+i);
+					wakeEntity.setNeckletnum(20);
+					wakeEntity.setNswaketimes(240);
+					wakeEntity.setAfwaketimes(200);
+					wakeEntity.setNwakelv(CalculateUtil.Get2double((200/(240*1.00))));
+					wakeEntity.setAppnum(10);
+					wakeEntity.setAswaketimes(120);
+					wakeEntity.setAfwaketimes(70);
+					wakeEntity.setAwakelv(CalculateUtil.Get2double((70/(120*1.00))));
+					wakeEntity.setNanum(10+20);
+					wakeEntity.setNaswaketimes(240+120);
+					wakeEntity.setNafwaketimes(200+70);
+					wakeEntity.setNawakelv(CalculateUtil.Get2double(((200+70)/((240+120)*1.00))));
+					wakeList.add(wakeEntity);
+				}
 			}
 		}
+		
 		
 		Map<String,Object> map = new HashMap<String,Object>();
         map.put("data",wakeList);
