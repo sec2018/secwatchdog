@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sec.secwatchdog.mapper.WarnEntity;
 import sec.secwatchdog.model.DevicedEntity;
 import sec.secwatchdog.model.Managers;
 import sec.secwatchdog.model.WakeEntity;
+import sec.secwatchdog.model.WarnEntity;
 import sec.secwatchdog.util.CalculateUtil;
 import sec.secwatchdog.util.R;
 

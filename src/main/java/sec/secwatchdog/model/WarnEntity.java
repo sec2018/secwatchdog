@@ -1,4 +1,4 @@
-package sec.secwatchdog.mapper;
+package sec.secwatchdog.model;
 
 public class WarnEntity {
 	
