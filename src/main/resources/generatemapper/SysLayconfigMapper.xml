@@ -101,7 +101,8 @@
     <include refid="Base_Column_List" />
     from sys_layconfig
     where id = #{id,jdbcType=INTEGER}
-  </select>
+  </select> 
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_layconfig
     where id = #{id,jdbcType=INTEGER}
@@ -369,4 +370,12 @@
       updatetime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectLayConfigByMid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_layconfig
+    where mid = #{mid,jdbcType=VARCHAR} order by updatetime desc limit 1
+  </select>
+  
 </mapper>

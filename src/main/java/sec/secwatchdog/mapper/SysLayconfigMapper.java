@@ -23,6 +23,8 @@ public interface SysLayconfigMapper {
     List<SysLayconfig> selectByExample(SysLayconfigExample example);
 
     SysLayconfig selectByPrimaryKey(Integer id);
+    
+    SysLayconfig selectLayConfigByMid(String mid);
 
     int updateByExampleSelective(@Param("record") SysLayconfig record, @Param("example") SysLayconfigExample example);
 
