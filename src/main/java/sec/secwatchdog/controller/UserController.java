@@ -224,6 +224,11 @@ public class UserController {
 		session.removeAttribute("currentUser");
 		return "redirect:/login.jsp";
 	}
+	
+	@RequestMapping("/newframe")
+	public String newFrame(HttpSession session){
+		return "redirect:/adminlte/pages/index_iframe.html";
+	}
 
 	@RequestMapping("/main")
 	public String main(HttpServletRequest request,Model model){

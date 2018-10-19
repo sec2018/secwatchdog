@@ -1,35 +1,53 @@
-﻿var senddata = {};
-senddata.username = username;
-senddata.clicktype = "pagepersonal";
-$.ajax({
-    url: "/api/pagepersonalapi",
-    type: "POST",
-    data: senddata,
-    success: function (data) {
-        if (data == "failed") {
-            window.location.href = "/Index/SignIn";
-            return;
-        } else {
-            data = eval("(" + data + ")");
+﻿$(function(){
+/*            data = eval("(" + data + ")");*/
             var logintime = "";
             if (data != null) {
                 //个人信息
-                $("#input_managername").val(data.data1[0].managername);
-                $("#input_managerarea").val(data.data1[0].area);
-                $("#input_managerjob").val(data.data1[0].job);
-                $("#input_manageridentity").val(data.data1[0].manageridentity);
-                $("#input_officecall").val(data.data1[0].officecall);
-                $("#input_managertel").val(data.data1[0].telphone);
-                $("#input_manageraddress").val(data.data1[0].address);
-                $("#input_email").val(data.data1[0].email);
-                $("#input_username").val(data.data1[0].username);
-                $("#input_password").val(data.data1[0].password);
+                $("#input_managername").val(data.data1.managername);
+                 
+                $("#input_managerjob").val(data.data1.workplace);
+                $("#input_manageridentity").val(data.data1.manageridentity);
+                $("#input_officecall").val(data.data1.officecall);
+                $("#input_managertel").val(data.data1.managertel);
+                $("#input_manageraddress").val(data.data1.address);
+                $("#input_email").val(data.data1.email);
+                $("#input_username").val(data.data1.username);
+                $("#input_password").val(data.data1.password);
+                
+                switch (data.data1.privilegelevel)
+                {
+                    case 1:
+                    	$("#input_managerarea").val("全国");
+                        break;
+                    case 2:
+                    	$("#input_managerarea").val(data.data1.province);
+                  
+                        break;
+                    case 3:
+                    	$("#input_managerarea").val(data.data1.province + data.data1.city);
+                        break;
+                    case 4:
+                    	$("#input_managerarea").val(data.data1.province + data.data1.city + data.data1.county);
+                    
+                        break;
+                    case 5:
+                    	$("#input_managerarea").val(data.data1.province + data.data1.city + data.data1.county + data.data1.village);
 
-                if (data.data1[0].privilegelevel == 5 || data.data1[0].privilegelevel == 6) {
+                        break;
+                    case 6:
+                    	$("#input_managerarea").val(data.data1.province + data.data1.city + data.data1.county + data.data1.village + data.data1.hamlet);
+                        break;
+                    case 7:
+                    	$("#input_managerarea").val("游客模式");
+                        
+                        break;
+                }
+
+                if (data.data1.privilegelevel == 5 || data.data1.privilegelevel == 6) {
                     //$("#li_countrysee").css("display", "none");
 
-                    if (data.data1[0].privilegelevel == 5) {
-                        $("#span_leftscan").html(data.data1[0].village + "总览");
+                    if (data.data1.privilegelevel == 5) {
+                        $("#span_leftscan").html(data.data1.village + "总览");
                         //$("#a_farmdetail").click(function () {
                         //    window.location.href = "page_farmlevel5.html";
                         //});
@@ -53,7 +71,7 @@ $.ajax({
                         //});
                     }
                 }
-                else if (data.data1[0].privilegelevel == 1) {
+                else if (data.data1.privilegelevel == 1) {
                     //$("#li_areasee").css("display", "none");
                     //$("#li_farmdetail").css("display", "none");
                     $("#span_leftscan").html("全国总览");
@@ -66,52 +84,52 @@ $.ajax({
                     //$("#a_areasee").click(function () {
                     //    window.location.href = "/Index?username="+username+"&Ticket="+Ticket;
                     //});
-                } else if (data.data1[0].privilegelevel == 2) {
+                } else if (data.data1.privilegelevel == 2) {
                     //$("#li_areasee").css("display", "none");
                     //$("#li_farmdetail").css("display", "none");
-                    $("#span_leftscan").html(data.data1[0].province + "总览");
+                    $("#span_leftscan").html(data.data1.province + "总览");
                     //$("#a_managepage").click(function () {
                     //    window.location.href = "page_managecommon2.html";
                     //});
                     //$("#li_countrysee").click(function () {
-                    //    if (data.data1[0].province == "建设兵团") {
+                    //    if (data.data1.province == "建设兵团") {
                     //        window.location.href = "page_corps.html";
                     //    } else {
                     //        window.location.href = "page_province.html";
                     //    }
                     //});
                     //$("#a_areasee").click(function () {
-                    //    if (data.data1[0].province == "建设兵团") {
+                    //    if (data.data1.province == "建设兵团") {
                     //        window.location.href = "page_corps.html";
                     //    } else {
                     //        window.location.href = "page_province.html";
                     //    }
                     //});
-                } else if (data.data1[0].privilegelevel == 3) {
+                } else if (data.data1.privilegelevel == 3) {
                     $("#li_areasee").css("display", "none");
                     //$("#li_farmdetail").css("display", "none");
-                    $("#span_leftscan").html(data.data1[0].city + "总览");
+                    $("#span_leftscan").html(data.data1.city + "总览");
                     //$("#a_managepage").click(function () {
                     //    window.location.href = "page_managecommon3.html";
                     //});
                     //$("#li_countrysee").click(function () {
-                    //    if (data.data1[0].province == "建设兵团") {
+                    //    if (data.data1.province == "建设兵团") {
                     //        window.location.href = "page_division.html";
                     //    } else {
                     //        window.location.href = "page_city.html";
                     //    }
                     //});
                     //$("#a_areasee").click(function () {
-                    //    if (data.data1[0].province == "建设兵团") {
+                    //    if (data.data1.province == "建设兵团") {
                     //        window.location.href = "page_division.html";
                     //    } else {
                     //        window.location.href = "page_city.html";
                     //    }
                     //});
-                } else if (data.data1[0].privilegelevel == 4) {
+                } else if (data.data1.privilegelevel == 4) {
                     $("#li_areasee").css("display", "none");
                     //$("#li_farmdetail").css("display", "none");
-                    $("#span_leftscan").html(data.data1[0].county + "总览");
+                    $("#span_leftscan").html(data.data1.county + "总览");
                     //$("#a_managepage").click(function () {
                     //    window.location.href = "page_managecommon4.html";
                     //});
@@ -123,23 +141,41 @@ $.ajax({
                     //});
                 }
                 $("#a_areasee").click(function () {
-                    window.location.href = "/Index?username=" + username + "&Ticket=" + Ticket;
+                	window.location.href = "../user/index.do";
                 });
-                $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/Manage";
-                });
+                if(data.data1.privilegelevel == 6){
+                	 $("#a_managepage").click(function () {
+                         window.location.href = "../pageManageCommon/hamletManager.do";
+                     });
+                }else{
+                	 $("#a_managepage").click(function () {
+                         window.location.href = "../pageManageCommon/index.do?districtcode=0";
+                     });
+                }
+               
 
                 var html = "";
                 var logintime = "";
+                data.data2 = objToArray(data.data2)
                 for (var i = 0; i < data.data2.length; i++) {
                     logintime = ChangeTimeFormat(data.data2[i].logintime).split(" ")[0];
                     html += "<tr><td>" + data.data2[i].username + "</td><td>" + data.data2[i].managername + "</td><td>" + logintime + "</td><td>" + data.data2[i].area + "</td><td>" + data.data2[i].telphonecall + "</td><td><input type=\"checkbox\"  value=\"" + data.data2[i].username + "\"></input></td></tr>";
                 }
                 $("#tbody_pagemanagecommon").append(html);
             }
+                
+            
         }
+ )
+ 
+function objToArray(array) {
+    var arr = []
+    for (var i in array) {
+        arr.push(array[i]); 
     }
-})
+    console.log(arr);
+    return arr;
+}
 
 function nameOnClick(id, privilegelevel) {
     switch (privilegelevel) {
@@ -222,10 +258,15 @@ $(function () {
         senddata.password = $("#input_password").val();
         senddata.clicktype = "modifyself";
         $.ajax({
-            url: "/api/pagepersonalapi",
+            url: "../personal/pagePersonalApi",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(senddata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
             }
         })
@@ -244,14 +285,19 @@ $(function () {
         names = names.slice(0, names.length - 1);
         alert("你选了：" + count + "个，其中有：" + names);
         var activedata = {};
-        senddata.username = $("#input_username").val();
-        senddata.activenames = names;
-        senddata.clicktype = "activeadmins";
+        activedata.username = $("#input_username").val();
+        activedata.activenames = names;
+        activedata.clicktype = "activeadmins";
         $.ajax({
-            url: "/api/pagepersonalapi",
+            url: "../personal/pagePersonalApi",
             type: "POST",
-            data: senddata,
+            data: JSON.stringify(activedata),
+            contentType: "application/json",
             success: function (data) {
+            	if (data == "") {
+    	            window.location.href = "../login.jsp";
+    	            return;
+            	}
                 alert(data);
                 window.location.reload();
             }

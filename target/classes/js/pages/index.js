@@ -1,4 +1,5 @@
 ﻿$(function(){
+	 
 	if (data.data1.privilegelevel == 1) {
 	    $("#span_leftscan").html("全国总览");
 	    //下面的表格
@@ -27,11 +28,20 @@
 	    GetCountryEcharts(data);
 
 	    $("#a_managepage").click(function () {
-	        window.location.href = timestamp("/PageManageCommon?districtcode=" + escape("0"));
+	        //window.location.href = timestamp("/pageManageCommon/index.do?districtcode=0");
+	        window.location.href ="../pageManageCommon/index.do?districtcode=0";
+	    }); 
+	    
+	    $("#a_analysis").click(function () {
+	       window.location.href ="../analysis/anaindex.do";
+	    }); 
+	    
+	    $("#a_personalpage").click(function () {
+	       window.location.href ="../personal/pagePersonal.do";
 	    }); 
 	    
 	    $("#quit").click(function () {
-	        window.location = "/Login/Index?clicktype=quit";
+	        window.location = "../user/logout.do";
 	    });
 
 	    $("#pagereflash").click(function () {
@@ -88,7 +98,6 @@ function objToArray(array) {
     for (var i in array) {
         arr.push(array[i]); 
     }
-    console.log(arr);
     return arr;
 }
 
@@ -495,7 +504,7 @@ function GetCountryEcharts(data) {
                     //} else {
                     //    window.location.href = "/Index/Province?province=" + escape(param.name);
                     //}
-                    window.location.href = "../province/province.do?province=" + param.name;
+                    window.location.href = encodeURI(encodeURI("../province/province.do?province=" + param.name));
                     //alert(param.name);
                 } else {
                     name_selected = param.name;

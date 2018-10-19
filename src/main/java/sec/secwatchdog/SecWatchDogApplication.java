@@ -7,9 +7,12 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 //for war
 @EnableCaching
 @SpringBootApplication
+@EnableSwagger2
 @EnableTransactionManagement
 public class SecWatchDogApplication extends SpringBootServletInitializer{
     @Override

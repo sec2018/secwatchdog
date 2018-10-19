@@ -16,7 +16,6 @@ public class SysLayTimeServiceImpl implements SysLayTimeService{
 	
 	@Override
 	public SysLayTimeDao getLastLayTimeByMid(String mid) {
-		// TODO Auto-generated method stub
 		return sysLayTimeDao.getLastLayTimeByMid(mid);
 	}
 

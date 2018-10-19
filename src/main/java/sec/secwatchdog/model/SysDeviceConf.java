@@ -81,4 +81,5 @@ public class SysDeviceConf {
 	private int ledenable;
 	private int temporaryflag;
 	private Date temporarygmt;
+	private Date updatetime;
 }

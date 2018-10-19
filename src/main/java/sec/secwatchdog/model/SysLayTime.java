@@ -14,6 +14,7 @@ public class SysLayTime {
 	private int temperature;
 	private int typ;
 	private Date timegmt;
+	private Date updatetime;
 	public int getId() {
 		return id;
 	}

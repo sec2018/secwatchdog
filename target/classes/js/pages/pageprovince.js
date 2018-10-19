@@ -22,8 +22,7 @@
             $("#countrywsqdognumtotal").text(data.data2.feedernumtotal);
             $("#countryratedognumtotal").text(((data.data2.neckdognumtotal + data.data2.feedernumtotal) * 100 / data.data2.alldognumtotal).toFixed(6));
             $("#countrymednumtotal").text(data.data2.countrymednumtotal);
-
-            var provinceGov;
+ 
             GetProvinceEcharts(data);
 
             //$("#tr_admin").click(function () {
@@ -33,7 +32,7 @@
             if (data.data1.privilegelevel == 1) {
                 $("#span_leftscan").html("全国总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode+"&arealevel=2";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -44,9 +43,9 @@
                 //});
             }
             else if (data.data1.privilegelevel == 2) {
-                $("#span_leftscan").html(provinceGov + "总览");
+                $("#span_leftscan").html(data.data4.provinceGov + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=2";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -128,7 +127,7 @@ function GetProvinceEcharts(data) {
     var p_feeders = new Array();
 
   
-    provinceGov = "" + data.data4.provinceGov;
+    var provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;
     $("#h3_logtitle").html(provinceGov);
     var map_ctrl = {};
@@ -322,7 +321,7 @@ function GetProvinceEcharts(data) {
                // alert(param.seriesName + 'S'+ (param.name == name_selected));
                 if (param.seriesName != '' && param.name == name_selected) {
                 	 
-                    window.location.href = "../city/city.do?city=" + param.name + "&province=" + provinceGov;
+                    window.location.href = encodeURI(encodeURI("../city/city.do?city=" + param.name + "&province=" + provinceGov));
                     //alert(param.name);
                 } else {
                     name_selected = param.name;

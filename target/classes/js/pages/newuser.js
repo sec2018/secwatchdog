@@ -1,56 +1,48 @@
 ﻿var adduserarea = "";
 var privilegelevel = -1;
-var manageusername = username;
+var data1 = data.data1;
+var data3 = data.data3;
 
-var senddata = {};
-senddata.username = username;
-senddata.manageusername = manageusername;
-$.ajax({
-    url: "/api/newuserapi",
-    type: "POST",
-    data: senddata,
-    success: function (data) {
-        if (data == "failed") {
-            window.location.href = "/Login/SignIn";
-            return;
-        } else {
-            data = eval("(" + data + ")");
+$(function(){
             var html = "";
             var logintime = "";
             if (data != null) {
                 var select_area = document.getElementById("select_area");
-                switch (data.data3[0].privilegelevel) {
+                switch (data.data3.privilegelevel) {
                     case 1:
                         $("#h3_adminname").html("添加新的省级管理员");
                         $("#span_leftscan").html("全国总览");
                         privilegelevel = 2;
-
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
                         }
 
                         $("#a_managepage").click(function () {
-                            window.location.href = "/PageManageCommon/Manage";
+                            window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
                         });
+                        $("#a_personalpage").click(function () {
+                	        window.location.href ="../personal/pagePersonal.do";
+                	    }); 
 
                         $("#li_countrysee").click(function () {
-                            window.location.href = "/Index?UserName=" + username + "&Ticket=" + Ticket;
+                        	 window.location.href = "../user/index.do";
                         });
                         break;
                     case 2:
                         $("#h3_adminname").html("添加新的市级管理员");
                         privilegelevel = 3;
-                        adduserarea = data.data3[0].province;
+                        adduserarea = data.data3.province;
                         $("#span_leftscan").html(adduserarea+"总览");
-
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
                         }
 
                         $("#a_managepage").click(function () {
-                            window.location.href = "/PageManageCommon/Manage";
+                            window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
                         });
 
                         $("#li_countrysee").click(function () {
@@ -61,68 +53,67 @@ $.ajax({
                     case 3:
                         $("#h3_adminname").html("添加新的县级管理员");
                         privilegelevel = 4;
-                        adduserarea = data.data3[0].province + "-" + data.data3[0].city;
+                        adduserarea = data.data3.province + "-" + data.data3.city;
 
-                        $("#span_leftscan").html(data.data3[0].city + "总览");
-
+                        $("#span_leftscan").html(data.data3.city + "总览");
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
                         }
 
                         $("#a_managepage").click(function () {
-                            window.location.href = "/PageManageCommon/Manage";
+                            window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
                         })
 
                         $("#li_countrysee").click(function () {
-                            window.location.href = "/Index/City?city=" + escape(data.data3[0].city) + "&province=" + escape(data.data3[0].province);
+                            window.location.href = "/Index/City?city=" + escape(data.data3.city) + "&province=" + escape(data.data3.province);
                         });
                         break;
 
                     case 4:
                         $("#h3_adminname").html("添加新的乡级管理员");
                         privilegelevel = 5;
-                        adduserarea = data.data3[0].province + "-" + data.data3[0].city + "-" + data.data3[0].county;
+                        adduserarea = data.data3.province + "-" + data.data3.city + "-" + data.data3.county;
 
-                        $("#span_leftscan").html(data.data3[0].county + "总览");
-
+                        $("#span_leftscan").html(data.data3.county + "总览");
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
                         }
 
                         $("#a_managepage").click(function () {
-                            window.location.href = "/PageManageCommon/Manage";
+                            window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
                         })
 
                         $("#li_countrysee").click(function () {
-                            window.location.href = "/Index/County?county=" + escape(data.data3[0].county) + "&city=" + escape(data.data3[0].city) + "&province=" + escape(data.data3[0].province);
+                            window.location.href = "/Index/County?county=" + escape(data.data3.county) + "&city=" + escape(data.data3.city) + "&province=" + escape(data.data3.province);
                         });
                         break;
 
                     case 5:
                         $("#h3_adminname").html("添加新的牧犬管理员");
                         privilegelevel = 6;
-                        adduserarea = data.data3[0].province + "-" + data.data3[0].city + "-" + data.data3[0].county + "-" + data.data3[0].village;
+                        adduserarea = data.data3.province + "-" + data.data3.city + "-" + data.data3.county + "-" + data.data3.village;
 
-                        $("#span_leftscan").html(data.data3[0].village + "总览");
-
+                        $("#span_leftscan").html(data.data3.village + "总览");
+                        data.data4 =  objToArray(data.data4)
                         for (var i = 0; i < data.data4.length; i++) {
                             //遍历后台传回的结果，一项项往select中添加option
                             select_area.options.add(new Option(data.data4[i].districtname, data.data4[i].districtcode));
                         }
                         $("#a_managepage").click(function () {
-                            window.location.href = "/PageManageCommon/Manage";
+                            window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data.data1.managername;
                         })
                         $("#li_countrysee").click(function () {
-                            window.location.href = "/Index/Village?village=" + escape(data.data3[0].village) + "&county=" + escape(data.data3[0].county) + "&city=" + escape(data.data3[0].city) + "&province=" + escape(data.data3[0].province);
+                            window.location.href = "/Index/Village?village=" + escape(data.data3.village) + "&county=" + escape(data.data3.county) + "&city=" + escape(data.data3.city) + "&province=" + escape(data.data3.province);
                         });
                         break;
                 }
             }
         }
-    }
-})
+   )
 
 
 function getCookie(name) {
@@ -167,10 +158,19 @@ function getsec(str) {
     }
 }
 
+function objToArray(array) {
+    var arr = []
+    for (var i in array) {
+        arr.push(array[i]); 
+    }
+    console.log(arr);
+    return arr;
+}
+
 $(function () {
     $("#btn_adduser").click(function () {
         var senddata = {};
-        senddata.click_type = "AddUser";
+        senddata.clicktype = "AddUser";
         senddata.privilegelevel = privilegelevel;
         senddata.managername = $("#input_managername").val();
         senddata.address = $("#input_address").val();
@@ -187,24 +187,30 @@ $(function () {
         senddata.addtype = "admin";
         if ($("#input_managername").val() == null || $("#input_managername").val() == "" || $("#input_username").val() == null || $("#input_username").val() == "" || $("#input_password").val() == null || $("#input_password").val() == "") {
             alert("带(*)选项为必填项！");
-            window.location.href = "#";
+            window.location.href = "../newUser/newUserPage.do?managername=" + data.data3.username;
+          
             return;
         }
 
         if (senddata.password != $("#input_confirmpassword").val()) {
             alert("两次输入的密码不一致！");
-            window.location.href = "#";
+            window.location.href = "../newUser/newUserPage.do?managername=" + data.data3.username;
         } else {
             $.ajax({
-                url: "/api/loginapi",
+                url: "../newUser/cteateNewUserApi",
                 type: "POST",
-                data: senddata,
+                data:  JSON.stringify(senddata),
+                contentType: "application/json",
                 success: function (data) {
+                	if (data == "") {
+        	            window.location.href = "../login.jsp";
+        	            return;
+                	}
                     alert(data);
                     if (data == "添加成功") {
-                        window.location.href = "/PageManageCommon/Manage";
+                        window.location.href = "../pageManageCommon/index.do?districtcode=0&managername=" + data1.username;
                     } else {
-                        window.location.href = "#";
+                        window.location.href = "../newUser/newUserPage.do?managername=" + data3.username;
                     }
                 }
             })
@@ -214,4 +220,4 @@ $(function () {
     $("#pagereflash").click(function () {
         window.location.reload();
     });
-})
+});

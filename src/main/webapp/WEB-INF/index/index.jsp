@@ -97,6 +97,12 @@
                     <span>退出</span>
                 </a>
             </li>
+            <li>
+                <a href="../user/newframe.do" style="cursor:pointer">
+                    <i class="icon-off"></i>
+                    <span>新框架</span>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- end sidebar -->

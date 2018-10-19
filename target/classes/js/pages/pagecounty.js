@@ -1,6 +1,5 @@
 ﻿$(function(){
 
-
             $("#td_areadognumtotal").html("全县总数");
             $("#td_areaalldognumtotal").html("全县总数");
             $("#td_areamednumtotal").html("全县总数");
@@ -34,7 +33,7 @@
             if (data.data1.privilegelevel == 1) {
                 $("#span_leftscan").html("全国总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=4";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 });
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -47,7 +46,7 @@
             else if (data.data1.privilegelevel == 2) {
                 $("#span_leftscan").html(data.data1.province + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=4";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -59,7 +58,7 @@
             } else if (data.data1.privilegelevel == 3) {
                 $("#span_leftscan").html(data.data1.city + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=4";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "../user/index.do";
@@ -71,7 +70,7 @@
             } else if (data.data1.privilegelevel == 4) {
                 $("#span_leftscan").html(data.data1.county + "总览");
                 $("#a_managepage").click(function () {
-                    window.location.href = "/PageManageCommon/MapToManage?districtcode=" + data.data4.districtcode + "&arealevel=4";
+                    window.location.href = "../pageManageCommon/index.do?districtcode=" + data.data4.districtcode;
                 })
                 $("#a_areasee").click(function () {
                     window.location.href = "#";
@@ -154,12 +153,16 @@ function GetCountyEcharts(data) {
 	var provinceGov = "" + data.data4.provinceGov;
     var provinceEchartsAreaName="" + data.data4.provinceEchartsAreaName;
 
+    
+    var centerx = data.data3[0].lng;
+    var centery = data.data3[0].lat;
 
     district, map = new AMap.Map("statsChart", {
         resizeEnable: true,
-        //center: [116.40, 39.91],//地图中心点
-        zoom: 10 //地图显示的缩放级别
+        center: [centerx, centery],//地图中心点
+        //zoom: 10 //地图显示的缩放级别
     });
+    map.setFitView();
 
     AMapUI.loadUI(['control/BasicControl'], function (BasicControl) {
 
@@ -225,7 +228,7 @@ function GetCountyEcharts(data) {
             district.setLevel('district');
             //行政区查询
             district.search(countyEchartsAreaName, function (status, result) {
-                var bounds = result.districtList.boundaries;
+                var bounds = result.districtList[0].boundaries;
                 var polygons = [];
                 if (bounds) {
                     for (var i = 0, l = bounds.length; i < l; i++) {
@@ -240,7 +243,7 @@ function GetCountyEcharts(data) {
                         });
                         polygons.push(polygon);
                     }
-                   // map.setFitView();//地图自适应
+                    map.setFitView();//地图自适应
                 }
             });
         });
@@ -393,7 +396,7 @@ function GetCountyEcharts(data) {
         var one_title = null;
         var one_icondir = null;
         if (p_neckletnums[i] > 0) {
-            one_title = "<a href=\"../village/village?village=" + p_titles[i] + "&county=" + countyGov + "&city=" + cityGov + "&province=" + provinceGov + "\"><font color='red'>" + p_titles[i] + "</font></a>";
+            one_title = "<a href=\"../village/village?village=" + encodeURI(encodeURI(p_titles[i])) + "&county=" + encodeURI(encodeURI(countyGov)) + "&city=" + encodeURI(encodeURI(cityGov)) + "&province=" + encodeURI(encodeURI(provinceGov)) + "\"><font color='red'>" + p_titles[i] + "</font></a>";
             one_icondir = "../img/town.png";
             //one_icondir = "http://api.map.baidu.com/img/markers.png";
             //one_icondir = "img/town.png";
