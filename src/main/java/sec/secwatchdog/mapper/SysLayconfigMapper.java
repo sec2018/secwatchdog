@@ -33,4 +33,6 @@ public interface SysLayconfigMapper {
     int updateByPrimaryKeySelective(SysLayconfig record);
 
     int updateByPrimaryKey(SysLayconfig record);
+    
+    int deleteOldestLayConfigByMid(String mid);
 }

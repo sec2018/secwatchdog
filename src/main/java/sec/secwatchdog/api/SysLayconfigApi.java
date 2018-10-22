@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,6 +93,7 @@ public class SysLayconfigApi {
         @ApiImplicitParam(name = "twelve", value = "第12次投药时间", required = true, dataType = "String",paramType = "query")
 	})
 	@RequestMapping(value="setlayconfigbynecid",method = RequestMethod.POST)
+	@Transactional
     @ResponseBody
     public ResponseEntity<JsonResult> InsertLayConfigByNeckletId(@RequestParam(value = "mid")String mid,
     		@RequestParam(value = "one")String one,@RequestParam(value = "two")String two,
@@ -102,6 +105,7 @@ public class SysLayconfigApi {
         JsonResult r = new JsonResult();
         try {
         	SysLayconfig layconfig = new SysLayconfig();
+        	layconfig.setId(0);
         	layconfig.setMid(mid);
         	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
         	layconfig.setOne(format.parse(one));
@@ -119,6 +123,14 @@ public class SysLayconfigApi {
         	layconfig.setUpdatetime(new Date());
         	boolean flag  = sysLayconfigMapper.insert(layconfig)==1?true:false;
         	if(flag) {
+        		//删除最老的一条记录
+        		SysLayconfigExample example = new SysLayconfigExample();
+        		SysLayconfigExample.Criteria criteria = example.createCriteria();
+        		criteria.andMidEqualTo(mid);
+                int num = sysLayconfigMapper.countByExample(example);
+                if(num == 4) {
+            		sysLayconfigMapper.deleteOldestLayConfigByMid(mid);
+                }
         		r.setCode("200");
                 r.setMsg("配置项圈时间成功！");
                 r.setData(layconfig);
@@ -134,6 +146,7 @@ public class SysLayconfigApi {
             r.setData(e.getClass().getName() + ":" + e.getMessage());
             r.setMsg("配置项圈时间失败");
             r.setSuccess(false);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
