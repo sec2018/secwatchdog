@@ -6,9 +6,7 @@
   <title>AdminLTE 2 | Advanced form elements</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	
-  <!-- <link rel="stylesheet" href="../../../layui/css/layui.css"> -->
-  
+
   <!-- Pace -->
   <link rel="stylesheet" href="../../plugins/pace-master/themes/blue/pace-theme-flash.css">
   <script type="text/javascript" src="../../plugins/pace-master/pace.min.js"></script>
@@ -16,65 +14,32 @@
   <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../dist/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="../../plugins/iCheck/all.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="../../plugins/colorpicker/bootstrap-colorpicker.min.css">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="../../plugins/timepicker/bootstrap-timepicker.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/all-skins.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-  <style>
-		.cc-content{
-			padding:20px;
-		}
-		.cc-content .box-body{
-			padding-left:10px;
-			margin:15px 0;
-		}
-		.cc-content .mt25{
-			margin-top:25px;
-		}
-		.cc-content .mb15{
-			margin-bottom:15px;
-		}
-		.cc-content .box-color{
-			position:relative;
-			text-align:center;
-			color:#fff;
-			box-shadow: 0 2px 5px 0 #4c89b2;
-			padding:10px 0 20px 0;
-			background:#74b9e6;
-			border-radius:4px;
-		}
-		.cc-content .cff{
-			color:#fff;
-			
-		}
-		.cc-content .cff-prencent{
-			color:#fff;
-			font-weight:blod;
-			font-size:20px;
-		}
-		.cc-content .cc-progress-bar{
-			position:absolute;
-			bottom:0;
-			left:0;
-			width:80%;
-			height:6px;
-			font-size:12px;
-			text-align:center;
-			color:#fff;
-			background:#eabe77;
-			border-radius:4px;
-		}
-		.cc-content .box-color1{
-			box-shadow: 0 2px 5px 0 #518c69;
-			background:#8dd1a9;
-		}
-		.cc-content .box-color2{
-			box-shadow: 0 2px 5px 0 #6da79a;
-			background:#97d3c5;
-		}
-	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Content Header (Page header) -->
@@ -118,12 +83,69 @@
       	</div>
       </div>
       <div class="row">
-        <div class="col-md-5" style="width:100%">
-	        <div class="layui-tab-item">
-				<table class="layui-hide" id="table1" lay-filter="table1"></table>
-			</div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>第1次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay1" type="datetime-local" value="2017-06-30T00:00"/>
+          </div>
+          <!-- /.form-group -->
+          <div class="form-group">
+            <label>第2次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay2" type="datetime-local" value="2017-06-30 00:00:00"/>
+          </div>
+          <div class="form-group">
+            <label>第3次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay3" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第4次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay4" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第5次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay5" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第6次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay6" type="datetime-local"/>
+          </div>
+          <!-- /.form-group -->
         </div>
         <!-- /.col -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>第7次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay7" type="datetime-local"/>
+          </div>
+          <!-- /.form-group -->
+          <div class="form-group">
+            <label>第8次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay8" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第9次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay9" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第10次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay10" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第11次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay11" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第12次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay12" type="datetime-local"/>
+          </div>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <div class="row">
+      	<div class="col-md-1">
+      		<button type="button" class="btn btn-block btn-primary" id="savelayconfig">保存</button>
+      	</div>
       </div>
       <!-- /.row -->
     </div>
@@ -167,8 +189,8 @@
 <script src="../../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../../layui/layui.js"  charset="utf-8"></script>
-<script src="../ui_js/setlaytime.js"></script>
+
+<script src="../ui_js/setlayconfig.js"></script>
 <!-- Page script -->
 <script>
   $(function () {

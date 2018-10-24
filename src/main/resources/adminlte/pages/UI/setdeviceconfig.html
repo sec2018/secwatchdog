@@ -6,9 +6,7 @@
   <title>AdminLTE 2 | Advanced form elements</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	
-  <!-- <link rel="stylesheet" href="../../../layui/css/layui.css"> -->
-  
+
   <!-- Pace -->
   <link rel="stylesheet" href="../../plugins/pace-master/themes/blue/pace-theme-flash.css">
   <script type="text/javascript" src="../../plugins/pace-master/pace.min.js"></script>
@@ -16,71 +14,38 @@
   <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../dist/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="../../plugins/iCheck/all.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="../../plugins/colorpicker/bootstrap-colorpicker.min.css">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="../../plugins/timepicker/bootstrap-timepicker.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/all-skins.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-  <style>
-		.cc-content{
-			padding:20px;
-		}
-		.cc-content .box-body{
-			padding-left:10px;
-			margin:15px 0;
-		}
-		.cc-content .mt25{
-			margin-top:25px;
-		}
-		.cc-content .mb15{
-			margin-bottom:15px;
-		}
-		.cc-content .box-color{
-			position:relative;
-			text-align:center;
-			color:#fff;
-			box-shadow: 0 2px 5px 0 #4c89b2;
-			padding:10px 0 20px 0;
-			background:#74b9e6;
-			border-radius:4px;
-		}
-		.cc-content .cff{
-			color:#fff;
-			
-		}
-		.cc-content .cff-prencent{
-			color:#fff;
-			font-weight:blod;
-			font-size:20px;
-		}
-		.cc-content .cc-progress-bar{
-			position:absolute;
-			bottom:0;
-			left:0;
-			width:80%;
-			height:6px;
-			font-size:12px;
-			text-align:center;
-			color:#fff;
-			background:#eabe77;
-			border-radius:4px;
-		}
-		.cc-content .box-color1{
-			box-shadow: 0 2px 5px 0 #518c69;
-			background:#8dd1a9;
-		}
-		.cc-content .box-color2{
-			box-shadow: 0 2px 5px 0 #6da79a;
-			background:#97d3c5;
-		}
-	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    设置投药时间
+    设置硬件基本信息
     <small>设备</small>
   </h1>
   <ol class="breadcrumb">
@@ -95,7 +60,7 @@
   <!-- SELECT2 EXAMPLE -->
   <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">投药时间设置（项圈）</h3>
+      <h3 class="box-title">硬件基本信息设置（项圈）</h3>
 
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -106,7 +71,7 @@
     <div class="box-body">
     	<div class="row">
 	      	<div class="col-md-3">
-	      	  <label>搜索项圈时间设置：</label>
+	      	  <label>搜索项圈基本设置：</label>
 	   		  <div class="input-group">
 	             <input id="in_necketid" type="text" class="form-control" placeholder="输入项圈标识">
 	             <div class="input-group-btn">
@@ -118,12 +83,60 @@
       	</div>
       </div>
       <div class="row">
-        <div class="col-md-5" style="width:100%">
-	        <div class="layui-tab-item">
-				<table class="layui-hide" id="table1" lay-filter="table1"></table>
-			</div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>上次投药状态：</label>
+            <label for="meeting"></label><input id="input_status" type="text" readonly="readonly"/>
+          </div>
+          <!-- /.form-group -->
+          <div class="form-group">
+            <label>硬件版本号：</label>
+            <label for="meeting"></label><input id="input_swver" type="text"  readonly="readonly"/>
+          </div>
+          <div class="form-group">
+            <label>绑定ip地址：</label>
+            <label for="meeting"></label><input id="input_ip" type="text"/>
+          </div>
+          <div class="form-group">
+            <label>绑定端口号：</label>
+            <label for="meeting"></label><input id="input_port"  type="text"/>
+          </div>
+          <div class="form-group">
+            <label>LED使能：</label>
+            <label for="meeting"></label><input id="input_ledenable" type="text"/>
+          </div>
+          <!-- /.form-group -->
         </div>
         <!-- /.col -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>投药信息上传周期：</label>
+            <label for="meeting"></label><input id="input_infoupdatecycle" type="text"/>
+          </div>
+          <!-- /.form-group -->
+          <div class="form-group">
+            <label>心跳包周期：</label>
+            <label for="meeting"></label><input id="input_tickcycle" type="text"/>
+          </div>
+          <div class="form-group">
+            <label>临时投药标志：</label>
+            <label for="meeting"></label><input id="input_tempflag"  type="text"/>
+          </div>
+          <div class="form-group">
+            <label>临时投药时间：</label>
+            <label for="meeting"></label><input id="input_tempgmt"  type="datetime-local" value="2017-06-30T00:00"/>
+          </div>
+          <div class="form-group">
+            <label>上次修改配置时间：</label>
+            <label for="meeting"></label><input id="input_lastupdatetime" type="datetime-local" value="2017-06-30T00:00"  readonly="readonly"/>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <div class="row">
+      	<div class="col-md-1">
+      		<button type="button" class="btn btn-block btn-primary" id="savedeviceconf">保存</button>
+      	</div>
       </div>
       <!-- /.row -->
     </div>
@@ -167,8 +180,8 @@
 <script src="../../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../../layui/layui.js"  charset="utf-8"></script>
-<script src="../ui_js/setlaytime.js"></script>
+
+<script src="../ui_js/setdeviceconfig.js"></script>
 <!-- Page script -->
 <script>
   $(function () {

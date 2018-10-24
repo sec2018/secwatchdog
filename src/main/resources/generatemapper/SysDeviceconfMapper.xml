@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sec.secwatchdog.mapper.SysDeviceconfMapper" >
+  <resultMap id="BaseResultMap" type="sec.secwatchdog.model.SysDeviceconf" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="mid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="swver" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="port" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="infoupdatecycle" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="tickcycle" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ledenable" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="temporaryflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="temporarygmt" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mid, status, swver, ip, port, infoupdatecycle, tickcycle, ledenable, temporaryflag, 
+    temporarygmt, updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="sec.secwatchdog.service.impl.SysDeviceconfExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_deviceconf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="sec.secwatchdog.model.SysDeviceconfKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_deviceconf
+    where id = #{id,jdbcType=INTEGER}
+      and mid = #{mid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="sec.secwatchdog.model.SysDeviceconfKey" >
+    delete from sys_deviceconf
+    where id = #{id,jdbcType=INTEGER}
+      and mid = #{mid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="sec.secwatchdog.service.impl.SysDeviceconfExample" >
+    delete from sys_deviceconf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="sec.secwatchdog.model.SysDeviceconf" >
+    insert into sys_deviceconf (id, mid, status, 
+      swver, ip, port, infoupdatecycle, 
+      tickcycle, ledenable, temporaryflag, 
+      temporarygmt, updatetime)
+    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{swver,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{infoupdatecycle,jdbcType=INTEGER}, 
+      #{tickcycle,jdbcType=INTEGER}, #{ledenable,jdbcType=TINYINT}, #{temporaryflag,jdbcType=TINYINT}, 
+      #{temporarygmt,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="sec.secwatchdog.model.SysDeviceconf" >
+    insert into sys_deviceconf
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mid != null" >
+        mid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="swver != null" >
+        swver,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="port != null" >
+        port,
+      </if>
+      <if test="infoupdatecycle != null" >
+        infoupdatecycle,
+      </if>
+      <if test="tickcycle != null" >
+        tickcycle,
+      </if>
+      <if test="ledenable != null" >
+        ledenable,
+      </if>
+      <if test="temporaryflag != null" >
+        temporaryflag,
+      </if>
+      <if test="temporarygmt != null" >
+        temporarygmt,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null" >
+        #{mid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="swver != null" >
+        #{swver,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="infoupdatecycle != null" >
+        #{infoupdatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="tickcycle != null" >
+        #{tickcycle,jdbcType=INTEGER},
+      </if>
+      <if test="ledenable != null" >
+        #{ledenable,jdbcType=TINYINT},
+      </if>
+      <if test="temporaryflag != null" >
+        #{temporaryflag,jdbcType=TINYINT},
+      </if>
+      <if test="temporarygmt != null" >
+        #{temporarygmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="sec.secwatchdog.service.impl.SysDeviceconfExample" resultType="java.lang.Integer" >
+    select count(*) from sys_deviceconf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_deviceconf
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mid != null" >
+        mid = #{record.mid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.swver != null" >
+        swver = #{record.swver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null" >
+        port = #{record.port,jdbcType=INTEGER},
+      </if>
+      <if test="record.infoupdatecycle != null" >
+        infoupdatecycle = #{record.infoupdatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="record.tickcycle != null" >
+        tickcycle = #{record.tickcycle,jdbcType=INTEGER},
+      </if>
+      <if test="record.ledenable != null" >
+        ledenable = #{record.ledenable,jdbcType=TINYINT},
+      </if>
+      <if test="record.temporaryflag != null" >
+        temporaryflag = #{record.temporaryflag,jdbcType=TINYINT},
+      </if>
+      <if test="record.temporarygmt != null" >
+        temporarygmt = #{record.temporarygmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_deviceconf
+    set id = #{record.id,jdbcType=INTEGER},
+      mid = #{record.mid,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      swver = #{record.swver,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=INTEGER},
+      infoupdatecycle = #{record.infoupdatecycle,jdbcType=INTEGER},
+      tickcycle = #{record.tickcycle,jdbcType=INTEGER},
+      ledenable = #{record.ledenable,jdbcType=TINYINT},
+      temporaryflag = #{record.temporaryflag,jdbcType=TINYINT},
+      temporarygmt = #{record.temporarygmt,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="sec.secwatchdog.model.SysDeviceconf" >
+    update sys_deviceconf
+    <set >
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="swver != null" >
+        swver = #{swver,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="infoupdatecycle != null" >
+        infoupdatecycle = #{infoupdatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="tickcycle != null" >
+        tickcycle = #{tickcycle,jdbcType=INTEGER},
+      </if>
+      <if test="ledenable != null" >
+        ledenable = #{ledenable,jdbcType=TINYINT},
+      </if>
+      <if test="temporaryflag != null" >
+        temporaryflag = #{temporaryflag,jdbcType=TINYINT},
+      </if>
+      <if test="temporarygmt != null" >
+        temporarygmt = #{temporarygmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and mid = #{mid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="sec.secwatchdog.model.SysDeviceconf" >
+    update sys_deviceconf
+    set status = #{status,jdbcType=TINYINT},
+      swver = #{swver,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=INTEGER},
+      infoupdatecycle = #{infoupdatecycle,jdbcType=INTEGER},
+      tickcycle = #{tickcycle,jdbcType=INTEGER},
+      ledenable = #{ledenable,jdbcType=TINYINT},
+      temporaryflag = #{temporaryflag,jdbcType=TINYINT},
+      temporarygmt = #{temporarygmt,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+      and mid = #{mid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectDeviceConfigByMid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from sys_deviceconf where mid = #{mid,jdbcType=VARCHAR}
+  </select>
+</mapper>
