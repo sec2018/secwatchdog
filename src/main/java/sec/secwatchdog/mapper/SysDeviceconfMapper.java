@@ -21,10 +21,10 @@ public interface SysDeviceconfMapper {
     int insertSelective(SysDeviceconf record);
 
     List<SysDeviceconf> selectByExample(SysDeviceconfExample example);
-
-    SysDeviceconf selectByPrimaryKey(SysDeviceconfKey key);
     
     SysDeviceconf selectDeviceConfigByMid(String mid);
+
+    SysDeviceconf selectByPrimaryKey(SysDeviceconfKey key);
 
     int updateByExampleSelective(@Param("record") SysDeviceconf record, @Param("example") SysDeviceconfExample example);
 

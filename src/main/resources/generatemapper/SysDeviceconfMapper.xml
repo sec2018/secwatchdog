@@ -6,6 +6,7 @@
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <idArg column="mid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="status" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="simccid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="swver" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="port" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -76,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mid, status, swver, ip, port, infoupdatecycle, tickcycle, ledenable, temporaryflag, 
-    temporarygmt, updatetime
+    id, mid, status, simccid, swver, ip, port, infoupdatecycle, tickcycle, ledenable, 
+    temporaryflag, temporarygmt, updatetime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="sec.secwatchdog.service.impl.SysDeviceconfExample" >
     select
@@ -113,13 +114,15 @@
   </delete>
   <insert id="insert" parameterType="sec.secwatchdog.model.SysDeviceconf" >
     insert into sys_deviceconf (id, mid, status, 
-      swver, ip, port, infoupdatecycle, 
-      tickcycle, ledenable, temporaryflag, 
-      temporarygmt, updatetime)
+      simccid, swver, ip, 
+      port, infoupdatecycle, tickcycle, 
+      ledenable, temporaryflag, temporarygmt, 
+      updatetime)
     values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{swver,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{infoupdatecycle,jdbcType=INTEGER}, 
-      #{tickcycle,jdbcType=INTEGER}, #{ledenable,jdbcType=TINYINT}, #{temporaryflag,jdbcType=TINYINT}, 
-      #{temporarygmt,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+      #{simccid,jdbcType=VARCHAR}, #{swver,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{port,jdbcType=INTEGER}, #{infoupdatecycle,jdbcType=INTEGER}, #{tickcycle,jdbcType=INTEGER}, 
+      #{ledenable,jdbcType=TINYINT}, #{temporaryflag,jdbcType=TINYINT}, #{temporarygmt,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="sec.secwatchdog.model.SysDeviceconf" >
     insert into sys_deviceconf
@@ -132,6 +135,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="simccid != null" >
+        simccid,
       </if>
       <if test="swver != null" >
         swver,
@@ -170,6 +176,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="simccid != null" >
+        #{simccid,jdbcType=VARCHAR},
       </if>
       <if test="swver != null" >
         #{swver,jdbcType=VARCHAR},
@@ -218,6 +227,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
       </if>
+      <if test="record.simccid != null" >
+        simccid = #{record.simccid,jdbcType=VARCHAR},
+      </if>
       <if test="record.swver != null" >
         swver = #{record.swver,jdbcType=VARCHAR},
       </if>
@@ -255,6 +267,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       mid = #{record.mid,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
+      simccid = #{record.simccid,jdbcType=VARCHAR},
       swver = #{record.swver,jdbcType=VARCHAR},
       ip = #{record.ip,jdbcType=VARCHAR},
       port = #{record.port,jdbcType=INTEGER},
@@ -273,6 +286,9 @@
     <set >
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="simccid != null" >
+        simccid = #{simccid,jdbcType=VARCHAR},
       </if>
       <if test="swver != null" >
         swver = #{swver,jdbcType=VARCHAR},
@@ -308,6 +324,7 @@
   <update id="updateByPrimaryKey" parameterType="sec.secwatchdog.model.SysDeviceconf" >
     update sys_deviceconf
     set status = #{status,jdbcType=TINYINT},
+      simccid = #{simccid,jdbcType=VARCHAR},
       swver = #{swver,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},
       port = #{port,jdbcType=INTEGER},

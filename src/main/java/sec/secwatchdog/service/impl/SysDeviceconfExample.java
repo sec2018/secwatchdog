@@ -295,6 +295,76 @@ public class SysDeviceconfExample {
             return (Criteria) this;
         }
 
+        public Criteria andSimccidIsNull() {
+            addCriterion("simccid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidIsNotNull() {
+            addCriterion("simccid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidEqualTo(String value) {
+            addCriterion("simccid =", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidNotEqualTo(String value) {
+            addCriterion("simccid <>", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidGreaterThan(String value) {
+            addCriterion("simccid >", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidGreaterThanOrEqualTo(String value) {
+            addCriterion("simccid >=", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidLessThan(String value) {
+            addCriterion("simccid <", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidLessThanOrEqualTo(String value) {
+            addCriterion("simccid <=", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidLike(String value) {
+            addCriterion("simccid like", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidNotLike(String value) {
+            addCriterion("simccid not like", value, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidIn(List<String> values) {
+            addCriterion("simccid in", values, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidNotIn(List<String> values) {
+            addCriterion("simccid not in", values, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidBetween(String value1, String value2) {
+            addCriterion("simccid between", value1, value2, "simccid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSimccidNotBetween(String value1, String value2) {
+            addCriterion("simccid not between", value1, value2, "simccid");
+            return (Criteria) this;
+        }
+
         public Criteria andSwverIsNull() {
             addCriterion("swver is null");
             return (Criteria) this;

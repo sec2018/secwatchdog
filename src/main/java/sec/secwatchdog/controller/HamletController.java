@@ -1,5 +1,6 @@
 package sec.secwatchdog.controller;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,11 +64,11 @@ public class HamletController {
 			village = resultUser.getVillage();
 			hamlet = resultUser.getHamlet();	
 		}else {
-			province = json.getString("province");
-			city = json.getString("city");
-			county = json.getString("county");
-			village = json.getString("village");
-			hamlet = json.getString("hamlet");
+			province = URLDecoder.decode(json.getString("province"),"UTF-8");
+			city = URLDecoder.decode(json.getString("city"),"UTF-8");
+			county = URLDecoder.decode(json.getString("county"),"UTF-8");
+			village = URLDecoder.decode(json.getString("village"),"UTF-8");
+			hamlet = URLDecoder.decode(json.getString("hamlet"),"UTF-8");
 		}
 		data = new HashMap<String,Object>();
 		data.put("data1", resultUser);
@@ -158,7 +159,6 @@ public class HamletController {
 		if(session.getAttribute("currentUser")==null){;
 			return "redirect:/login.jsp";
 		}
-		
 		model.addAttribute("provincename", province);
 		model.addAttribute("cityname", city);
 		model.addAttribute("countyname", county);

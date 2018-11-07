@@ -15,6 +15,7 @@ $(function(){
 				}
 				for(var i=0;i<data.data.length;i++){
 					data.data[i].updatetime = timetrans(data.data[i].updatetime);
+					data.data[i].grantgmt = timetrans(data.data[i].grantgmt);
 				}
 				layui.use('table', function(){
 				  var table = layui.table;

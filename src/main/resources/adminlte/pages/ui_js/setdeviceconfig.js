@@ -12,6 +12,7 @@ $(function(){
             	}else{
             		neckletid = data.data.mid;
             		$("#input_status").val(data.data.status);
+            		$("#input_sim").val(data.data.simccid);
             		$("#input_swver").val(data.data.swver);
             		$("#input_ip").val(data.data.ip);
             		$("#input_port").val(data.data.port);
@@ -33,6 +34,7 @@ $(function(){
 		}
 		var mid = "mid="+neckletid+"&";
 		var status = "status=" +$("#input_status").val()+"&";
+		var simccid = "simccid=" +$("#input_sim").val()+"&";
 		var swver ="swver=" + $("#input_swver").val()+"&";
 		var ip ="ip=" + $("#input_ip").val()+"&";
 		var port ="port=" + $("#input_port").val()+"&";
@@ -41,7 +43,7 @@ $(function(){
 		var tickcycle ="tickcycle=" + $("#input_tickcycle").val()+"&";
 		var tempflag ="tempflag=" + $("#input_tempflag").val()+"&";
 		var tempgmt ="tempgmt=" +  $("#input_tempgmt").val()+":00";
-		var senddata = mid+status+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt;
+		var senddata = mid+status+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt;
 		$.ajax({
 	    	url: "/sec/api/setdeviceconfigbynecid.do",
 	        method: "POST",

@@ -60,6 +60,7 @@ public class SysDeviceConfApi {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "mid", value = "项圈标识", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "status", value = "投药状态", required = true, dataType = "Byte",paramType = "query"),
+        @ApiImplicitParam(name = "simccid", value = "SIM_CCID", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "swver", value = "版本号", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "ip", value = "ip地址", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "port", value = "端口号", required = true, dataType = "Integer",paramType = "query"),
@@ -73,7 +74,7 @@ public class SysDeviceConfApi {
 	@Transactional
     @ResponseBody
     public ResponseEntity<JsonResult> InsertLayConfigByNeckletId(@RequestParam(value = "mid")String mid,
-    		@RequestParam(value = "status")Byte status,@RequestParam(value = "swver")String swver,
+    		@RequestParam(value = "status")Byte status,@RequestParam(value = "simccid")String simccid,@RequestParam(value = "swver")String swver,
     		@RequestParam(value = "ip")String ip,@RequestParam(value = "port")Integer port,
     		@RequestParam(value = "infoupdatecycle")Integer infoupdatecycle,@RequestParam(value = "tickcycle")Integer tickcycle,
     		@RequestParam(value = "ledenable")Byte ledenable,@RequestParam(value = "tempflag")Byte tempflag,
@@ -82,6 +83,7 @@ public class SysDeviceConfApi {
         try {
         	SysDeviceconf sysDeviceconf = SysDeviceconfMapper.selectDeviceConfigByMid(mid);
         	sysDeviceconf.setStatus(status);
+        	sysDeviceconf.setSimccid(simccid);
         	sysDeviceconf.setSwver(swver);
         	sysDeviceconf.setIp(ip);
         	sysDeviceconf.setPort(port);

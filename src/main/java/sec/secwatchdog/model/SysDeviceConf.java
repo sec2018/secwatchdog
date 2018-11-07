@@ -5,6 +5,8 @@ import java.util.Date;
 public class SysDeviceconf extends SysDeviceconfKey {
     private Byte status;
 
+    private String simccid;
+
     private String swver;
 
     private String ip;
@@ -23,9 +25,10 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     private Date updatetime;
 
-    public SysDeviceconf(Integer id, String mid, Byte status, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Date updatetime) {
+    public SysDeviceconf(Integer id, String mid, Byte status, String simccid, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Date updatetime) {
         super(id, mid);
         this.status = status;
+        this.simccid = simccid;
         this.swver = swver;
         this.ip = ip;
         this.port = port;
@@ -47,6 +50,14 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getSimccid() {
+        return simccid;
+    }
+
+    public void setSimccid(String simccid) {
+        this.simccid = simccid == null ? null : simccid.trim();
     }
 
     public String getSwver() {
