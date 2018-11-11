@@ -23,9 +23,13 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     private Date temporarygmt;
 
+    private Byte uimodifyflag;
+
+    private Byte hardmodifyflag;
+
     private Date updatetime;
 
-    public SysDeviceconf(Integer id, String mid, Byte status, String simccid, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Date updatetime) {
+    public SysDeviceconf(Integer id, String mid, Byte status, String simccid, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Byte uimodifyflag, Byte hardmodifyflag, Date updatetime) {
         super(id, mid);
         this.status = status;
         this.simccid = simccid;
@@ -37,6 +41,8 @@ public class SysDeviceconf extends SysDeviceconfKey {
         this.ledenable = ledenable;
         this.temporaryflag = temporaryflag;
         this.temporarygmt = temporarygmt;
+        this.uimodifyflag = uimodifyflag;
+        this.hardmodifyflag = hardmodifyflag;
         this.updatetime = updatetime;
     }
 
@@ -122,6 +128,22 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     public void setTemporarygmt(Date temporarygmt) {
         this.temporarygmt = temporarygmt;
+    }
+
+    public Byte getUimodifyflag() {
+        return uimodifyflag;
+    }
+
+    public void setUimodifyflag(Byte uimodifyflag) {
+        this.uimodifyflag = uimodifyflag;
+    }
+
+    public Byte getHardmodifyflag() {
+        return hardmodifyflag;
+    }
+
+    public void setHardmodifyflag(Byte hardmodifyflag) {
+        this.hardmodifyflag = hardmodifyflag;
     }
 
     public Date getUpdatetime() {

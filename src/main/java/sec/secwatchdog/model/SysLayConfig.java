@@ -31,9 +31,13 @@ public class SysLayconfig {
 
     private Date twelve;
 
+    private Byte uimodifyflag;
+
+    private Byte hardmodifyflag;
+
     private Date updatetime;
 
-    public SysLayconfig(Integer id, String mid, Date one, Date two, Date three, Date four, Date five, Date six, Date seven, Date eight, Date nine, Date ten, Date eleven, Date twelve, Date updatetime) {
+    public SysLayconfig(Integer id, String mid, Date one, Date two, Date three, Date four, Date five, Date six, Date seven, Date eight, Date nine, Date ten, Date eleven, Date twelve, Byte uimodifyflag, Byte hardmodifyflag, Date updatetime) {
         this.id = id;
         this.mid = mid;
         this.one = one;
@@ -48,6 +52,8 @@ public class SysLayconfig {
         this.ten = ten;
         this.eleven = eleven;
         this.twelve = twelve;
+        this.uimodifyflag = uimodifyflag;
+        this.hardmodifyflag = hardmodifyflag;
         this.updatetime = updatetime;
     }
 
@@ -165,6 +171,22 @@ public class SysLayconfig {
 
     public void setTwelve(Date twelve) {
         this.twelve = twelve;
+    }
+
+    public Byte getUimodifyflag() {
+        return uimodifyflag;
+    }
+
+    public void setUimodifyflag(Byte uimodifyflag) {
+        this.uimodifyflag = uimodifyflag;
+    }
+
+    public Byte getHardmodifyflag() {
+        return hardmodifyflag;
+    }
+
+    public void setHardmodifyflag(Byte hardmodifyflag) {
+        this.hardmodifyflag = hardmodifyflag;
     }
 
     public Date getUpdatetime() {

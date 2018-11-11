@@ -15,6 +15,8 @@
       <arg column="ledenable" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="temporaryflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="temporarygmt" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="uimodifyflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="hardmodifyflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
@@ -78,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, mid, status, simccid, swver, ip, port, infoupdatecycle, tickcycle, ledenable, 
-    temporaryflag, temporarygmt, updatetime
+    temporaryflag, temporarygmt, uimodifyflag, hardmodifyflag, updatetime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="sec.secwatchdog.service.impl.SysDeviceconfExample" >
     select
@@ -117,12 +119,14 @@
       simccid, swver, ip, 
       port, infoupdatecycle, tickcycle, 
       ledenable, temporaryflag, temporarygmt, 
-      updatetime)
+      uimodifyflag, hardmodifyflag, updatetime
+      )
     values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{simccid,jdbcType=VARCHAR}, #{swver,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
       #{port,jdbcType=INTEGER}, #{infoupdatecycle,jdbcType=INTEGER}, #{tickcycle,jdbcType=INTEGER}, 
       #{ledenable,jdbcType=TINYINT}, #{temporaryflag,jdbcType=TINYINT}, #{temporarygmt,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+      #{uimodifyflag,jdbcType=TINYINT}, #{hardmodifyflag,jdbcType=TINYINT}, #{updatetime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="sec.secwatchdog.model.SysDeviceconf" >
     insert into sys_deviceconf
@@ -162,6 +166,12 @@
       </if>
       <if test="temporarygmt != null" >
         temporarygmt,
+      </if>
+      <if test="uimodifyflag != null" >
+        uimodifyflag,
+      </if>
+      <if test="hardmodifyflag != null" >
+        hardmodifyflag,
       </if>
       <if test="updatetime != null" >
         updatetime,
@@ -203,6 +213,12 @@
       </if>
       <if test="temporarygmt != null" >
         #{temporarygmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uimodifyflag != null" >
+        #{uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="hardmodifyflag != null" >
+        #{hardmodifyflag,jdbcType=TINYINT},
       </if>
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
@@ -254,6 +270,12 @@
       <if test="record.temporarygmt != null" >
         temporarygmt = #{record.temporarygmt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.uimodifyflag != null" >
+        uimodifyflag = #{record.uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="record.hardmodifyflag != null" >
+        hardmodifyflag = #{record.hardmodifyflag,jdbcType=TINYINT},
+      </if>
       <if test="record.updatetime != null" >
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -276,6 +298,8 @@
       ledenable = #{record.ledenable,jdbcType=TINYINT},
       temporaryflag = #{record.temporaryflag,jdbcType=TINYINT},
       temporarygmt = #{record.temporarygmt,jdbcType=TIMESTAMP},
+      uimodifyflag = #{record.uimodifyflag,jdbcType=TINYINT},
+      hardmodifyflag = #{record.hardmodifyflag,jdbcType=TINYINT},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -314,6 +338,12 @@
       <if test="temporarygmt != null" >
         temporarygmt = #{temporarygmt,jdbcType=TIMESTAMP},
       </if>
+      <if test="uimodifyflag != null" >
+        uimodifyflag = #{uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="hardmodifyflag != null" >
+        hardmodifyflag = #{hardmodifyflag,jdbcType=TINYINT},
+      </if>
       <if test="updatetime != null" >
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -333,6 +363,8 @@
       ledenable = #{ledenable,jdbcType=TINYINT},
       temporaryflag = #{temporaryflag,jdbcType=TINYINT},
       temporarygmt = #{temporarygmt,jdbcType=TIMESTAMP},
+      uimodifyflag = #{uimodifyflag,jdbcType=TINYINT},
+      hardmodifyflag = #{hardmodifyflag,jdbcType=TINYINT},
       updatetime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
       and mid = #{mid,jdbcType=VARCHAR}

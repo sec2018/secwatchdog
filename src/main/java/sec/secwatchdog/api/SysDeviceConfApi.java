@@ -93,6 +93,10 @@ public class SysDeviceConfApi {
         	sysDeviceconf.setTemporaryflag(tempflag);
         	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
         	sysDeviceconf.setTemporarygmt(format.parse(tempgmt));
+        	byte uimodifyflag = 1;
+        	sysDeviceconf.setUimodifyflag(uimodifyflag);
+        	byte hardmodifyflag = 0;
+        	sysDeviceconf.setHardmodifyflag(hardmodifyflag);
         	sysDeviceconf.setUpdatetime(new Date());
         	
         	boolean flag  = SysDeviceconfMapper.updateByPrimaryKey(sysDeviceconf)==1?true:false;

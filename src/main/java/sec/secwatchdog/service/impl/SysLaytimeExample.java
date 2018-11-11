@@ -805,6 +805,66 @@ public class SysLaytimeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSignallevelIsNull() {
+            addCriterion("signallevel is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelIsNotNull() {
+            addCriterion("signallevel is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelEqualTo(Byte value) {
+            addCriterion("signallevel =", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelNotEqualTo(Byte value) {
+            addCriterion("signallevel <>", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelGreaterThan(Byte value) {
+            addCriterion("signallevel >", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelGreaterThanOrEqualTo(Byte value) {
+            addCriterion("signallevel >=", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelLessThan(Byte value) {
+            addCriterion("signallevel <", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelLessThanOrEqualTo(Byte value) {
+            addCriterion("signallevel <=", value, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelIn(List<Byte> values) {
+            addCriterion("signallevel in", values, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelNotIn(List<Byte> values) {
+            addCriterion("signallevel not in", values, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelBetween(Byte value1, Byte value2) {
+            addCriterion("signallevel between", value1, value2, "signallevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignallevelNotBetween(Byte value1, Byte value2) {
+            addCriterion("signallevel not between", value1, value2, "signallevel");
+            return (Criteria) this;
+        }
+
         public Criteria andUpdatetimeIsNull() {
             addCriterion("updatetime is null");
             return (Criteria) this;

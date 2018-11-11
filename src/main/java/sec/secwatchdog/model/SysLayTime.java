@@ -25,9 +25,11 @@ public class SysLaytime {
 
     private Byte islay;
 
+    private Byte signallevel;
+
     private Date updatetime;
 
-    public SysLaytime(Integer id, String mid, String latitude, String longitude, Date grantgmt, String err, Double voltage, Byte temperature, Byte type, Date timegmt, Byte islay, Date updatetime) {
+    public SysLaytime(Integer id, String mid, String latitude, String longitude, Date grantgmt, String err, Double voltage, Byte temperature, Byte type, Date timegmt, Byte islay, Byte signallevel, Date updatetime) {
         this.id = id;
         this.mid = mid;
         this.latitude = latitude;
@@ -39,6 +41,7 @@ public class SysLaytime {
         this.type = type;
         this.timegmt = timegmt;
         this.islay = islay;
+        this.signallevel = signallevel;
         this.updatetime = updatetime;
     }
 
@@ -132,6 +135,14 @@ public class SysLaytime {
 
     public void setIslay(Byte islay) {
         this.islay = islay;
+    }
+
+    public Byte getSignallevel() {
+        return signallevel;
+    }
+
+    public void setSignallevel(Byte signallevel) {
+        this.signallevel = signallevel;
     }
 
     public Date getUpdatetime() {

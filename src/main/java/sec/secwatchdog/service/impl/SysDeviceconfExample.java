@@ -1,5 +1,6 @@
 package sec.secwatchdog.service.impl;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -862,6 +863,126 @@ public class SysDeviceconfExample {
 
         public Criteria andTemporarygmtNotBetween(Date value1, Date value2) {
             addCriterion("temporarygmt not between", value1, value2, "temporarygmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagIsNull() {
+            addCriterion("uimodifyflag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagIsNotNull() {
+            addCriterion("uimodifyflag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagEqualTo(Byte value) {
+            addCriterion("uimodifyflag =", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagNotEqualTo(Byte value) {
+            addCriterion("uimodifyflag <>", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagGreaterThan(Byte value) {
+            addCriterion("uimodifyflag >", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagGreaterThanOrEqualTo(Byte value) {
+            addCriterion("uimodifyflag >=", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagLessThan(Byte value) {
+            addCriterion("uimodifyflag <", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagLessThanOrEqualTo(Byte value) {
+            addCriterion("uimodifyflag <=", value, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagIn(List<Byte> values) {
+            addCriterion("uimodifyflag in", values, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagNotIn(List<Byte> values) {
+            addCriterion("uimodifyflag not in", values, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagBetween(Byte value1, Byte value2) {
+            addCriterion("uimodifyflag between", value1, value2, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUimodifyflagNotBetween(Byte value1, Byte value2) {
+            addCriterion("uimodifyflag not between", value1, value2, "uimodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagIsNull() {
+            addCriterion("hardmodifyflag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagIsNotNull() {
+            addCriterion("hardmodifyflag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagEqualTo(Byte value) {
+            addCriterion("hardmodifyflag =", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagNotEqualTo(Byte value) {
+            addCriterion("hardmodifyflag <>", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagGreaterThan(Byte value) {
+            addCriterion("hardmodifyflag >", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagGreaterThanOrEqualTo(Byte value) {
+            addCriterion("hardmodifyflag >=", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagLessThan(Byte value) {
+            addCriterion("hardmodifyflag <", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagLessThanOrEqualTo(Byte value) {
+            addCriterion("hardmodifyflag <=", value, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagIn(List<Byte> values) {
+            addCriterion("hardmodifyflag in", values, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagNotIn(List<Byte> values) {
+            addCriterion("hardmodifyflag not in", values, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagBetween(Byte value1, Byte value2) {
+            addCriterion("hardmodifyflag between", value1, value2, "hardmodifyflag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHardmodifyflagNotBetween(Byte value1, Byte value2) {
+            addCriterion("hardmodifyflag not between", value1, value2, "hardmodifyflag");
             return (Criteria) this;
         }
 

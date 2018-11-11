@@ -17,6 +17,8 @@
       <arg column="ten" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="eleven" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="twelve" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="uimodifyflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="hardmodifyflag" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
@@ -80,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, mid, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, 
-    updatetime
+    uimodifyflag, hardmodifyflag, updatetime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="sec.secwatchdog.service.impl.SysLayconfigExample" >
     select
@@ -101,8 +103,7 @@
     <include refid="Base_Column_List" />
     from sys_layconfig
     where id = #{id,jdbcType=INTEGER}
-  </select> 
-  
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_layconfig
     where id = #{id,jdbcType=INTEGER}
@@ -118,14 +119,14 @@
       two, three, four, 
       five, six, seven, 
       eight, nine, ten, 
-      eleven, twelve, updatetime
-      )
+      eleven, twelve, uimodifyflag, 
+      hardmodifyflag, updatetime)
     values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=VARCHAR}, #{one,jdbcType=TIMESTAMP}, 
       #{two,jdbcType=TIMESTAMP}, #{three,jdbcType=TIMESTAMP}, #{four,jdbcType=TIMESTAMP}, 
       #{five,jdbcType=TIMESTAMP}, #{six,jdbcType=TIMESTAMP}, #{seven,jdbcType=TIMESTAMP}, 
       #{eight,jdbcType=TIMESTAMP}, #{nine,jdbcType=TIMESTAMP}, #{ten,jdbcType=TIMESTAMP}, 
-      #{eleven,jdbcType=TIMESTAMP}, #{twelve,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{eleven,jdbcType=TIMESTAMP}, #{twelve,jdbcType=TIMESTAMP}, #{uimodifyflag,jdbcType=TINYINT}, 
+      #{hardmodifyflag,jdbcType=TINYINT}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="sec.secwatchdog.model.SysLayconfig" >
     insert into sys_layconfig
@@ -171,6 +172,12 @@
       </if>
       <if test="twelve != null" >
         twelve,
+      </if>
+      <if test="uimodifyflag != null" >
+        uimodifyflag,
+      </if>
+      <if test="hardmodifyflag != null" >
+        hardmodifyflag,
       </if>
       <if test="updatetime != null" >
         updatetime,
@@ -218,6 +225,12 @@
       </if>
       <if test="twelve != null" >
         #{twelve,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uimodifyflag != null" >
+        #{uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="hardmodifyflag != null" >
+        #{hardmodifyflag,jdbcType=TINYINT},
       </if>
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
@@ -275,6 +288,12 @@
       <if test="record.twelve != null" >
         twelve = #{record.twelve,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.uimodifyflag != null" >
+        uimodifyflag = #{record.uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="record.hardmodifyflag != null" >
+        hardmodifyflag = #{record.hardmodifyflag,jdbcType=TINYINT},
+      </if>
       <if test="record.updatetime != null" >
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -299,6 +318,8 @@
       ten = #{record.ten,jdbcType=TIMESTAMP},
       eleven = #{record.eleven,jdbcType=TIMESTAMP},
       twelve = #{record.twelve,jdbcType=TIMESTAMP},
+      uimodifyflag = #{record.uimodifyflag,jdbcType=TINYINT},
+      hardmodifyflag = #{record.hardmodifyflag,jdbcType=TINYINT},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -346,6 +367,12 @@
       <if test="twelve != null" >
         twelve = #{twelve,jdbcType=TIMESTAMP},
       </if>
+      <if test="uimodifyflag != null" >
+        uimodifyflag = #{uimodifyflag,jdbcType=TINYINT},
+      </if>
+      <if test="hardmodifyflag != null" >
+        hardmodifyflag = #{hardmodifyflag,jdbcType=TINYINT},
+      </if>
       <if test="updatetime != null" >
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -367,9 +394,12 @@
       ten = #{ten,jdbcType=TIMESTAMP},
       eleven = #{eleven,jdbcType=TIMESTAMP},
       twelve = #{twelve,jdbcType=TIMESTAMP},
+      uimodifyflag = #{uimodifyflag,jdbcType=TINYINT},
+      hardmodifyflag = #{hardmodifyflag,jdbcType=TINYINT},
       updatetime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   
   <select id="selectLayConfigByMid" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

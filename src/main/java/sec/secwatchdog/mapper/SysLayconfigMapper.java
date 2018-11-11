@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import sec.secwatchdog.model.SysLayconfig;
 import sec.secwatchdog.service.impl.SysLayconfigExample;
+
 
 @Mapper
 public interface SysLayconfigMapper {

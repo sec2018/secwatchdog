@@ -14,6 +14,7 @@
       <arg column="type" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="timegmt" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="islay" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="signallevel" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, mid, latitude, longitude, grantgmt, err, voltage, temperature, type, timegmt, 
-    islay, updatetime
+    islay, signallevel, updatetime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="sec.secwatchdog.service.impl.SysLaytimeExample" >
     select
@@ -113,13 +114,13 @@
     insert into sys_laytime (id, mid, latitude, 
       longitude, grantgmt, err, 
       voltage, temperature, type, 
-      timegmt, islay, updatetime
-      )
+      timegmt, islay, signallevel, 
+      updatetime)
     values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=VARCHAR}, #{grantgmt,jdbcType=TIMESTAMP}, #{err,jdbcType=VARCHAR}, 
       #{voltage,jdbcType=DOUBLE}, #{temperature,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}, 
-      #{timegmt,jdbcType=TIMESTAMP}, #{islay,jdbcType=TINYINT}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{timegmt,jdbcType=TIMESTAMP}, #{islay,jdbcType=TINYINT}, #{signallevel,jdbcType=TINYINT}, 
+      #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="sec.secwatchdog.model.SysLaytime" >
     insert into sys_laytime
@@ -156,6 +157,9 @@
       </if>
       <if test="islay != null" >
         islay,
+      </if>
+      <if test="signallevel != null" >
+        signallevel,
       </if>
       <if test="updatetime != null" >
         updatetime,
@@ -194,6 +198,9 @@
       </if>
       <if test="islay != null" >
         #{islay,jdbcType=TINYINT},
+      </if>
+      <if test="signallevel != null" >
+        #{signallevel,jdbcType=TINYINT},
       </if>
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
@@ -242,6 +249,9 @@
       <if test="record.islay != null" >
         islay = #{record.islay,jdbcType=TINYINT},
       </if>
+      <if test="record.signallevel != null" >
+        signallevel = #{record.signallevel,jdbcType=TINYINT},
+      </if>
       <if test="record.updatetime != null" >
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -263,6 +273,7 @@
       type = #{record.type,jdbcType=TINYINT},
       timegmt = #{record.timegmt,jdbcType=TIMESTAMP},
       islay = #{record.islay,jdbcType=TINYINT},
+      signallevel = #{record.signallevel,jdbcType=TINYINT},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -301,6 +312,9 @@
       <if test="islay != null" >
         islay = #{islay,jdbcType=TINYINT},
       </if>
+      <if test="signallevel != null" >
+        signallevel = #{signallevel,jdbcType=TINYINT},
+      </if>
       <if test="updatetime != null" >
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
@@ -319,6 +333,7 @@
       type = #{type,jdbcType=TINYINT},
       timegmt = #{timegmt,jdbcType=TIMESTAMP},
       islay = #{islay,jdbcType=TINYINT},
+      signallevel = #{signallevel,jdbcType=TINYINT},
       updatetime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

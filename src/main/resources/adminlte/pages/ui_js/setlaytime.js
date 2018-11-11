@@ -38,6 +38,7 @@ $(function(){
 				    	{field:'temperature',title: '温度'},
 				    	{field:'type', sort: true, title: '投药类型'},
 				    	{field:'islay', title: '是否投药反馈'},
+				    	{field:'signallevel', title: '信号强度'},
 				    	{field:'err', title: '错误信息'}
 		    	    ]],
 				    data: data.data,
