@@ -20,6 +20,7 @@ import sec.secwatchdog.mapper.SysDeviceconfMapper;
 import sec.secwatchdog.mapper.SysLayconfigMapper;
 import sec.secwatchdog.model.SysDeviceconf;
 import sec.secwatchdog.model.SysLayconfig;
+import sec.secwatchdog.redis.service.RedisService;
 import sec.secwatchdog.service.impl.SysLayconfigExample;
 import sec.secwatchdog.util.JsonResult;
 
@@ -28,7 +29,10 @@ import sec.secwatchdog.util.JsonResult;
 public class SysDeviceConfApi {
 	
 	@Autowired
-	private SysDeviceconfMapper SysDeviceconfMapper;
+	private SysDeviceconfMapper sysDeviceconfMapper;
+	
+	@Autowired
+    private RedisService redisService;
 
 	@ApiOperation(value = "通过项圈编号查询项圈配置信息", notes = "通过项圈编号查询项圈配置信息")
 	@ApiImplicitParams({
@@ -39,7 +43,7 @@ public class SysDeviceConfApi {
     public ResponseEntity<JsonResult> GetLayConfigByNeckletId(@RequestParam(value = "mid")String mid){
         JsonResult r = new JsonResult();
         try {
-        	SysDeviceconf deviceconfig  = SysDeviceconfMapper.selectDeviceConfigByMid(mid);
+        	SysDeviceconf deviceconfig  = sysDeviceconfMapper.selectDeviceConfigByMid(mid);
             r.setCode("200");
             r.setMsg("获取项圈配置信息成功！");
             r.setData(deviceconfig);
@@ -81,7 +85,7 @@ public class SysDeviceConfApi {
     		@RequestParam(value = "tempgmt")String tempgmt){
         JsonResult r = new JsonResult();
         try {
-        	SysDeviceconf sysDeviceconf = SysDeviceconfMapper.selectDeviceConfigByMid(mid);
+        	SysDeviceconf sysDeviceconf = sysDeviceconfMapper.selectDeviceConfigByMid(mid);
         	sysDeviceconf.setStatus(status);
         	sysDeviceconf.setSimccid(simccid);
         	sysDeviceconf.setSwver(swver);
@@ -99,8 +103,15 @@ public class SysDeviceConfApi {
         	sysDeviceconf.setHardmodifyflag(hardmodifyflag);
         	sysDeviceconf.setUpdatetime(new Date());
         	
-        	boolean flag  = SysDeviceconfMapper.updateByPrimaryKey(sysDeviceconf)==1?true:false;
+        	boolean flag  = sysDeviceconfMapper.updateByPrimaryKey(sysDeviceconf)==1?true:false;
+        	boolean flag2  = false;
+        	boolean flag3 = false;
         	if(flag) {
+        		String command03 = Analyse.Command_03_Send(sysDeviceconf);
+        		flag2  = redisService.set("device_"+mid, command03);
+        		flag3 = redisService.persistKey("device_"+mid);
+        	}
+        	if(flag2 && flag3) {
         		r.setCode("200");
                 r.setMsg("配置项圈信息成功！");
                 r.setData(null);
@@ -108,7 +119,7 @@ public class SysDeviceConfApi {
         	}else {
         		r.setCode(500+"");
                 r.setData(null);
-                r.setMsg("配置项圈信息失败");
+                r.setMsg("服务器忙，配置项圈信息失败");
                 r.setSuccess(false);
         	}
         } catch (Exception e) {

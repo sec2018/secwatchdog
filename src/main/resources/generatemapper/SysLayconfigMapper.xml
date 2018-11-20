@@ -413,4 +413,12 @@
     where mid = #{mid,jdbcType=VARCHAR} order by updatetime limit 1
   </delete>
   
+  
+  <update id="updateOtherLayConfigflag" parameterType="java.lang.String" >
+    update sys_layconfig
+    set uimodifyflag = 0,
+      hardmodifyflag = 0
+    where mid = #{mid,jdbcType=VARCHAR}
+  </update>
+  
 </mapper>

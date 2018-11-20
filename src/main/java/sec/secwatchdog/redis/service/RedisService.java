@@ -30,5 +30,12 @@ public interface RedisService {
      * @return
      */
     boolean remove(String key);
+    
+    /**
+     * 将key设置为永久有效
+     * @param key
+     * @return
+     */
+    boolean persistKey(String key);
 
 }

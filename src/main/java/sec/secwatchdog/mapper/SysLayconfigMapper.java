@@ -35,4 +35,6 @@ public interface SysLayconfigMapper {
     int updateByPrimaryKey(SysLayconfig record);
     
     int deleteOldestLayConfigByMid(String mid);
+    
+    int updateOtherLayConfigflag(String mid);
 }

@@ -31,8 +31,8 @@ $(function(){
 			    	},
 					cols: [[
 						{field:'updatetime', sort: true,title: '反馈时间'},
-				    	{field:'latitude',title: '经度'},
-				    	{field:'longitude', title: '维度'},
+				    	{field:'longitude',title: '经度'},
+				    	{field:'latitude', title: '维度'},
 				    	{field:'grantgmt',title: '上次投药时间'},
 				    	{field:'voltage',title: '电压'},
 				    	{field:'temperature',title: '温度'},

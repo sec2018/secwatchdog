@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import sec.secwatchdog.mapper.SysLayconfigMapper;
 import sec.secwatchdog.model.SysLayconfig;
+import sec.secwatchdog.redis.service.RedisService;
 import sec.secwatchdog.service.impl.SysLayconfigExample;
 import sec.secwatchdog.util.JsonResult;
 
@@ -28,6 +29,9 @@ public class SysLayconfigApi {
 	
 	@Autowired
 	private SysLayconfigMapper sysLayconfigMapper;
+	
+	@Autowired
+    private RedisService redisService;
 	
 	@ApiOperation(value = "查询所有项圈配置列表", notes = "查询所有项圈配置列表")
 	@RequestMapping(value="getlayconfiglist",method = RequestMethod.GET)
@@ -120,9 +124,19 @@ public class SysLayconfigApi {
         	layconfig.setTen(format.parse(ten));
         	layconfig.setEleven(format.parse(eleven));
         	layconfig.setTwelve(format.parse(twelve));
+        	layconfig.setUimodifyflag(Byte.valueOf("1"));
+        	layconfig.setHardmodifyflag(Byte.valueOf("0"));
         	layconfig.setUpdatetime(new Date());
+        	sysLayconfigMapper.updateOtherLayConfigflag(mid);
         	boolean flag  = sysLayconfigMapper.insert(layconfig)==1?true:false;
+        	boolean flag2  = false;
+        	boolean flag3 = false;
         	if(flag) {
+        		String command02 = Analyse.Command_02_Send(layconfig);
+        		flag2  = redisService.set("time_"+mid, command02);
+        		flag3 = redisService.persistKey("time_"+mid);
+        	}
+        	if(flag2 && flag3) {
         		//删除最老的一条记录
         		SysLayconfigExample example = new SysLayconfigExample();
         		SysLayconfigExample.Criteria criteria = example.createCriteria();
