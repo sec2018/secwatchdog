@@ -7,7 +7,7 @@ $(function(){
             data: "mid="+$("#in_necketid").val(),   //方法1
             success: function (data) {
             	if (data.data == null) {
-            		alert("该项圈不存在！");
+            		alert(data.msg);
     	            return;
             	}else{
             		neckletid = data.data.mid;
@@ -22,6 +22,8 @@ $(function(){
             		$("#input_tempflag").val(data.data.temporaryflag);
             		$("#input_tempgmt").val((timetrans(data.data.temporarygmt)));
             		$("#input_lastupdatetime").val((timetrans(data.data.updatetime)));
+            		$("#input_clearerr").val(data.data.clearerr);
+            		$("#input_factory").val(data.data.factory);
             	}
             }
         })
@@ -42,8 +44,10 @@ $(function(){
 		var infoupdatecycle ="infoupdatecycle=" + $("#input_infoupdatecycle").val()+"&";
 		var tickcycle ="tickcycle=" + $("#input_tickcycle").val()+"&";
 		var tempflag ="tempflag=" + $("#input_tempflag").val()+"&";
-		var tempgmt ="tempgmt=" +  $("#input_tempgmt").val()+":00";
-		var senddata = mid+status+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt;
+		var tempgmt ="tempgmt=" +  $("#input_tempgmt").val()+":00&";
+		var clearerr = "clearerr=" +$("#input_clearerr").val()+"&";
+		var factory = "factory=" +$("#input_factory").val();
+		var senddata = mid+status+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt+clearerr+factory;
 		$.ajax({
 	    	url: "/sec/api/setdeviceconfigbynecid.do",
 	        method: "POST",

@@ -45,7 +45,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    设置硬件基本信息
+    设置投药时间
     <small>设备</small>
   </h1>
   <ol class="breadcrumb">
@@ -60,7 +60,7 @@
   <!-- SELECT2 EXAMPLE -->
   <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">硬件基本信息设置（项圈）</h3>
+      <h3 class="box-title">添加设备（项圈）</h3>
 
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -71,13 +71,9 @@
     <div class="box-body">
     	<div class="row">
 	      	<div class="col-md-3">
-	      	  <label>搜索项圈基本设置：</label>
+	      	  <label>项圈标识：</label>
 	   		  <div class="input-group">
 	             <input id="in_necketid" type="text" class="form-control" placeholder="输入项圈标识">
-	             <div class="input-group-btn">
-	               <button id="search_neckletid" type="button" class="btn btn-primary btn-flat">搜索</button>
-	             </div>
-	             <!-- /btn-group -->
 	           </div>
 	      	</div>
       	</div>
@@ -85,17 +81,73 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>投药状态：</label>
-            <label for="meeting"></label><input id="input_status" type="text" readonly="readonly"/>
+            <label>第1次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay1" type="datetime-local" value="2017-06-30T00:00"/>
           </div>
           <!-- /.form-group -->
           <div class="form-group">
+            <label>第2次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay2" type="datetime-local" value="2017-06-30 00:00:00"/>
+          </div>
+          <div class="form-group">
+            <label>第3次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay3" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第4次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay4" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第5次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay5" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第6次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay6" type="datetime-local"/>
+          </div>
+          <!-- /.form-group -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>第7次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay7" type="datetime-local"/>
+          </div>
+          <!-- /.form-group -->
+          <div class="form-group">
+            <label>第8次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay8" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第9次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay9" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第10次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay10" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第11次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay11" type="datetime-local"/>
+          </div>
+          <div class="form-group">
+            <label>第12次投药时间：</label>
+            <label for="meeting"></label><input id="input_lay12" type="datetime-local"/>
+          </div>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+       <div class="row">
+        <div class="col-md-6">
+          <!-- /.form-group -->
+          <div class="form-group">
             <label>SIM_CCID：</label>
-            <label for="meeting"></label><input id="input_sim" type="text"  readonly="readonly"/>
+            <label for="meeting"></label><input id="input_sim" type="text" />
           </div>
           <div class="form-group">
             <label>硬件版本号：</label>
-            <label for="meeting"></label><input id="input_swver" type="text"  readonly="readonly"/>
+            <label for="meeting"></label><input id="input_swver" type="text" />
           </div>
           <div class="form-group">
             <label>绑定ip地址：</label>
@@ -108,10 +160,6 @@
           <div class="form-group">
             <label>LED使能：</label>
             <label for="meeting"></label><input id="input_ledenable" type="text"/>
-          </div>
-          <div class="form-group">
-            <label>清除故障标志：</label>
-            <label for="meeting"></label><input id="input_clearerr" type="text"/>
           </div>
           <!-- /.form-group -->
         </div>
@@ -134,20 +182,12 @@
             <label>临时投药时间：</label>
             <label for="meeting"></label><input id="input_tempgmt"  type="datetime-local" value="2017-06-30T00:00"/>
           </div>
-          <div class="form-group">
-            <label>上次修改配置时间：</label>
-            <label for="meeting"></label><input id="input_lastupdatetime" type="datetime-local" value="2017-06-30T00:00"  readonly="readonly"/>
-          </div>
-          <div class="form-group">
-            <label>恢复出厂设置：</label>
-            <label for="meeting"></label><input id="input_factory" type="text"/>
-          </div>
         </div>
         <!-- /.col -->
       </div>
       <div class="row">
       	<div class="col-md-1">
-      		<button type="button" class="btn btn-block btn-primary" id="savedeviceconf">保存</button>
+      		<button type="button" class="btn btn-block btn-primary" id="adddevice">添加</button>
       	</div>
       </div>
       <!-- /.row -->
@@ -193,7 +233,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
-<script src="../ui_js/setdeviceconfig.js"></script>
+<script src="../ui_js/adddevice.js"></script>
 <!-- Page script -->
 <script>
   $(function () {

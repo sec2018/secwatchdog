@@ -3,7 +3,7 @@ package sec.secwatchdog.model;
 import java.util.Date;
 
 public class SysDeviceconf extends SysDeviceconfKey {
-    private Byte status;
+    private Integer status;
 
     private String simccid;
 
@@ -23,13 +23,17 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     private Date temporarygmt;
 
+    private Byte clearerr;
+
+    private Byte factory;
+
     private Byte uimodifyflag;
 
     private Byte hardmodifyflag;
 
     private Date updatetime;
 
-    public SysDeviceconf(Integer id, String mid, Byte status, String simccid, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Byte uimodifyflag, Byte hardmodifyflag, Date updatetime) {
+    public SysDeviceconf(Integer id, String mid, Integer status, String simccid, String swver, String ip, Integer port, Integer infoupdatecycle, Integer tickcycle, Byte ledenable, Byte temporaryflag, Date temporarygmt, Byte clearerr, Byte factory, Byte uimodifyflag, Byte hardmodifyflag, Date updatetime) {
         super(id, mid);
         this.status = status;
         this.simccid = simccid;
@@ -41,6 +45,8 @@ public class SysDeviceconf extends SysDeviceconfKey {
         this.ledenable = ledenable;
         this.temporaryflag = temporaryflag;
         this.temporarygmt = temporarygmt;
+        this.clearerr = clearerr;
+        this.factory = factory;
         this.uimodifyflag = uimodifyflag;
         this.hardmodifyflag = hardmodifyflag;
         this.updatetime = updatetime;
@@ -50,11 +56,11 @@ public class SysDeviceconf extends SysDeviceconfKey {
         super();
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -128,6 +134,22 @@ public class SysDeviceconf extends SysDeviceconfKey {
 
     public void setTemporarygmt(Date temporarygmt) {
         this.temporarygmt = temporarygmt;
+    }
+
+    public Byte getClearerr() {
+        return clearerr;
+    }
+
+    public void setClearerr(Byte clearerr) {
+        this.clearerr = clearerr;
+    }
+
+    public Byte getFactory() {
+        return factory;
+    }
+
+    public void setFactory(Byte factory) {
+        this.factory = factory;
     }
 
     public Byte getUimodifyflag() {

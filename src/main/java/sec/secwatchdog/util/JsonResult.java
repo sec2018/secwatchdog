@@ -2,20 +2,21 @@ package sec.secwatchdog.util;
 
 public class JsonResult {
 
-	private String code = null;
+	private int code = -1;
     private String msg = null;
     private boolean success = false;
     private Object data = null;
 
-    public String getCode() {
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+    public int getCode() {
+		return code;
+	}
 
-    public String getMsg() {
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public String getMsg() {
         return msg;
     }
 

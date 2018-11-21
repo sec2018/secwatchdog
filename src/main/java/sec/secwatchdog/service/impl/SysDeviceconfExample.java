@@ -1,6 +1,5 @@
 package sec.secwatchdog.service.impl;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -246,52 +245,52 @@ public class SysDeviceconfExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Byte value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Byte value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Byte value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Byte value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Byte value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Byte> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Byte> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Byte value1, Byte value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
@@ -863,6 +862,126 @@ public class SysDeviceconfExample {
 
         public Criteria andTemporarygmtNotBetween(Date value1, Date value2) {
             addCriterion("temporarygmt not between", value1, value2, "temporarygmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrIsNull() {
+            addCriterion("clearerr is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrIsNotNull() {
+            addCriterion("clearerr is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrEqualTo(Byte value) {
+            addCriterion("clearerr =", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrNotEqualTo(Byte value) {
+            addCriterion("clearerr <>", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrGreaterThan(Byte value) {
+            addCriterion("clearerr >", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrGreaterThanOrEqualTo(Byte value) {
+            addCriterion("clearerr >=", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrLessThan(Byte value) {
+            addCriterion("clearerr <", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrLessThanOrEqualTo(Byte value) {
+            addCriterion("clearerr <=", value, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrIn(List<Byte> values) {
+            addCriterion("clearerr in", values, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrNotIn(List<Byte> values) {
+            addCriterion("clearerr not in", values, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrBetween(Byte value1, Byte value2) {
+            addCriterion("clearerr between", value1, value2, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearerrNotBetween(Byte value1, Byte value2) {
+            addCriterion("clearerr not between", value1, value2, "clearerr");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryIsNull() {
+            addCriterion("factory is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryIsNotNull() {
+            addCriterion("factory is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryEqualTo(Byte value) {
+            addCriterion("factory =", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotEqualTo(Byte value) {
+            addCriterion("factory <>", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryGreaterThan(Byte value) {
+            addCriterion("factory >", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryGreaterThanOrEqualTo(Byte value) {
+            addCriterion("factory >=", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryLessThan(Byte value) {
+            addCriterion("factory <", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryLessThanOrEqualTo(Byte value) {
+            addCriterion("factory <=", value, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryIn(List<Byte> values) {
+            addCriterion("factory in", values, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotIn(List<Byte> values) {
+            addCriterion("factory not in", values, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryBetween(Byte value1, Byte value2) {
+            addCriterion("factory between", value1, value2, "factory");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactoryNotBetween(Byte value1, Byte value2) {
+            addCriterion("factory not between", value1, value2, "factory");
             return (Criteria) this;
         }
 

@@ -36,6 +36,8 @@ public interface RedisService {
      * @param key
      * @return
      */
-    boolean persistKey(String key);
+//    boolean persistKey(String key);   不起作用
+    boolean setpersist(String key, String value);
+    
 
 }

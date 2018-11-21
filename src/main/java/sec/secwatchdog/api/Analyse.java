@@ -185,7 +185,7 @@ public class Analyse {
     //02命令发送
     public static String Command_02_Send(SysLayconfig sysLayconfig){
 //        String mid = "10010";
-    	String mid = sysLayconfig.getMid();
+        String mid = sysLayconfig.getMid();
         //传入12个投药时间对象
         int[] time_all = new int[12];
 //        int time_01 = 1541741868;
@@ -262,9 +262,9 @@ public class Analyse {
 
     //03命令  发送配置信息
     public static String Command_03_Send(SysDeviceconf sysDeviceconf){
-    	
+
 //        String mid = "10010";
-    	String mid = sysDeviceconf.getMid();
+        String mid = sysDeviceconf.getMid();
 
         String resp = "";
         int Mid = Integer.parseInt(mid);
@@ -322,8 +322,18 @@ public class Analyse {
         tempgmt = Integer.reverseBytes(tempgmt);
         v = ScheduleCheck.intToByteArray(tempgmt);
         String tempgmtres = ScheduleCheck.bytesToHexString(v).toUpperCase();
+        //clearErr  清除故障标志位
+        int clearErr = sysDeviceconf.getClearerr();
+        clearErr = Integer.reverseBytes(clearErr);
+        v = ScheduleCheck.intToByteArray(clearErr);
+        String clearErrres = ScheduleCheck.bytesToHexString(v).toUpperCase().substring(0,2);
+        //恢复出厂设置
+        int factory = sysDeviceconf.getFactory();
+        factory = Integer.reverseBytes(factory);
+        v = ScheduleCheck.intToByteArray(factory);
+        String factoryres = ScheduleCheck.bytesToHexString(v).toUpperCase().substring(0,2);
 
-        resp = "3A"+midstr+"03"+"1200"+ipres+portres+infoupdatecycleres+tickcycleres+ledenableres+tempflagres+tempgmtres+"0000"+"0000"+"0D0A";
+        resp = "3A"+midstr+"03"+"1200"+ipres+portres+infoupdatecycleres+tickcycleres+ledenableres+tempflagres+tempgmtres+clearErrres+factoryres+"0000"+"0000"+"0D0A";
         return resp;
     }
 
@@ -356,9 +366,7 @@ public class Analyse {
     }
 
     //04命令  发送配置信息
-    public static String Command_04_Send(){
-        String mid = "10010";
-
+    public static String Command_04_Send(String mid){
         String resp = "";
         int Mid = Integer.parseInt(mid);
 
@@ -376,7 +384,7 @@ public class Analyse {
         if(hexstr.length()!=60){
             return null;
         }
-        String[] rescommand_04 = new String[9];
+        String[] rescommand_04 = new String[11];
         if(hexstr.substring(0,2).equals("3A") && hexstr.substring(56,60).equals("0D0A")) {
             byte[] res = ScheduleCheck.hexStringToBytes(hexstr);
             //04命令
@@ -465,7 +473,18 @@ public class Analyse {
             int res57 = ScheduleCheck.byteArrayToInt(v);
             System.out.println("临时投药时间： "+res57);
             rescommand_04[8] = res57+"";
-
+            //ClearErr  清除故障标志位 1个字节  （第25个字节）
+            v[0] = 0;
+            v[1] = 0;
+            v[2] = 0;
+            v[3] = res[24];
+            int res58 = ScheduleCheck.byteArrayToInt(v);
+            System.out.println("清除故障标志位： "+res58);
+            rescommand_04[9] = res58+"";
+            v[3] = res[25];
+            int res59 = ScheduleCheck.byteArrayToInt(v);
+            System.out.println("恢复出厂设置： "+res59);
+            rescommand_04[10] = res59+"";
 
             //CRC16 2个字节  小端模式         (第27，28个字节)
             v[0] = 0;
@@ -480,9 +499,7 @@ public class Analyse {
     }
 
     //05命令   发送读取信息寄存器信息
-    public static String Command_05_Send(){
-        String mid = "10010";
-
+    public static String Command_05_Send(String mid){
         String resp = "";
         int Mid = Integer.parseInt(mid);
 
@@ -604,8 +621,7 @@ public class Analyse {
     }
 
     //06命令   发送读取时间寄存器信息
-    public static String Command_06_Send(){
-        String mid = "10010";
+    public static String Command_06_Send(String mid){
 
         String resp = "";
         int Mid = Integer.parseInt(mid);

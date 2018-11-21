@@ -44,14 +44,21 @@ public class SysDeviceConfApi {
         JsonResult r = new JsonResult();
         try {
         	SysDeviceconf deviceconfig  = sysDeviceconfMapper.selectDeviceConfigByMid(mid);
-            r.setCode("200");
-            r.setMsg("获取项圈配置信息成功！");
-            r.setData(deviceconfig);
-            r.setSuccess(true);
+        	if(deviceconfig!=null) {
+        		r.setCode(200);
+                r.setMsg("获取项圈配置信息成功！");
+                r.setData(deviceconfig);
+                r.setSuccess(true);
+        	}else {
+        		r.setCode(500);
+                r.setData(null);
+                r.setMsg("该项圈不存在，请先添加！");
+                r.setSuccess(false);
+        	}      
         } catch (Exception e) {
-            r.setCode(500+"");
+            r.setCode(500);
             r.setData(e.getClass().getName() + ":" + e.getMessage());
-            r.setMsg("获取项圈配置信息失败");
+            r.setMsg("该项圈不存在，请先添加！");
             r.setSuccess(false);
             e.printStackTrace();
         }
@@ -63,7 +70,7 @@ public class SysDeviceConfApi {
 	@ApiOperation(value = "通过项圈编号配置项圈信息", notes = "通过项圈编号配置项圈信息")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "mid", value = "项圈标识", required = true, dataType = "String",paramType = "query"),
-        @ApiImplicitParam(name = "status", value = "投药状态", required = true, dataType = "Byte",paramType = "query"),
+//        @ApiImplicitParam(name = "status", value = "投药状态", required = true, dataType = "Byte",paramType = "query"),
         @ApiImplicitParam(name = "simccid", value = "SIM_CCID", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "swver", value = "版本号", required = true, dataType = "String",paramType = "query"),
         @ApiImplicitParam(name = "ip", value = "ip地址", required = true, dataType = "String",paramType = "query"),
@@ -72,7 +79,9 @@ public class SysDeviceConfApi {
         @ApiImplicitParam(name = "tickcycle", value = "心跳周期", required = true, dataType = "Integer",paramType = "query"),
         @ApiImplicitParam(name = "ledenable", value = "led使能", required = true, dataType = "Byte",paramType = "query"),
         @ApiImplicitParam(name = "tempflag", value = "临时投药标志", required = true, dataType = "Byte",paramType = "query"),
-        @ApiImplicitParam(name = "tempgmt", value = "临时投药时间", required = true, dataType = "String",paramType = "query")
+        @ApiImplicitParam(name = "tempgmt", value = "临时投药时间", required = true, dataType = "String",paramType = "query"),
+        @ApiImplicitParam(name = "clearerr", value = "清除故障标志", required = true, dataType = "Byte",paramType = "query"),
+        @ApiImplicitParam(name = "factory", value = "恢复出厂设置", required = true, dataType = "Byte",paramType = "query")
 	})
 	@RequestMapping(value="setdeviceconfigbynecid",method = RequestMethod.POST)
 	@Transactional
@@ -82,11 +91,11 @@ public class SysDeviceConfApi {
     		@RequestParam(value = "ip")String ip,@RequestParam(value = "port")Integer port,
     		@RequestParam(value = "infoupdatecycle")Integer infoupdatecycle,@RequestParam(value = "tickcycle")Integer tickcycle,
     		@RequestParam(value = "ledenable")Byte ledenable,@RequestParam(value = "tempflag")Byte tempflag,
-    		@RequestParam(value = "tempgmt")String tempgmt){
+    		@RequestParam(value = "tempgmt")String tempgmt,@RequestParam(value = "clearerr")Byte clearerr,
+    		@RequestParam(value = "factory")Byte factory){
         JsonResult r = new JsonResult();
         try {
         	SysDeviceconf sysDeviceconf = sysDeviceconfMapper.selectDeviceConfigByMid(mid);
-        	sysDeviceconf.setStatus(status);
         	sysDeviceconf.setSimccid(simccid);
         	sysDeviceconf.setSwver(swver);
         	sysDeviceconf.setIp(ip);
@@ -102,28 +111,28 @@ public class SysDeviceConfApi {
         	byte hardmodifyflag = 0;
         	sysDeviceconf.setHardmodifyflag(hardmodifyflag);
         	sysDeviceconf.setUpdatetime(new Date());
+        	sysDeviceconf.setClearerr(clearerr);
+        	sysDeviceconf.setFactory(factory);
         	
         	boolean flag  = sysDeviceconfMapper.updateByPrimaryKey(sysDeviceconf)==1?true:false;
         	boolean flag2  = false;
-        	boolean flag3 = false;
         	if(flag) {
         		String command03 = Analyse.Command_03_Send(sysDeviceconf);
-        		flag2  = redisService.set("device_"+mid, command03);
-        		flag3 = redisService.persistKey("device_"+mid);
+        		flag2  = redisService.setpersist("device_"+mid, command03);
         	}
-        	if(flag2 && flag3) {
-        		r.setCode("200");
+        	if(flag2) {
+        		r.setCode(200);
                 r.setMsg("配置项圈信息成功！");
                 r.setData(null);
                 r.setSuccess(true);
         	}else {
-        		r.setCode(500+"");
+        		r.setCode(500);
                 r.setData(null);
                 r.setMsg("服务器忙，配置项圈信息失败");
                 r.setSuccess(false);
         	}
         } catch (Exception e) {
-            r.setCode(500+"");
+            r.setCode(500);
             r.setData(e.getClass().getName() + ":" + e.getMessage());
             r.setMsg("配置项圈信息失败");
             r.setSuccess(false);

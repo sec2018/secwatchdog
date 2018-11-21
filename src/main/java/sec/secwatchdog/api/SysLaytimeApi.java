@@ -40,12 +40,12 @@ public class SysLaytimeApi {
         	SysLaytimeExample.Criteria criteria = example.createCriteria();
         	criteria.andMidEqualTo(mid);
         	List<SysLaytime> layconfig  = sysLaytimeMapper.selectByExample(example);
-            r.setCode("200");
+            r.setCode(200);
             r.setMsg("获取项圈反馈成功！");
             r.setData(layconfig);
             r.setSuccess(true);
         } catch (Exception e) {
-            r.setCode(500+"");
+            r.setCode(500);
             r.setData(e.getClass().getName() + ":" + e.getMessage());
             r.setMsg("获取项圈反馈失败");
             r.setSuccess(false);

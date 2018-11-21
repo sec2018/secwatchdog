@@ -1,39 +1,13 @@
 /**
  * 
  */
-var neckletid = "";
 $(function(){
-	$("#search_neckletid").click(function(){
-		$.ajax({
-        	url: "/sec/api/getlayconfigbynecid.do",
-            method: "POST",
-            data: "mid="+$("#in_necketid").val(),   //方法1
-            success: function (data) {
-            	if (data.data == null) {
-            		alert(data.msg);
-    	            return;
-            	}else{
-            		neckletid = data.data.mid;
-            		$("#input_lay1").val((timetrans(data.data.one)));
-            		$("#input_lay2").val((timetrans(data.data.two)));
-            		$("#input_lay3").val((timetrans(data.data.three)));
-            		$("#input_lay4").val((timetrans(data.data.four)));
-            		$("#input_lay5").val((timetrans(data.data.five)));
-            		$("#input_lay6").val((timetrans(data.data.six)));
-            		$("#input_lay7").val((timetrans(data.data.seven)));
-            		$("#input_lay8").val((timetrans(data.data.eight)));
-            		$("#input_lay9").val((timetrans(data.data.nine)));
-            		$("#input_lay10").val((timetrans(data.data.ten)));
-            		$("#input_lay11").val((timetrans(data.data.eleven)));
-            		$("#input_lay12").val((timetrans(data.data.twelve)));
-            	}
-            }
-        })
-	});
 	
-	$("#savelayconfig").click(function(){
+	
+	$("#adddevice").click(function(){
+		var neckletid = $("#in_necketid").val();
 		if(neckletid == ""){
-			alert("请先查询获取项圈投药时间配置！");
+			alert("项圈标识不正确！");
 			return;
 		}
 		var mid = "mid="+neckletid+"&";
@@ -62,15 +36,26 @@ $(function(){
 			var nine = "nine=" +  $("#input_lay9").val()+":00&";
 			var ten = "ten=" +  $("#input_lay10").val()+":00&";
 			var eleven = "eleven=" +  $("#input_lay11").val()+":00&";
-			var twelve = "twelve=" +  $("#input_lay12").val()+":00";
-			var senddata = mid+one+two+three+four+five+six+seven+eight+nine+ten+eleven+twelve;
+			var twelve = "twelve=" +  $("#input_lay12").val()+":00&";
+			
+			var simccid = "simccid=" +$("#input_sim").val()+"&";
+			var swver ="swver=" + $("#input_swver").val()+"&";
+			var ip ="ip=" + $("#input_ip").val()+"&";
+			var port ="port=" + $("#input_port").val()+"&";
+			var ledenable ="ledenable=" + $("#input_ledenable").val()+"&";
+			var infoupdatecycle ="infoupdatecycle=" + $("#input_infoupdatecycle").val()+"&";
+			var tickcycle ="tickcycle=" + $("#input_tickcycle").val()+"&";
+			var tempflag ="tempflag=" + $("#input_tempflag").val()+"&";
+			var tempgmt ="tempgmt=" +  $("#input_tempgmt").val()+":00";
+			
+			var senddata = mid+one+two+three+four+five+six+seven+eight+nine+ten+eleven+twelve+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt;;
 			$.ajax({
-	        	url: "/sec/api/setlayconfigbynecid.do",
+	        	url: "/sec/api/adddevice.do",
 	            method: "POST",
 	            data: senddata, 
 	            success: function (data) {
 	            	if (data.data == null) {
-	            		alert("该项圈不存在！");
+	            		alert(data.msg);
 	    	            return;
 	            	}else{
 	            		alert(data.msg);
