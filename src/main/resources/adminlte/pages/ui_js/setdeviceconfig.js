@@ -24,6 +24,12 @@ $(function(){
             		$("#input_lastupdatetime").val((timetrans(data.data.updatetime)));
             		$("#input_clearerr").val(data.data.clearerr);
             		$("#input_factory").val(data.data.factory);
+            		
+            		if(data.data.uimodifyflag == 1 && data.data.hardmodifyflag == 0){
+            			$("#lable_status").text("硬件设备尚未接收到更改通知！");
+            		}else if(data.data.uimodifyflag == 0 && data.data.hardmodifyflag == 0){
+            			$("#lable_status").text("硬件设备已完成配置更改！");
+            		}
             	}
             }
         })
@@ -50,6 +56,25 @@ $(function(){
 		var senddata = mid+status+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt+clearerr+factory;
 		$.ajax({
 	    	url: "/sec/api/setdeviceconfigbynecid.do",
+	        method: "POST",
+	        data: senddata, 
+	        success: function (data) {
+        		alert(data.msg);
+        		if(data.code == 200){
+        			$("#lable_status").text("硬件设备尚未接收到更改通知！");
+        		}
+	        }
+	    })
+	});
+	
+	$("#getdevicemodifiedstatus").click(function(){
+		if(neckletid == ""){
+			alert("请先查询获取项圈投药时间配置！");
+			return;
+		}
+		var mid = "mid="+neckletid;
+		$.ajax({
+	    	url: "/sec/api/getdevicemodifiedstatus.do",
 	        method: "POST",
 	        data: senddata, 
 	        success: function (data) {

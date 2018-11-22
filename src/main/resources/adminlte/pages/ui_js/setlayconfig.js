@@ -26,6 +26,11 @@ $(function(){
             		$("#input_lay10").val((timetrans(data.data.ten)));
             		$("#input_lay11").val((timetrans(data.data.eleven)));
             		$("#input_lay12").val((timetrans(data.data.twelve)));
+            		if(data.data.uimodifyflag == 1 && data.data.hardmodifyflag == 0){
+            			$("#lable_status").text("硬件设备尚未接收到时间更改通知！");
+            		}else if(data.data.uimodifyflag == 0 && data.data.hardmodifyflag == 0){
+            			$("#lable_status").text("硬件设备已完成时间更改！");
+            		}
             	}
             }
         })
@@ -74,6 +79,9 @@ $(function(){
 	    	            return;
 	            	}else{
 	            		alert(data.msg);
+	            		if(data.code == 200){
+	            			$("#lable_status").text("硬件设备尚未接收到时间更改通知！");
+	            		}
 	            	}
 	            }
 	        })

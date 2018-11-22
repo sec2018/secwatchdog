@@ -122,7 +122,7 @@ public class SysDeviceConfApi {
         	}
         	if(flag2) {
         		r.setCode(200);
-                r.setMsg("配置项圈信息成功！");
+                r.setMsg("项圈信息入库成功！");
                 r.setData(null);
                 r.setSuccess(true);
         	}else {
@@ -134,7 +134,7 @@ public class SysDeviceConfApi {
         } catch (Exception e) {
             r.setCode(500);
             r.setData(e.getClass().getName() + ":" + e.getMessage());
-            r.setMsg("配置项圈信息失败");
+            r.setMsg("项圈信息入库失败");
             r.setSuccess(false);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();

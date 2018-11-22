@@ -156,19 +156,19 @@ public class SysLayconfigApi {
             		sysLayconfigMapper.deleteOldestLayConfigByMid(mid);
                 }
         		r.setCode(200);
-                r.setMsg("配置项圈时间成功！");
+                r.setMsg("项圈时间配置入库成功！");
                 r.setData(layconfig);
                 r.setSuccess(true);
         	}else {
         		r.setCode(500);
                 r.setData(null);
-                r.setMsg("配置项圈时间失败");
+                r.setMsg("项圈时间配置入库失败");
                 r.setSuccess(false);
         	}
         } catch (Exception e) {
             r.setCode(500);
             r.setData(e.getClass().getName() + ":" + e.getMessage());
-            r.setMsg("配置项圈时间失败");
+            r.setMsg("项圈时间配置入库失败");
             r.setSuccess(false);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
