@@ -11,7 +11,7 @@ $(function(){
     	            return;
             	}else{
             		neckletid = data.data.mid;
-            		$("#input_status").val(data.data.status);
+            		$("#input_status").val(changestatus(data.data.status));
             		$("#input_sim").val(data.data.simccid);
             		$("#input_swver").val(data.data.swver);
             		$("#input_ip").val(data.data.ip);
@@ -96,3 +96,16 @@ function timetrans(date){
     var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
     return Y+M+D+h+m+s;
 }
+
+function changestatus(int_status){
+	var status = int_status.toString(2)+"";
+	status = status.split("").reverse().join("");
+	while(status.length<12){
+		status = status+"0";
+	}
+	status = status.substring(0,4)+"-"+status.substring(4,8)+"-"+status.substring(8,12);
+	return status;
+}
+
+
+

@@ -9,7 +9,7 @@ $(function(){
 			method: "POST",
 			data: "mid="+$("#in_necketid").val(),
 			success:function(data){
-				if(data.code.indexOf("500")!=-1){
+				if(data.code==500){
 					alert("未找到指定项圈！")
 					return;
 				}

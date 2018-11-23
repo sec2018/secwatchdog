@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>设备地图</title>
+	<style type="text/css">
+		body, html, #tab, #mapfrm {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		#menu{height:100%;overflow-y:auto}
+		td{font-size:14px}
+		h4{margin:0;}
+		#map_demo{
+			width:1000px;
+			height: 750px;
+			/*overflow: hidden;*/
+		}
+		.qw{
+		height:100px;
+		margin-right: 20px;
+		}
+		.detail-message{
+			/*display: none;*/
+		}
+		ul{
+			list-style: none;
+			font-size: 20px;
+			color: blue;
+			/*margin-top:50px;*/
+			/*!*margin-left:100px;*!*/
+			/*margin-bottom:70px;*/
+		}
+
+		.BMap_cpyCtrl
+			{
+				display:none;
+			}
+		.anchorBL{
+			display:none;
+		}
+  </style>
+	<script type="text/javascript" src="../。。/baidumap_apiV2_offline/baidumapv2/baidumap_offline_v2_load.js"></script>
+	<script src="../。。/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="../。。/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../。。/baidumap_apiV2_offline/baidumapv2/layer/layer.js"></script>
+    <link rel="stylesheet" type="text/css" href="../。。/baidumap_apiV2_offline/baidumapv2/css/baidu_map_v2.css"/>
+	<link rel="stylesheet" href="../。。/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../。。/dist/css/AdminLTE.min.css">
+</head>
+<body>
+<body>
+<div class="col-md-9">
+	<div class=" map-width" id="map_demo"></div>
+</div>
+<div class="col-md-3 content" >
+	<div class="box list-all">
+		<div class="factory-name box-header with-border">
+			<h4 class="box-title">太平洋机电集团（上海）科技有限公司</h4>
+		</div>
+		<div class="box-body">
+			<ul>
+				<li id="bj" title="点击进入" style="cursor: pointer">北京工厂</li>
+				<li id="sh" title="点击进入" style="cursor: pointer">上海工厂</li>
+			</ul>
+		</div>
+	</div>
+	<div class="detail-message box" >
+		<div class="factory-name box-header with-border">
+			<h4 class="box-title name-msg" id="factoryInfo">北京工厂概况</h4>
+		</div>
+		<div class="mes box-body">
+			<table class="table ">
+				<tr>
+					<th>机器总数</th>
+					<td id="machineCount">250台</td>
+				</tr>
+				<tr>
+					<th>厂房位置</th>
+					<td id="position">东经：116.43度，北纬：39.91度</td>
+				</tr>
+				<tr>
+					<th>占地面积</th>
+					<td id="areaCount">50公顷</td>
+				</tr>
+				<tr>
+					<th>详细地址</th>
+					<td id="address">北京市海淀区首体南路9号</td>
+				</tr>
+				<tr>
+					<th>联系电话</th>
+					<td id="tel">010-88356057</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+</body>
+</body>
+<script type="text/javascript">
+        var a=screen.width*8.8/12;
+        var c=$(window).height();
+        $('#map_demo').width(a+'px');
+        $('#map_demo').height(c+'px')
+		//console.log(a)
+		//多个点
+		var map = new BMap.Map("map_demo");
+		var arr1 = [116.404, 39.915];
+		var arr2 = [121.47, 31.23];
+		var position = new Array(2);
+		position[0] = arr1;
+		position[1] = arr2;
+
+
+		for(var i=0;i<position.length;i++){
+
+			var marker = new BMap.Marker(new BMap.Point(position[i][0], position[i][1]));  // 创建标注
+			map.addOverlay(marker);               // 将标注添加到地图E)中
+			//marker.setAnimation(BMAP_ANIMATION_BOUNC; //跳动的动画
+			marker.addEventListener("click",attribute);
+		}
+
+		map.centerAndZoom(new BMap.Point(116.404, 39.915), 5);  // 初始化地图,设置中心点坐标和地图级别
+		map.setCurrentCity("太原");          // 设置地图中心显示的城市 new！
+		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+		//监听地图缩放
+		map.addEventListener("zoomend", function(){
+			if( this.getZoom() > 8 ||this.getZoom() <5) {
+				//layer.msg("默认只有8级地图, 超过无法显示");
+				map.centerAndZoom(new BMap.Point(116.404, 39.915), 5);
+				map.setCurrentCity("太原");
+			}
+		});
+
+		function attribute(e){
+			var p = e.target;
+			var markerP=[p.getPosition().lng,p.getPosition().lat];//获取marker经纬度
+		//        console.log(markerP)
+			if((markerP[0]==position[0][0])&&(markerP[1]==position[0][1])){
+                $("#factoryInfo").html("北京工厂概况");
+				$('#machineCount').html("250");
+				$('#position').html("东经：116.43度，北纬：39.91度");
+				$('#areaCount').html("50公顷");
+				$('#address').html("北京市海淀区首体南路9号");
+				$('#tel').html("010-88356057");
+			}
+			if((markerP[0]==position[1][0])&&(markerP[1]==position[1][1])){
+                $("#factoryInfo").html("上海工厂概况");
+				$('#machineCount').html("300");
+				$('#position').html("东经：121.47度，北纬：31.23度");
+				$('#areaCount').html("180公顷");
+				$('#address').html("上海市宝山区蕰川路6号（智慧湾1号楼3M)");
+				$('#tel').html("0086-21-66791659");
+			}
+		//        $('.detail-message').toggle()
+		}
+		var contextPath=getContextPath();
+		function getContextPath(){
+			var pathName = document.location.pathname;
+			var index = pathName.substr(1).indexOf("/");
+			var result = pathName.substr(0,index+1);
+			return result;
+		}
+		$("#bj").click(function () {
+			location.href = contextPath+"/index";
+		})
+		$("#sh").click(function () {
+			location.href = contextPath+"/index";
+		})
+</script>
+</html>

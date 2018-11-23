@@ -118,6 +118,7 @@ public class SysDeviceConfApi {
         	boolean flag2  = false;
         	if(flag) {
         		String command03 = Analyse.Command_03_Send(sysDeviceconf);
+        		redisService.remove("device_"+mid);
         		flag2  = redisService.setpersist("device_"+mid, command03);
         	}
         	if(flag2) {

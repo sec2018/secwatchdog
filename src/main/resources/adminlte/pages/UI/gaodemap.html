@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loca 创建 - 全国省会及直辖市</title>
+    <style>
+        html,
+        body,
+        #container {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="container" class="container">
+</div>
+<!--<script src="./script/loca.js"></script>-->
+<script src="//webapi.amap.com/loca?v=1.2.0&key=a95f2a626d3afd67fb6ae4231c8997d5"></script>
+<script src="//a.amap.com/Loca/static/mock/districts.js"></script>
+<script>
+
+    var map = Loca.create('container', {
+        mapStyle: 'amap://styles/twilight',
+        zoom: 4,
+        center: [107.4976, 32.1697],
+        features: ['bg', 'road'],
+        // Loca 自 1.2.0 起 viewMode 模式默认为 3D，如需 2D 模式，请显示配置。
+        // viewMode: '3D'
+    });
+
+    var layer = Loca.visualLayer({
+        container: map,
+        // 指定数据类型
+        type: 'point',
+        // 展示形状
+        shape: 'circle'
+    });
+
+    layer.setData(districts, {
+        // 指定经纬度所在字段
+        lnglat: 'center'
+    });
+
+    layer.setOptions({
+        style: {
+            // 圆形半径，单位像素
+            radius: 13,
+            // 填充颜色
+            color: '#f3ad6a',
+            // 描边颜色
+            borderColor: '#5a6aff',
+            // 描边宽度，单位像素
+            borderWidth: 1,
+            // 透明度 [0-1]
+            opacity: 0.9,
+        }
+    });
+
+    layer.render();
+
+</script>
+</body>
+</html>
