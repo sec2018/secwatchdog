@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import sec.secwatchdog.model.SysLaytime;
 import sec.secwatchdog.service.impl.SysLaytimeExample;
 
@@ -30,4 +32,7 @@ public interface SysLaytimeMapper {
     int updateByPrimaryKeySelective(SysLaytime record);
 
     int updateByPrimaryKey(SysLaytime record);
+    
+    @Select("select * from sys_laytime as a where not exists (select 1 from sys_laytime where mid = a.mid and updatetime>a.updatetime)")
+    List<SysLaytime> getAllDevicePosition();
 }
