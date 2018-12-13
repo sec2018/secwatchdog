@@ -1,6 +1,8 @@
-/target
+target
 /
-/log/
-/.settings/
-/src/main/resources/application.yml
-/src/main/resources/application-dev.yml
+log/
+src/main/resources/application.yml
+src/main/resources/application-dev.yml
+.classpath
+.project
+.settings/
