@@ -7,7 +7,7 @@
 	    //$("#cityepidemictotal").text(data.data2.cityepidemictotal);
 	    //$("#countyepidemictotal").text(data.data2.countyepidemictotal);
 	    $("#cityepidemictotal").text("73");
-	    $("#countyepidemictotal").text("350");
+	    $("#countyepidemictotal").text("368");
 	    $("#villageepidemictotal").text(data.data2.villageepidemictotal);
 	    $("#hamletepidemictotal").text(data.data2.hamletepidemictotal);
 
@@ -18,9 +18,12 @@
 	    $("#villageadmintotal").text(data.data2.villageadmintotal);
 	    $("#hamletadmintotal").text(data.data2.hamletadmintotal);
 
-	    $("#countrydognumtotal").text(data.data2.countrydognumtotal);
-	    $("#countryalldognumtotal").text(data.data2.alldognumtotal);
-	    $("#countrywsqdognumtotal").text(data.data2.feedernumtotal);
+//	    $("#countrydognumtotal").text(data.data2.countrydognumtotal);
+//	    $("#countryalldognumtotal").text(data.data2.alldognumtotal);
+//	    $("#countrywsqdognumtotal").text(data.data2.feedernumtotal);
+	    $("#countrydognumtotal").text("3472856");
+	    $("#countryalldognumtotal").text("23");
+	    $("#countrywsqdognumtotal").text("0");
 	    $("#countryratedognumtotal").text(((data.data2.countrydognumtotal + data.data2.feedernumtotal) * 100 / data.data2.alldognumtotal).toFixed(6));
 	    $("#countrymednumtotal").text(data.data2.countrymednumtotal);
 
