@@ -87,7 +87,7 @@ public class SysDeviceConfApi {
 	@Transactional
     @ResponseBody
     public ResponseEntity<JsonResult> InsertLayConfigByNeckletId(@RequestParam(value = "mid")String mid,
-    		@RequestParam(value = "status")Byte status,@RequestParam(value = "simccid")String simccid,@RequestParam(value = "swver")String swver,
+    		@RequestParam(value = "simccid")String simccid,@RequestParam(value = "swver")String swver,
     		@RequestParam(value = "ip")String ip,@RequestParam(value = "port")Integer port,
     		@RequestParam(value = "infoupdatecycle")Integer infoupdatecycle,@RequestParam(value = "tickcycle")Integer tickcycle,
     		@RequestParam(value = "ledenable")Byte ledenable,@RequestParam(value = "tempflag")Byte tempflag,

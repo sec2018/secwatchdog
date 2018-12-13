@@ -54,7 +54,7 @@
     </header>
     <!-- end navbar -->
     <!-- sidebar -->
-    <div id="sidebar-nav" style="width:219px">
+    <div id="sidebar-nav">
         <ul id="dashboard-menu">
 
             <li class="active">
@@ -70,19 +70,19 @@
             <li>
                 <a style="cursor: pointer" id="a_managepage">
                     <i class="icon-wrench"></i>
-                    <span>查询与搜索</span>
+                    <span>管理页面</span>
                 </a>
             </li>
             <li>
                 <a style="cursor:pointer" id="a_analysis">
-                    <i class="icon-user"></i>
-                    <span>用户添加/激活</span>
+                    <i class="icon-cogs"></i>
+                    <span>统计分析</span>
                 </a>
             </li>
             <li>
                 <a style="cursor: pointer" id="a_personalpage">
                     <i class="icon-user"></i>
-                    <span>信息修改/删除</span>
+                    <span>个人信息</span>
                 </a>
             </li>
             <!--<li>
@@ -93,21 +93,21 @@
             </li>-->
             <li>
                 <a href="../user/logout.do" style="cursor:pointer">
-                    <i class="icon-cogs"></i>
-                    <span>统计分析</span>
+                    <i class="icon-off"></i>
+                    <span>退出</span>
                 </a>
             </li>
             <li>
                 <a href="../user/newframe.do" style="cursor:pointer">
                     <i class="icon-off"></i>
-                    <span>退出</span>
+                    <span>新框架</span>
                 </a>
             </li>
         </ul>
     </div>
     <!-- end sidebar -->
     <!-- main container -->
-    <div class="content" style="margin-left:216px">
+    <div class="content">
 
         <!-- upper main stats -->
         <!-- end upper main stats -->
@@ -209,7 +209,7 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    犬的总数量
+                                    犬只总数
                                 </td>
                                 <td>
                                     数量（只）
@@ -223,7 +223,7 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    佩戴项圈犬的数量
+                                    已佩项圈犬只数
                                 </td>
                                 <td>
                                     数量（只）
@@ -237,7 +237,7 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    使用喂饲器犬的数量
+                                    使用喂饲器数
                                 </td>
                                 <td>
                                     数量（只）
@@ -251,7 +251,7 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    智能驱虫总次数
+                                    驱虫总次数
                                 </td>
                                 <td>
                                     数量（次）
@@ -265,7 +265,7 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    使用硬件驱虫比
+                                    驱虫犬只比
                                 </td>
                                 <td>
                                     单位（%）

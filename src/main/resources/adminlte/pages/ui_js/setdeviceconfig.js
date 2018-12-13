@@ -41,7 +41,7 @@ $(function(){
 			return;
 		}
 		var mid = "mid="+neckletid+"&";
-		var status = "status=" +$("#input_status").val()+"&";
+		//var status = "status=" +$("#input_status").val()+"&";
 		var simccid = "simccid=" +$("#input_sim").val()+"&";
 		var swver ="swver=" + $("#input_swver").val()+"&";
 		var ip ="ip=" + $("#input_ip").val()+"&";
@@ -53,7 +53,7 @@ $(function(){
 		var tempgmt ="tempgmt=" +  $("#input_tempgmt").val()+":00&";
 		var clearerr = "clearerr=" +$("#input_clearerr").val()+"&";
 		var factory = "factory=" +$("#input_factory").val();
-		var senddata = mid+status+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt+clearerr+factory;
+		var senddata = mid+simccid+swver+ip+port+ledenable+infoupdatecycle+tickcycle+tempflag+tempgmt+clearerr+factory;
 		$.ajax({
 	    	url: "/sec/api/setdeviceconfigbynecid.do",
 	        method: "POST",
